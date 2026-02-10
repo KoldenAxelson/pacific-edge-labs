@@ -1,25 +1,8 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 /* Custom Pacific Edge Labs styles */
-@layer components {
-    .btn-primary {
-        @apply px-4 py-2 bg-pel-blue-500 text-white rounded-lg hover:bg-pel-blue-600 transition duration-150 ease-in-out;
-    }
-    
-    .btn-secondary {
-        @apply px-4 py-2 bg-pel-gray-200 text-pel-gray-700 rounded-lg hover:bg-pel-gray-300 transition duration-150 ease-in-out;
-    }
-    
-    .card {
-        @apply bg-white rounded-lg shadow-md overflow-hidden;
-    }
-    
-    .input-text {
-        @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pel-blue-500 focus:border-transparent;
-    }
-}
+/* Note: @apply is deprecated in Tailwind v4 */
+/* Custom component classes will be added using Tailwind's utility classes directly in templates */
 
 /* Livewire loading states */
 [wire\:loading] {
