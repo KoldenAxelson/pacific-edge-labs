@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Services\PaymentService;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 
@@ -63,4 +64,57 @@ Route::get("/test-s3", function () {
     return response()->json($results, 200, [], JSON_PRETTY_PRINT);
 });
 
+// Payment test route (REMOVE IN PRODUCTION)
+Route::get('/test-payment', function (PaymentService $paymentService) {
+    $user = auth()->user() ?? \App\Models\User::first();
+    
+    if (!$user) {
+        return 'No users found. Create a user first.';
+    }
+    
+    // Test successful payment
+    $successTransaction = $paymentService->processPayment(
+        user: $user,
+        amount: 99.99,
+        paymentDetails: [
+            'card_number' => '4111111111111111', // Test Visa
+            'cvv' => '123',
+            'expiry' => '12/25',
+            'name' => $user->name,
+        ],
+        metadata: ['test' => true, 'description' => 'Test payment']
+    );
+    
+    // Test failed payment
+    $failedTransaction = $paymentService->processPayment(
+        user: $user,
+        amount: 49.99,
+        paymentDetails: [
+            'card_number' => '4111111111110000', // Ends in 0000 = fails
+            'cvv' => '123',
+            'expiry' => '12/25',
+            'name' => $user->name,
+        ],
+        metadata: ['test' => true, 'description' => 'Test failed payment']
+    );
+    
+    return response()->json([
+        'gateway_info' => $paymentService->getGatewayInfo(),
+        'success_transaction' => [
+            'id' => $successTransaction->id,
+            'status' => $successTransaction->status,
+            'amount' => $successTransaction->amount,
+            'transaction_id' => $successTransaction->transaction_id,
+            'payment_method' => $successTransaction->payment_method,
+        ],
+        'failed_transaction' => [
+            'id' => $failedTransaction->id,
+            'status' => $failedTransaction->status,
+            'amount' => $failedTransaction->amount,
+            'error' => $failedTransaction->error_message,
+        ],
+    ], 200, [], JSON_PRETTY_PRINT);
+})->name('test-payment');
+
 require __DIR__ . "/auth.php";
+
