@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -12,24 +11,34 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Call RoleSeeder first
+        $this->command->info('🌱 Starting database seeding...');
+
         $this->call([
+            // Phase 0: Foundation
             RoleSeeder::class,
+            UserSeeder::class,
+
+            // Phase 2: Products & Inventory (placeholder for now)
+            ProductSeeder::class,
+            BatchSeeder::class,
+
+            // Phase 3: CoAs (placeholder for now)
+            CoaSeeder::class,
+
+            // Phase 4: Orders (placeholder for now)
+            OrderSeeder::class,
         ]);
 
-        // Create test users
-        $superAdmin = User::factory()->create([
-            'name' => 'Super Admin',
-            'email' => 'admin@pacificedgelabs.test',
-            'password' => bcrypt('password'),
-        ]);
-        $superAdmin->assignRole('super-admin');
-
-        $customer = User::factory()->create([
-            'name' => 'Test Customer',
-            'email' => 'customer@pacificedgelabs.test',
-            'password' => bcrypt('password'),
-        ]);
-        $customer->assignRole('customer');
+        $this->command->info('✅ Database seeding completed!');
+        $this->command->newLine();
+        $this->command->info('Test accounts created:');
+        $this->command->table(
+            ['Role', 'Email', 'Password'],
+            [
+                ['Super Admin', 'admin@pacificedgelabs.test', 'password'],
+                ['Admin', 'staff@pacificedgelabs.test', 'password'],
+                ['Customer', 'johnson1@research.test', 'password'],
+            ]
+        );
     }
 }
