@@ -14,6 +14,10 @@ trait TestHelpers
 {
     /**
      * Create multiple users with a given role.
+     *
+     * @param string $role The role to assign to each user
+     * @param int $count The number of users to create
+     * @return \Illuminate\Support\Collection Collection of created users
      */
     protected function createUsersWithRole(string $role, int $count): \Illuminate\Support\Collection
     {
@@ -25,6 +29,10 @@ trait TestHelpers
 
     /**
      * Assert user has specific role.
+     *
+     * @param User $user The user to check
+     * @param string $role The role to verify
+     * @return void
      */
     protected function assertUserHasRole(User $user, string $role): void
     {
@@ -36,6 +44,10 @@ trait TestHelpers
 
     /**
      * Assert user can perform action.
+     *
+     * @param User $user The user to check
+     * @param string $permission The permission to verify
+     * @return void
      */
     protected function assertUserCan(User $user, string $permission): void
     {
@@ -47,6 +59,10 @@ trait TestHelpers
 
     /**
      * Assert user cannot perform action.
+     *
+     * @param User $user The user to check
+     * @param string $permission The permission to verify
+     * @return void
      */
     protected function assertUserCannot(User $user, string $permission): void
     {

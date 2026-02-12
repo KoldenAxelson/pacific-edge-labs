@@ -38,17 +38,23 @@ interface PaymentGatewayInterface
     public function verify(array $paymentDetails): array;
 
     /**
-     * Get gateway name
+     * Get the gateway identifier name.
+     *
+     * @return string Gateway name (e.g., 'mock', 'authorize_net')
      */
     public function getGatewayName(): string;
 
     /**
-     * Get supported currencies
+     * Get the list of currencies this gateway accepts.
+     *
+     * @return array<string> Currency codes (e.g., ['USD', 'EUR', 'GBP'])
      */
     public function getSupportedCurrencies(): array;
 
     /**
-     * Check if gateway is in test mode
+     * Check if the gateway is operating in test/sandbox mode.
+     *
+     * @return bool True if the gateway is in test mode
      */
     public function isTestMode(): bool;
 }

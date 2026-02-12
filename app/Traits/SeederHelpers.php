@@ -11,7 +11,10 @@ namespace App\Traits;
 trait SeederHelpers
 {
     /**
-     * Truncate tables and reset auto-increment
+     * Truncate tables and reset auto-increment.
+     *
+     * @param string $table The table name to truncate
+     * @return void
      */
     protected function truncateTable(string $table): void
     {
@@ -19,7 +22,10 @@ trait SeederHelpers
     }
 
     /**
-     * Check if seeder should run (useful for production safety)
+     * Check if seeder should run (useful for production safety).
+     *
+     * @param string $environment The environment to check against
+     * @return bool True if the current environment matches the specified environment
      */
     protected function shouldSeed(string $environment = 'local'): bool
     {
@@ -27,7 +33,10 @@ trait SeederHelpers
     }
 
     /**
-     * Display progress message
+     * Display progress message.
+     *
+     * @param string $message The message to display
+     * @return void
      */
     protected function info(string $message): void
     {
@@ -37,7 +46,11 @@ trait SeederHelpers
     }
 
     /**
-     * Generate random date within range
+     * Generate random date within range.
+     *
+     * @param string $startDate The start date string
+     * @param string $endDate The end date string
+     * @return \DateTime A random date between the specified dates
      */
     protected function randomDateBetween(string $startDate, string $endDate): \DateTime
     {

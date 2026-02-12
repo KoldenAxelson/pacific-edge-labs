@@ -24,6 +24,9 @@ class AuthenticatedSessionController extends Controller
 
     /**
      * Handle an incoming authentication request.
+     *
+     * @param LoginRequest $request The login request with credentials
+     * @return RedirectResponse Redirect to intended page or dashboard after login
      */
     public function store(LoginRequest $request): RedirectResponse
     {
@@ -36,6 +39,9 @@ class AuthenticatedSessionController extends Controller
 
     /**
      * Destroy an authenticated session.
+     *
+     * @param Request $request The current request
+     * @return RedirectResponse Redirect to home page after logout
      */
     public function destroy(Request $request): RedirectResponse
     {

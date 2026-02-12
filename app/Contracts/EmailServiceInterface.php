@@ -24,22 +24,38 @@ interface EmailServiceInterface
     public function sendWelcomeEmail(User $user): bool;
 
     /**
-     * Send order confirmation email
+     * Send order confirmation email.
+     *
+     * @param Order $order The order to send confirmation for
+     * @return bool True if email was sent successfully, false otherwise
      */
     public function sendOrderConfirmation(Order $order): bool;
 
     /**
-     * Send CoA ready notification
+     * Send notification that a Certificate of Analysis is ready for download.
+     *
+     * @param User $user The user to notify
+     * @param string $productName The name of the product the CoA belongs to
+     * @param string $coaUrl The URL where the CoA PDF can be downloaded
+     * @return bool True if email was sent successfully, false otherwise
      */
     public function sendCoaReadyNotification(User $user, string $productName, string $coaUrl): bool;
 
     /**
-     * Send password reset email
+     * Send password reset email with token link.
+     *
+     * @param User $user The user requesting the password reset
+     * @param string $token The password reset token
+     * @return bool True if email was sent successfully, false otherwise
      */
     public function sendPasswordResetEmail(User $user, string $token): bool;
 
     /**
-     * Send generic mailable
+     * Send an arbitrary mailable to a user.
+     *
+     * @param Mailable $mailable The mailable instance to send
+     * @param User $user The recipient user
+     * @return bool True if email was sent successfully, false otherwise
      */
     public function send(Mailable $mailable, User $user): bool;
 }

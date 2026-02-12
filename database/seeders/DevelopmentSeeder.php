@@ -18,8 +18,10 @@ class DevelopmentSeeder extends Seeder
     use SeederHelpers;
 
     /**
-     * Run development-specific seeders
-     * This creates extra verbose data for local testing
+     * Run development-specific seeders.
+     * This creates extra verbose data for local testing.
+     *
+     * @return void
      */
     public function run(): void
     {

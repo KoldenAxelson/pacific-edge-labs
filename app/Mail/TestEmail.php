@@ -22,6 +22,8 @@ class TestEmail extends Mailable
 
     /**
      * Create a new message instance.
+     *
+     * @param string $userName The name of the recipient
      */
     public function __construct(string $userName)
     {

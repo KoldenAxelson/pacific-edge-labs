@@ -565,26 +565,42 @@ class ShoppingCart extends Component
 </div>
 ```
 
-### Tailwind CSS
+### Tailwind CSS (v4)
+
+We use Tailwind CSS 4 with the v3 compatibility layer (`tailwind.config.js`). Tailwind v4
+introduces a CSS-first configuration model, but our existing JS config still works via
+automatic compatibility detection.
+
+**Key v4 differences from v3:**
+- Entry point is `@import "tailwindcss"` (replaces `@tailwind base/components/utilities`)
+- Content detection is automatic (the `content` array in our config is a v3 holdover)
+- Custom design tokens can be defined via `@theme` in CSS (v4-native) or in `tailwind.config.js` (v3-compat)
+- `@apply` is still supported (not deprecated)
+
+**Our setup:**
+- `resources/css/app.css` — CSS entry point with `@import "tailwindcss"`
+- `tailwind.config.js` — custom brand colors (`pel-blue`, `pel-gray`), font family
+- `@tailwindcss/vite` plugin — handles compilation via Vite
 
 **✅ DO:**
-- Use Tailwind utility classes
-- Extract common patterns to Blade components
-- Use `@apply` sparingly (only for custom utilities)
-- Follow mobile-first responsive design
+- Use Tailwind utility classes directly in templates
+- Extract common patterns to Blade components (preferred over `@apply`)
+- Follow mobile-first responsive design (`sm:`, `md:`, `lg:` breakpoints)
+- Use the `pel-blue-*` and `pel-gray-*` brand color tokens
 
 **❌ DON'T:**
 - Write custom CSS unless absolutely necessary
 - Use inline styles
-- Over-use `@apply` (defeats the purpose of Tailwind)
+- Over-use `@apply` (extract to Blade components instead)
+- Use v3-only syntax like `@tailwind base` (use `@import "tailwindcss"`)
 
 ```blade
-{{-- ✅ GOOD - Utility classes --}}
+{{-- ✅ GOOD - Utility classes with brand colors --}}
 <button class="px-4 py-2 bg-pel-blue-500 text-white rounded-lg hover:bg-pel-blue-600 transition duration-150">
     Add to Cart
 </button>
 
-{{-- ✅ GOOD - Component for reuse --}}
+{{-- ✅ GOOD - Component for reuse (preferred over @apply) --}}
 <x-button color="primary">Add to Cart</x-button>
 
 {{-- ❌ BAD - Inline styles --}}
@@ -592,6 +608,21 @@ class ShoppingCart extends Component
     Add to Cart
 </button>
 ```
+
+**Theme customization (v4-native approach for future reference):**
+```css
+/* In resources/css/app.css — this is the v4 way to define tokens */
+@import "tailwindcss";
+
+@theme {
+    --color-pel-blue-500: #3b82f6;
+    --color-pel-blue-600: #2563eb;
+    --font-sans: 'Figtree', sans-serif;
+}
+```
+
+We currently use `tailwind.config.js` for this, which v4 reads via its compatibility layer.
+When Phase 1 design system work is complete, consider migrating to `@theme` for a cleaner setup.
 
 ## 🔒 Security Conventions
 

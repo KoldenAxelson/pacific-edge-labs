@@ -23,6 +23,8 @@ class RoleSeeder extends Seeder
      *
      * Creates roles and permission definitions, then assigns permissions to roles
      * according to the application's authorization requirements.
+     *
+     * @return void
      */
     public function run(): void
     {

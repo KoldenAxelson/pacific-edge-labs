@@ -22,6 +22,8 @@ class UserSeeder extends Seeder
      *
      * Creates a super-admin account, a regular admin account, and multiple customer test accounts,
      * each assigned to their respective roles via the permissions system.
+     *
+     * @return void
      */
     public function run(): void
     {

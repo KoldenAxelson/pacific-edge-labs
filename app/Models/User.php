@@ -54,6 +54,11 @@ class User extends Authenticatable implements FilamentUser
 
     /**
      * Determine if the user can access the Filament admin panel.
+     *
+     * Only users with super-admin, admin, or manager roles are granted access.
+     *
+     * @param Panel $panel The Filament panel being accessed
+     * @return bool True if the user has an admin-tier role
      */
     public function canAccessPanel(Panel $panel): bool
     {

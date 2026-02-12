@@ -34,6 +34,9 @@ abstract class TestCase extends BaseTestCase
 
     /**
      * Create a user.
+     *
+     * @param array $attributes Optional attributes to override defaults
+     * @return \App\Models\User The created user
      */
     protected function createUser(array $attributes = []): \App\Models\User
     {
@@ -42,6 +45,10 @@ abstract class TestCase extends BaseTestCase
 
     /**
      * Create a user with a specific role.
+     *
+     * @param string $role The role to assign to the user
+     * @param array $attributes Optional attributes to override defaults
+     * @return \App\Models\User The created user with assigned role
      */
     protected function createUserWithRole(string $role, array $attributes = []): \App\Models\User
     {
@@ -53,6 +60,9 @@ abstract class TestCase extends BaseTestCase
 
     /**
      * Create and authenticate a super-admin.
+     *
+     * @param array $attributes Optional attributes to override defaults
+     * @return static The test case instance authenticated as super-admin
      */
     protected function actingAsSuperAdmin(array $attributes = []): static
     {
@@ -63,6 +73,9 @@ abstract class TestCase extends BaseTestCase
 
     /**
      * Create and authenticate an admin.
+     *
+     * @param array $attributes Optional attributes to override defaults
+     * @return static The test case instance authenticated as admin
      */
     protected function actingAsAdmin(array $attributes = []): static
     {
@@ -73,6 +86,9 @@ abstract class TestCase extends BaseTestCase
 
     /**
      * Create and authenticate a customer.
+     *
+     * @param array $attributes Optional attributes to override defaults
+     * @return static The test case instance authenticated as customer
      */
     protected function actingAsCustomer(array $attributes = []): static
     {

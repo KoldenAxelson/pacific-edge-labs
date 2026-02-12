@@ -1,8 +1,7 @@
 @import "tailwindcss";
 
 /* Custom Pacific Edge Labs styles */
-/* Note: @apply is deprecated in Tailwind v4 */
-/* Custom component classes will be added using Tailwind's utility classes directly in templates */
+/* Prefer Blade components over @apply for reusable patterns */
 
 /* Livewire loading states */
 [wire\:loading] {

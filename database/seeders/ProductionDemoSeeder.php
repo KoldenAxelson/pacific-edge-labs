@@ -18,8 +18,10 @@ class ProductionDemoSeeder extends Seeder
     use SeederHelpers;
 
     /**
-     * Run production demo seeder
-     * This creates realistic but limited data for demo deployment
+     * Run production demo seeder.
+     * This creates realistic but limited data for demo deployment.
+     *
+     * @return void
      */
     public function run(): void
     {
