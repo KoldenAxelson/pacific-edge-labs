@@ -50,9 +50,11 @@ class UserSeeder extends Seeder
         ];
 
         foreach ($customerNames as $index => $name) {
+            $parts = explode(' ', $name);
+            $lastName = strtolower(end($parts));
             $customer = User::create([
                 'name' => $name,
-                'email' => strtolower(str_replace([' ', '.'], ['', ''], explode(' ', $name)[1])) . ($index + 1) . '@research.test',
+                'email' => $lastName . ($index + 1) . '@research.test',
                 'password' => Hash::make('password'),
                 'email_verified_at' => now(),
             ]);
