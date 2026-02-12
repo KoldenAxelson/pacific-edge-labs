@@ -8,6 +8,12 @@ use App\Services\EmailService;
 use App\Contracts\PaymentGatewayInterface;
 use App\Services\Payment\MockPaymentGateway;
 
+/**
+ * Core application service provider.
+ *
+ * Registers and bootstraps application-wide services including dependency injection
+ * bindings for email and payment gateway implementations.
+ */
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -15,7 +21,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        // Email service binding
+        // Bind email service implementation to allow for easy swapping between drivers
         $this->app->singleton(EmailServiceInterface::class, EmailService::class);
 
         // Payment gateway binding

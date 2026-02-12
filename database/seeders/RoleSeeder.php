@@ -7,10 +7,23 @@ use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
+/**
+ * Seeds roles and permissions for the application.
+ *
+ * Creates three default roles (super-admin, admin, customer) and assigns appropriate
+ * permissions for user management, product management, order management, and settings.
+ * Uses Spatie Laravel-permission package for role-based access control (RBAC).
+ */
 class RoleSeeder extends Seeder
 {
     use SeederHelpers;
 
+    /**
+     * Seed all application roles and their associated permissions.
+     *
+     * Creates roles and permission definitions, then assigns permissions to roles
+     * according to the application's authorization requirements.
+     */
     public function run(): void
     {
         $this->info('Seeding roles and permissions...');

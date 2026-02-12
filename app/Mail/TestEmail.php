@@ -8,6 +8,12 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
+/**
+ * Test email for verifying the email abstraction layer.
+ *
+ * Used to validate that the mailing system is properly configured
+ * and capable of sending messages with the MAIL_* environment settings.
+ */
 class TestEmail extends Mailable
 {
     use Queueable, SerializesModels;

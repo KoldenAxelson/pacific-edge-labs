@@ -7,6 +7,9 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
+/**
+ * Displays email verification prompt or redirects verified users (Laravel Breeze scaffolded).
+ */
 class EmailVerificationPromptController extends Controller
 {
     /**

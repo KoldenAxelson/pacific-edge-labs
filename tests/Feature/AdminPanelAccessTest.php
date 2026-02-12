@@ -6,6 +6,12 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
+/**
+ * Feature tests for admin panel access control.
+ *
+ * Verifies that authentication and authorization rules are properly enforced
+ * for admin panel routes based on user roles and permissions.
+ */
 class AdminPanelAccessTest extends TestCase
 {
     use RefreshDatabase;

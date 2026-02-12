@@ -4,6 +4,13 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
+/**
+ * Main database seeder orchestrating all foundational seeders.
+ *
+ * Executes seeders in sequence for Phase 0 (roles, users) and Phase 2+ (products, orders)
+ * to establish the complete database schema with test data. Outputs helpful information
+ * about created test accounts.
+ */
 class DatabaseSeeder extends Seeder
 {
     /**

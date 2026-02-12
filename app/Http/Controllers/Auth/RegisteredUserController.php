@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 
+/**
+ * Handles user registration and account creation (Laravel Breeze scaffolded).
+ */
 class RegisteredUserController extends Controller
 {
     /**
@@ -41,6 +44,7 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        // Assign customer role to all newly registered users for proper authorization control.
         $user->assignRole('customer');
 
         event(new Registered($user));

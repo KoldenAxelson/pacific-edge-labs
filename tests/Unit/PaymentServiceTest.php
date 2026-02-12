@@ -8,6 +8,12 @@ use App\Services\PaymentService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
+/**
+ * Unit tests for the PaymentService.
+ *
+ * Verifies payment processing, refund handling, transaction creation,
+ * and payment method masking with the mock payment gateway.
+ */
 class PaymentServiceTest extends TestCase
 {
     use RefreshDatabase;

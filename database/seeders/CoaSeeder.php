@@ -5,6 +5,12 @@ namespace Database\Seeders;
 use App\Traits\SeederHelpers;
 use Illuminate\Database\Seeder;
 
+/**
+ * Placeholder seeder for Certificate of Analysis (CoA) data (Phase 3).
+ *
+ * To be implemented in Phase 3 when the CoA model is created.
+ * Will seed sample PDF CoAs, upload to S3, and link to product batches.
+ */
 class CoaSeeder extends Seeder
 {
     use SeederHelpers;

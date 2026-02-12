@@ -5,6 +5,12 @@ namespace Database\Seeders;
 use App\Traits\SeederHelpers;
 use Illuminate\Database\Seeder;
 
+/**
+ * Placeholder seeder for order data (Phase 4).
+ *
+ * To be implemented in Phase 4 when the Order model is created.
+ * Will seed realistic orders with multiple products, various statuses, payments, and history.
+ */
 class OrderSeeder extends Seeder
 {
     use SeederHelpers;

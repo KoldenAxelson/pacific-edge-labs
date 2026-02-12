@@ -7,6 +7,12 @@ use App\Traits\SeederHelpers;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
+/**
+ * Production demo database seeder for staging deployments.
+ *
+ * Creates realistic but limited demo data for demonstration and testing in staging environments.
+ * Includes a demo admin account and a few realistic demo customers for presentation purposes.
+ */
 class ProductionDemoSeeder extends Seeder
 {
     use SeederHelpers;

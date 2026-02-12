@@ -7,6 +7,9 @@ use Illuminate\Auth\Events\Verified;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\RedirectResponse;
 
+/**
+ * Marks user email as verified via verification link (Laravel Breeze scaffolded).
+ */
 class VerifyEmailController extends Controller
 {
     /**

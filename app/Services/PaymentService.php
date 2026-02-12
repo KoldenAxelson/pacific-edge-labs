@@ -7,6 +7,17 @@ use App\Models\PaymentTransaction;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
 
+/**
+ * Payment service acting as the primary bridge between business logic and payment gateway interface.
+ *
+ * Orchestrates payment operations including charges, refunds, and verification by delegating
+ * to a pluggable payment gateway implementation. Manages transaction recording, status updates,
+ * error handling, and detailed logging for audit compliance. Supports metadata tracking and
+ * payment method masking for secure storage.
+ *
+ * @see \App\Contracts\PaymentGatewayInterface
+ * @see \App\Models\PaymentTransaction
+ */
 class PaymentService
 {
     public function __construct(
@@ -14,7 +25,15 @@ class PaymentService
     ) {}
 
     /**
-     * Process a payment
+     * Process a payment.
+     *
+     * @param User $user The user making the payment
+     * @param float $amount The amount to charge in dollars
+     * @param array $paymentDetails Payment method details (card number, CVV, etc.)
+     * @param array $metadata Additional metadata (currency, customer info, etc.)
+     * @param int|null $orderId Optional order ID associated with this payment
+     * @return PaymentTransaction The created or updated transaction record
+     * @throws \Exception When payment gateway operations fail
      */
     public function processPayment(
         User $user,
@@ -91,7 +110,12 @@ class PaymentService
     }
 
     /**
-     * Process a refund
+     * Process a refund.
+     *
+     * @param PaymentTransaction $originalTransaction The original completed transaction to refund
+     * @param float|null $amount The partial refund amount; null for full refund
+     * @return PaymentTransaction The refund transaction record
+     * @throws \Exception When original transaction is not completed or gateway refund fails
      */
     public function processRefund(
         PaymentTransaction $originalTransaction,
@@ -163,7 +187,10 @@ class PaymentService
     }
 
     /**
-     * Verify payment details
+     * Verify payment details.
+     *
+     * @param array $paymentDetails Payment method details to verify
+     * @return array Verification result array
      */
     public function verifyPaymentDetails(array $paymentDetails): array
     {
@@ -171,7 +198,10 @@ class PaymentService
     }
 
     /**
-     * Format payment method for storage (last 4 digits only)
+     * Format payment method for storage (last 4 digits only).
+     *
+     * @param array $paymentDetails Payment method details containing card_number
+     * @return string|null Formatted payment method (e.g., "Visa ****1234") or null if no card number
      */
     private function formatPaymentMethod(array $paymentDetails): ?string
     {
@@ -188,7 +218,10 @@ class PaymentService
     }
 
     /**
-     * Detect card type from number
+     * Detect card type from number.
+     *
+     * @param string $cardNumber The card number to analyze
+     * @return string The detected card type (Visa, Mastercard, Amex, Discover, or Card)
      */
     private function detectCardType(string $cardNumber): string
     {
@@ -209,7 +242,9 @@ class PaymentService
     }
 
     /**
-     * Get gateway info
+     * Get gateway info.
+     *
+     * @return array Gateway information including name, test mode, and supported currencies
      */
     public function getGatewayInfo(): array
     {

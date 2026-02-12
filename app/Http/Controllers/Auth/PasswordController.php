@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
 
+/**
+ * Handles password updates for authenticated users (Laravel Breeze scaffolded).
+ */
 class PasswordController extends Controller
 {
     /**

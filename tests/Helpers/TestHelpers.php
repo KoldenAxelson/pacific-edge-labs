@@ -4,6 +4,12 @@ namespace Tests\Helpers;
 
 use App\Models\User;
 
+/**
+ * Provides reusable assertion and creation helpers for test cases.
+ *
+ * Includes utilities for creating users with roles, asserting user role assignments,
+ * and verifying user permissions and capabilities.
+ */
 trait TestHelpers
 {
     /**

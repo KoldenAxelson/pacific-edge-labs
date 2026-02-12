@@ -6,10 +6,20 @@ use App\Models\User;
 use App\Models\Order;
 use Illuminate\Mail\Mailable;
 
+/**
+ * Email service interface defining the contract for email operations in the application.
+ *
+ * Establishes the public API for sending transactional emails including welcome emails,
+ * order confirmations, password resets, and certificate of analysis notifications.
+ * Implementations should handle mail delivery, error handling, and optional logging.
+ */
 interface EmailServiceInterface
 {
     /**
-     * Send welcome email to new user
+     * Send welcome email to new user.
+     *
+     * @param User $user The user to send the welcome email to
+     * @return bool True if email was sent successfully, false otherwise
      */
     public function sendWelcomeEmail(User $user): bool;
 

@@ -9,6 +9,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
+/**
+ * Handles user login and logout (Laravel Breeze scaffolded).
+ */
 class AuthenticatedSessionController extends Controller
 {
     /**

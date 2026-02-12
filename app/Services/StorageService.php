@@ -5,6 +5,14 @@ namespace App\Services;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\UploadedFile;
 
+/**
+ * Storage service providing abstraction layer for S3-based file operations.
+ *
+ * Manages uploads, retrieval, and deletion of certificates of analysis (CoAs) and product
+ * images across separate S3 buckets. Provides secure temporary URLs for CoA access, handles
+ * file naming conventions, and abstracts away cloud storage implementation details. Supports
+ * S3 versioning for compliance auditing and soft deletes.
+ */
 class StorageService
 {
     /**

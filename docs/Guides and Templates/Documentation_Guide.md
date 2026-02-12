@@ -30,25 +30,25 @@ This guide establishes documentation practices for the Pacific Edge Labs e-comme
 
 ```
 pacific-edge-labs/
-├── README.md                          # Project overview, setup, tech stack
-├── Coding_Conventions.md              # Development standards
-├── Documentation_Guide.md             # This file
+├── README.md                              # Project overview, setup, tech stack
 ├── docs/
-│   ├── architecture/
-│   │   ├── database-schema.md        # ER diagrams, table relationships
-│   │   ├── payment-abstraction.md    # Payment gateway architecture
-│   │   └── compliance-system.md      # Compliance logging design
-│   ├── api/
-│   │   └── endpoints.md              # API documentation (future)
-│   ├── deployment/
-│   │   ├── lightsail-setup.md       # Deployment procedures
-│   │   └── environment-config.md     # Environment variables
-│   └── decisions/
-│       ├── 001-database-choice.md    # Architectural decisions
-│       ├── 002-batch-tracking.md     # Key design decisions
-│       └── template.md               # ADR template
-├── INFO-*.md                          # Task completion reports
-└── TASK-*.md                          # Phase/task documentation
+│   ├── architecture/                      # Architecture and design decisions
+│   │   ├── email-architecture.md          # Email abstraction layer design
+│   │   └── payment-architecture.md        # Payment gateway abstraction design
+│   ├── Execution/                         # Phase execution tracking
+│   │   ├── Phase 0/                       # TASK-* instructions and INFO-* completion reports
+│   │   ├── Phase 1/                       # (created per phase)
+│   │   └── TASK-X-000-Overview.md         # Phase overview files
+│   ├── Guides and Templates/             # Development standards
+│   │   ├── Coding_Conventions.md          # Coding standards and conventions
+│   │   ├── Documentation_Guide.md         # This file
+│   │   └── TEMPLATE-Task-Completion.md    # Template for INFO completion reports
+│   ├── history/                           # Project history and milestones
+│   │   ├── pacific-edge-project-brief.md  # Original project brief
+│   │   └── Phase-0-Completion.md          # Phase 0 completion summary
+│   └── reference/                         # Operational reference guides
+│       ├── seeding.md                     # Database seeding guide
+│       └── testing.md                     # Testing guide
 ```
 
 ## 💬 Inline Comments
@@ -317,9 +317,9 @@ Batch-level inventory tracking with CoA association.
 
 Document significant architectural decisions using ADR format.
 
-**Location:** `docs/decisions/`
+**Location:** `docs/architecture/`
 
-**Template:** `docs/decisions/template.md`
+**Template (inline):**
 
 ```markdown
 # [Number]. [Title]
@@ -345,7 +345,7 @@ What other options did we evaluate?
 
 ### Example ADR
 
-**File:** `docs/decisions/002-batch-level-inventory.md`
+**File:** `docs/architecture/batch-level-inventory.md` (example)
 
 ```markdown
 # 2. Batch-Level Inventory Tracking
@@ -559,7 +559,7 @@ Keep current
 
 ### Environment Variables
 
-Document all `.env` variables in `docs/deployment/environment-config.md`:
+Document all `.env` variables in `docs/reference/environment-config.md` (create when needed):
 
 ```markdown
 # Environment Configuration
@@ -771,12 +771,11 @@ Use this checklist when completing a phase:
 | Complex business logic | Inline comments | In the code |
 | Public method | DocBlock | Above method |
 | New table/migration | Schema doc + comments | `docs/architecture/` + migration file |
-| Major architectural decision | ADR | `docs/decisions/` |
-| Completed task | Completion report | `INFO-*.md` |
-| Phase completion | README update | `README.md` |
-| New environment variable | Config doc | `docs/deployment/` |
-| Deployment procedure | Deployment doc | `docs/deployment/` |
-| Feature for admin users | Admin guide | `docs/onboarding/` |
+| Major architectural decision | Architecture doc | `docs/architecture/` |
+| Completed task | Completion report | `docs/Execution/Phase X/INFO-*.md` |
+| Phase completion | README update + summary | `README.md` + `docs/history/` |
+| Operational reference | Reference guide | `docs/reference/` |
+| Feature for admin users | Admin guide | `docs/reference/` (future) |
 
 ### Documentation Priority
 

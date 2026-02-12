@@ -6,6 +6,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * PaymentTransaction model representing payment operations in the system.
+ *
+ * Tracks all financial transactions including charges and refunds processed through
+ * payment gateways. Records transaction status, gateway responses, and error details
+ * for auditing and compliance purposes. Maintains relationships with users and orders,
+ * enabling comprehensive payment history tracking and financial reconciliation.
+ */
 class PaymentTransaction extends Model
 {
     use HasFactory;
@@ -33,7 +41,9 @@ class PaymentTransaction extends Model
     ];
 
     /**
-     * Get the user that owns the transaction
+     * Get the user that owns the transaction.
+     *
+     * @return BelongsTo The user relationship
      */
     public function user(): BelongsTo
     {
@@ -41,8 +51,9 @@ class PaymentTransaction extends Model
     }
 
     /**
-     * Get the order associated with the transaction
-     * (Order model will be created in Phase 4)
+     * Get the order associated with the transaction.
+     *
+     * @return BelongsTo The order relationship
      */
     public function order(): BelongsTo
     {
@@ -50,7 +61,9 @@ class PaymentTransaction extends Model
     }
 
     /**
-     * Check if transaction was successful
+     * Check if transaction was successful.
+     *
+     * @return bool True if transaction status is completed
      */
     public function isSuccessful(): bool
     {
@@ -58,7 +71,9 @@ class PaymentTransaction extends Model
     }
 
     /**
-     * Check if transaction failed
+     * Check if transaction failed.
+     *
+     * @return bool True if transaction status is failed
      */
     public function isFailed(): bool
     {
@@ -66,7 +81,9 @@ class PaymentTransaction extends Model
     }
 
     /**
-     * Check if transaction is pending
+     * Check if transaction is pending.
+     *
+     * @return bool True if transaction status is pending
      */
     public function isPending(): bool
     {
@@ -74,7 +91,9 @@ class PaymentTransaction extends Model
     }
 
     /**
-     * Check if transaction was refunded
+     * Check if transaction was refunded.
+     *
+     * @return bool True if transaction status is refunded
      */
     public function isRefunded(): bool
     {
@@ -82,7 +101,10 @@ class PaymentTransaction extends Model
     }
 
     /**
-     * Scope to get completed transactions only
+     * Scope to get completed transactions only.
+     *
+     * @param mixed $query The query builder instance
+     * @return mixed The filtered query
      */
     public function scopeCompleted($query)
     {
@@ -90,7 +112,10 @@ class PaymentTransaction extends Model
     }
 
     /**
-     * Scope to get failed transactions only
+     * Scope to get failed transactions only.
+     *
+     * @param mixed $query The query builder instance
+     * @return mixed The filtered query
      */
     public function scopeFailed($query)
     {
@@ -98,7 +123,11 @@ class PaymentTransaction extends Model
     }
 
     /**
-     * Scope to get transactions for a specific gateway
+     * Scope to get transactions for a specific gateway.
+     *
+     * @param mixed $query The query builder instance
+     * @param string $gateway The gateway name to filter by
+     * @return mixed The filtered query
      */
     public function scopeGateway($query, string $gateway)
     {
@@ -106,7 +135,10 @@ class PaymentTransaction extends Model
     }
 
     /**
-     * Scope to get charge transactions only
+     * Scope to get charge transactions only.
+     *
+     * @param mixed $query The query builder instance
+     * @return mixed The filtered query
      */
     public function scopeCharges($query)
     {
@@ -114,7 +146,10 @@ class PaymentTransaction extends Model
     }
 
     /**
-     * Scope to get refund transactions only
+     * Scope to get refund transactions only.
+     *
+     * @param mixed $query The query builder instance
+     * @return mixed The filtered query
      */
     public function scopeRefunds($query)
     {

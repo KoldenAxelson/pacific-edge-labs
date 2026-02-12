@@ -7,6 +7,12 @@ use App\Traits\SeederHelpers;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
+/**
+ * Development-specific database seeder for local testing.
+ *
+ * Creates additional test users and verbose sample data for local development,
+ * feature testing, and stress testing. Only runs in the local environment.
+ */
 class DevelopmentSeeder extends Seeder
 {
     use SeederHelpers;

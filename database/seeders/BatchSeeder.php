@@ -5,6 +5,12 @@ namespace Database\Seeders;
 use App\Traits\SeederHelpers;
 use Illuminate\Database\Seeder;
 
+/**
+ * Placeholder seeder for product batch data (Phase 2).
+ *
+ * To be implemented in Phase 2 when the Batch model is created.
+ * Will seed batch numbers, quantities, manufacturing and expiry dates.
+ */
 class BatchSeeder extends Seeder
 {
     use SeederHelpers;

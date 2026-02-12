@@ -5,6 +5,13 @@ namespace Tests;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
+/**
+ * Base test case with role and permission helper methods.
+ *
+ * Provides convenient factory methods for creating test users with specific roles,
+ * acting as authenticated users, and accessing the full permissions system.
+ * Automatically seeds the database with roles and permissions before each test.
+ */
 abstract class TestCase extends BaseTestCase
 {
     use RefreshDatabase;

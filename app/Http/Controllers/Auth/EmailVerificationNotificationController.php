@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
+/**
+ * Sends email verification notifications to users (Laravel Breeze scaffolded).
+ */
 class EmailVerificationNotificationController extends Controller
 {
     /**

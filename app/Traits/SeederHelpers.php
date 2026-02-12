@@ -2,6 +2,12 @@
 
 namespace App\Traits;
 
+/**
+ * Provides reusable helper methods for database seeders.
+ *
+ * Includes utilities for table truncation, environment checks, progress output,
+ * and random date generation to support safe and flexible data seeding.
+ */
 trait SeederHelpers
 {
     /**

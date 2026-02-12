@@ -9,10 +9,23 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
 
+/**
+ * Email service for handling all transactional emails in the application.
+ *
+ * Provides methods to send user welcome emails, order confirmations, payment notifications,
+ * and certificate of analysis (CoA) ready notifications. Acts as the concrete implementation
+ * of EmailServiceInterface, abstracting away mail delivery details from the rest of the
+ * application. Currently logs email operations for phase development.
+ *
+ * @see \App\Contracts\EmailServiceInterface
+ */
 class EmailService implements EmailServiceInterface
 {
     /**
-     * Send welcome email to new user
+     * Send welcome email to new user.
+     *
+     * @param User $user The user to send the welcome email to
+     * @return bool True if email was sent successfully, false otherwise
      */
     public function sendWelcomeEmail(User $user): bool
     {
@@ -27,7 +40,10 @@ class EmailService implements EmailServiceInterface
     }
 
     /**
-     * Send order confirmation email
+     * Send order confirmation email.
+     *
+     * @param Order $order The order to send confirmation for
+     * @return bool True if email was sent successfully, false otherwise
      */
     public function sendOrderConfirmation(Order $order): bool
     {
@@ -42,7 +58,12 @@ class EmailService implements EmailServiceInterface
     }
 
     /**
-     * Send CoA ready notification
+     * Send CoA ready notification.
+     *
+     * @param User $user The user to notify
+     * @param string $productName The name of the product
+     * @param string $coaUrl The URL to the certificate of analysis
+     * @return bool True if email was sent successfully, false otherwise
      */
     public function sendCoaReadyNotification(User $user, string $productName, string $coaUrl): bool
     {
@@ -58,7 +79,11 @@ class EmailService implements EmailServiceInterface
     }
 
     /**
-     * Send password reset email
+     * Send password reset email.
+     *
+     * @param User $user The user to send reset email to
+     * @param string $token The password reset token
+     * @return bool True if email was sent successfully, false otherwise
      */
     public function sendPasswordResetEmail(User $user, string $token): bool
     {
@@ -72,7 +97,11 @@ class EmailService implements EmailServiceInterface
     }
 
     /**
-     * Send generic mailable
+     * Send generic mailable.
+     *
+     * @param Mailable $mailable The mailable instance to send
+     * @param User $user The user to send the email to
+     * @return bool True if email was sent successfully, false otherwise
      */
     public function send(Mailable $mailable, User $user): bool
     {

@@ -10,6 +10,17 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
+/**
+ * User model representing system users in the Pacific Edge Labs application.
+ *
+ * Manages user authentication, role-based access control, and compliance tracking.
+ * Users can have roles such as super-admin, admin, manager, or customer, which determine
+ * their access to the Filament admin panel and system features. Integrates with Laravel's
+ * authentication system and Spatie's permission package for role management.
+ *
+ * @see \App\Models\Order
+ * @see \App\Models\PaymentTransaction
+ */
 class User extends Authenticatable implements FilamentUser
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles;

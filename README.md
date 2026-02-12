@@ -48,14 +48,14 @@ This platform prioritizes:
 - **Framework:** Laravel 12 (PHP 8.5)
 - **Database:** PostgreSQL 18
 - **Authentication:** Laravel Breeze with Alpine.js
-- **Admin Panel:** Filament 3.x
+- **Admin Panel:** Filament 4 (beta) with Filament Shield
 - **API:** Laravel Sanctum (for future mobile app)
 - **Permissions:** Spatie Laravel Permission
 - **Debugging:** Laravel Telescope (development only)
 
 ### Frontend
 - **Templating:** Blade
-- **CSS:** Tailwind CSS 3.x
+- **CSS:** Tailwind CSS 4
 - **JavaScript:** Alpine.js (lightweight, reactive)
 - **Components:** Livewire 3 (server-rendered reactivity)
 - **Build Tool:** Vite
@@ -109,7 +109,7 @@ This platform prioritizes:
 - Payment and email abstraction layers
 - Testing framework and seeders
 
-### Phase 1: Design System & Brand (In Progress)
+### Phase 1: Design System & Brand (Up Next)
 - Typography, color palette, spacing system
 - Reusable Blade components (buttons, cards, badges, forms)
 - Responsive layout foundations
@@ -240,97 +240,116 @@ sail artisan telescope:install     # Access at /telescope
 sail artisan test
 
 # Run specific test file
-sail artisan test --filter=ProductTest
+sail artisan test --filter=PaymentServiceTest
+
+# Run specific test method
+sail artisan test --filter=test_users_can_authenticate
 
 # Run with coverage (requires Xdebug)
 sail artisan test --coverage
-
-# Run Pest tests (if using Pest)
-sail artisan pest
 ```
 
-### Test Coverage Goals
+### Current Test Coverage (Phase 0)
+- **Authentication:** Registration, login, logout, password reset, email verification
+- **Role/Permissions:** Role assignment, permission checks, role-based access
+- **Admin Panel:** Filament access gated by role
+- **Payment Service:** Charge, refund, card masking, error handling
+
+### Coverage Goals
 - **Authentication:** 100%
 - **Role/Permissions:** 100%
 - **Payment Service:** 90%+
 - **Overall:** 80%+ coverage
-- **Critical paths (checkout, payments):** 100%
+- **Critical paths (checkout, payments):** 100% when implemented
 
 ## 📁 Project Structure
 
 ```
 ├── app/
-│   ├── Contracts/          # Interfaces (PaymentGatewayInterface, etc.)
-│   ├── Filament/          # Filament admin resources
+│   ├── Console/Commands/   # Custom Artisan commands (SeedDemo, SeedDevelopment)
+│   ├── Contracts/          # Interfaces (PaymentGatewayInterface, EmailServiceInterface)
+│   ├── Filament/           # Filament admin panel resources and pages
 │   ├── Http/
-│   │   ├── Controllers/   # Route controllers
-│   │   └── Livewire/      # Livewire components
-│   ├── Models/            # Eloquent models
-│   ├── Services/          # Business logic (PaymentService, BatchAllocationService)
-│   └── View/Components/   # Blade components
+│   │   ├── Controllers/    # Route controllers (Auth, Profile)
+│   │   └── Requests/       # Form request validation
+│   ├── Livewire/           # Livewire components
+│   ├── Mail/               # Mailable classes (TestEmail)
+│   ├── Models/             # Eloquent models (User, PaymentTransaction)
+│   ├── Policies/           # Authorization policies (RolePolicy)
+│   ├── Providers/          # Service providers (App, Telescope)
+│   ├── Services/           # Business logic (PaymentService, EmailService, StorageService)
+│   ├── Traits/             # Reusable traits (SeederHelpers)
+│   └── View/Components/    # Blade layout components
 ├── database/
-│   ├── factories/         # Model factories for testing
-│   ├── migrations/        # Database migrations
-│   └── seeders/           # Database seeders
+│   ├── factories/          # Model factories for testing
+│   ├── migrations/         # Database migrations
+│   └── seeders/            # Database seeders (Role, User, placeholders for future)
+├── docs/
+│   ├── architecture/       # Architecture decision docs (payment, email)
+│   ├── Execution/          # Phase task files (TASK-*) and completion reports (INFO-*)
+│   ├── Guides and Templates/ # Coding conventions, documentation guide, templates
+│   ├── history/            # Project brief, phase completion summaries
+│   └── reference/          # Testing guide, seeding guide
 ├── resources/
-│   ├── css/              # Tailwind CSS
-│   ├── js/               # Alpine.js entry point
-│   └── views/            # Blade templates
+│   ├── css/                # Tailwind CSS
+│   ├── js/                 # Alpine.js entry point
+│   └── views/              # Blade templates
 ├── routes/
-│   ├── web.php           # Web routes
-│   └── api.php           # API routes (future)
+│   ├── web.php             # Web routes
+│   └── api.php             # API routes (future)
 └── tests/
-    ├── Feature/          # Feature tests
-    └── Unit/             # Unit tests
+    ├── Feature/            # Feature tests (Auth, Roles, Admin access)
+    ├── Helpers/            # Test helper traits
+    └── Unit/               # Unit tests (PaymentService)
 ```
 
 ## 🔐 Security Features
 
-- **Age verification** with IP logging for compliance
+**Implemented (Phase 0):**
 - **CSRF protection** (Laravel default)
 - **XSS protection** (escaped output in Blade)
 - **SQL injection prevention** (Eloquent ORM, no raw queries with user input)
-- **Rate limiting** on authentication and checkout endpoints
-- **CAPTCHA** on age verification gate (prevents bot bypass)
-- **SSL/HTTPS enforcement** (production)
 - **Environment variables** never committed (.env in .gitignore)
-- **Role-based access control** (Spatie Permission)
-- **Payment data** never stored (PCI compliance)
+- **Role-based access control** (Spatie Permission with three roles)
+- **Payment data** never fully stored (last 4 digits only, PCI-aware)
+- **Admin panel** gated to admin+ roles via Filament Shield
 
-## 🎨 Design System
+**Planned (Future Phases):**
+- **Age verification gate** with IP logging for compliance (Phase 4)
+- **Research attestation checkboxes** at checkout (Phase 4)
+- **Rate limiting** on authentication and checkout endpoints (Phase 7)
+- **CAPTCHA** on age verification gate (Phase 7)
+- **SSL/HTTPS enforcement** in production (Phase 8)
 
-### Brand Colors
-- **Primary Blue:** `pel-blue-500` (#3b82f6)
-- **Dark Blue:** `pel-blue-700` (#1d4ed8)
-- **Gray Scale:** `pel-gray-50` through `pel-gray-950`
+## 🎨 Design System (Phase 1)
 
-### Typography
-- **Font:** Figtree (sans-serif)
-- **Headings:** Bold, clear hierarchy
-- **Body:** Readable, accessible
+The design system will be built in Phase 1. Planned elements:
 
-### Components
-- Buttons (primary, secondary, ghost)
-- Cards (product, category, info)
-- Badges (new, sale, low stock)
-- Forms (inputs, selects, checkboxes, validation)
-- Modals (age verification, confirmations)
-- Alerts (success, error, warning, info)
+- **Brand colors:** Primary blue palette, gray scale, accent colors
+- **Typography:** Figtree (sans-serif), clear heading hierarchy
+- **Reusable Blade components:** Buttons, cards, badges, forms, modals, alerts
+- **Mobile-first responsive layout** foundations
 
-## 📊 Database Schema (Key Tables)
+## 📊 Database Schema
 
+**Existing (Phase 0):**
 ```
-users              # Customer accounts
-roles              # Admin, Manager, Customer (Spatie)
-products           # Product catalog
-categories         # Product categories
-batches            # Batch-level inventory with CoA
-carts              # Persistent shopping carts
-cart_items         # Cart line items with batch allocation
-orders             # Order history
-order_items        # Order line items with batch info
-compliance_logs    # Age verification, attestation logging
+users                 # Customer accounts with authentication
+roles                 # Super-admin, Admin, Customer (Spatie)
+permissions           # Granular permission definitions (Spatie)
 payment_transactions  # Payment processing audit trail
+```
+
+**Planned (Future Phases):**
+```
+products              # Product catalog (Phase 2)
+categories            # Product categories (Phase 2)
+batches               # Batch-level inventory with CoA (Phase 3)
+carts                 # Persistent shopping carts (Phase 4)
+cart_items            # Cart line items with batch allocation (Phase 4)
+orders                # Order history (Phase 5)
+order_items           # Order line items with batch info (Phase 5)
+compliance_logs       # Age verification, attestation logging (Phase 4)
 ```
 
 ## 🌐 Deployment

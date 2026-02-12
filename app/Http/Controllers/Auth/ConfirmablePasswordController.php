@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
+/**
+ * Handles password confirmation for sensitive operations (Laravel Breeze scaffolded).
+ */
 class ConfirmablePasswordController extends Controller
 {
     /**

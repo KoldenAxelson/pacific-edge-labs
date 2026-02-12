@@ -7,10 +7,22 @@ use App\Traits\SeederHelpers;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
+/**
+ * Seeds test user accounts with assigned roles.
+ *
+ * Creates one super-admin, one admin, and ten test customer accounts with verified emails.
+ * All accounts use the password "password" for testing purposes.
+ */
 class UserSeeder extends Seeder
 {
     use SeederHelpers;
 
+    /**
+     * Create test user accounts and assign them to roles.
+     *
+     * Creates a super-admin account, a regular admin account, and multiple customer test accounts,
+     * each assigned to their respective roles via the permissions system.
+     */
     public function run(): void
     {
         $this->info('Seeding users...');

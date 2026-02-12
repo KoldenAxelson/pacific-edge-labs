@@ -5,6 +5,11 @@ namespace App\View\Components;
 use Illuminate\View\Component;
 use Illuminate\View\View;
 
+/**
+ * Layout component for unauthenticated guest pages.
+ *
+ * Renders authentication pages (login, register, password reset) with minimal navigation.
+ */
 class GuestLayout extends Component
 {
     /**

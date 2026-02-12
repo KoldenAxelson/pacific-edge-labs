@@ -8,6 +8,12 @@ use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
+/**
+ * Feature tests for role and permission system.
+ *
+ * Verifies that roles are seeded correctly, permissions are assigned properly,
+ * and users can be assigned and checked against roles and permissions.
+ */
 class RolePermissionTest extends TestCase
 {
     use RefreshDatabase;
