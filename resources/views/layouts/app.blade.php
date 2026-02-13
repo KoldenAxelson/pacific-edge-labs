@@ -32,14 +32,8 @@
         @endisset
 
         <main>
-            {{-- Flash messages --}}
-            @if(session('status'))
-                <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
-                    <div class="bg-brand-success-bg border border-brand-success text-brand-success rounded-md px-4 py-3 text-body-sm">
-                        {{ session('status') }}
-                    </div>
-                </div>
-            @endif
+            {{-- Flash messages (success / error / warning / info / validation errors) --}}
+            <x-ui.flash-messages />
 
             {{ $slot }}
         </main>
@@ -49,13 +43,8 @@
             {{ $footer }}
         @endisset
 
-        {{-- Toast container — wired up in TASK-1-011 --}}
-        <div
-            id="toast-container"
-            aria-live="polite"
-            aria-atomic="true"
-            class="fixed bottom-4 right-4 z-50 flex flex-col gap-2 w-80 pointer-events-none"
-        ></div>
+        {{-- Toast container — receives toasts from window._showToast() and Livewire (Phase 4/5) --}}
+        <x-ui.toast-container />
 
         {{-- Age verification gate — full-viewport Alpine overlay, always shows in Phase 1 demo --}}
         {{-- Phase 4: replace `verified: false` with cookie/session persistence --}}

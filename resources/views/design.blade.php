@@ -927,10 +927,132 @@
         </x-ui.container>
     </x-ui.section>
 
+    <x-ui.divider />
+
+    {{-- ── ALERTS & TOASTS ─────────────────────────────────────────────── --}}
+    <x-ui.section spacing="tight">
+        <x-ui.container>
+
+            <h2 class="text-h2 mb-6">Alerts &amp; Toasts</h2>
+
+            {{-- ── Alert — all 4 variants ── --}}
+            <p class="text-label font-semibold text-brand-text-muted uppercase tracking-widest mb-4">x-ui.alert — variants</p>
+            <div class="space-y-3 mb-10">
+                <x-ui.alert variant="info">
+                    New batch PEL-2026-04-A0291 is now available for BPC-157.
+                </x-ui.alert>
+                <x-ui.alert variant="success">
+                    Order #ORD-00018472 has been placed successfully.
+                </x-ui.alert>
+                <x-ui.alert variant="warning">
+                    Stock for TB-500 is low — only 3 units remaining.
+                </x-ui.alert>
+                <x-ui.alert variant="error">
+                    Payment declined. Please check your billing details and try again.
+                </x-ui.alert>
+            </div>
+
+            {{-- ── Alert — with title ── --}}
+            <p class="text-label font-semibold text-brand-text-muted uppercase tracking-widest mb-4">x-ui.alert — with title</p>
+            <div class="space-y-3 mb-10">
+                <x-ui.alert variant="success" title="Order confirmed">
+                    Your order has been received and will be dispatched within 1 business day.
+                </x-ui.alert>
+                <x-ui.alert variant="error" title="Please correct the following errors:">
+                    <ul class="list-disc list-inside space-y-0.5 mt-1">
+                        <li>Attestation checkbox 1 is required.</li>
+                        <li>Attestation checkbox 3 is required.</li>
+                    </ul>
+                </x-ui.alert>
+            </div>
+
+            {{-- ── Alert — dismissible ── --}}
+            <p class="text-label font-semibold text-brand-text-muted uppercase tracking-widest mb-4">x-ui.alert — dismissible (click &times; to hide)</p>
+            <div class="space-y-3 mb-10">
+                <x-ui.alert variant="info" dismissible>
+                    This is a dismissible info alert. Click the &times; to hide it.
+                </x-ui.alert>
+                <x-ui.alert variant="warning" title="Session expiring" dismissible>
+                    Your session will expire in 5 minutes. Save any unsaved work.
+                </x-ui.alert>
+            </div>
+
+            {{-- ── Flash messages ── --}}
+            <p class="text-label font-semibold text-brand-text-muted uppercase tracking-widest mb-4">x-ui.flash-messages — session-driven alerts</p>
+            <div class="mb-10 p-6 bg-brand-surface rounded-lg border border-brand-border">
+                <p class="text-body-sm text-brand-text-muted">
+                    <code class="font-mono-data text-brand-cyan">&lt;x-ui.flash-messages /&gt;</code> is placed at the top of
+                    <code class="font-mono-data">&lt;main&gt;</code> in <code class="font-mono-data">app.blade.php</code>.
+                    It reads <code class="font-mono-data">session('success')</code>,
+                    <code class="font-mono-data">session('error')</code>,
+                    <code class="font-mono-data">session('warning')</code>,
+                    <code class="font-mono-data">session('info')</code>, and
+                    <code class="font-mono-data">$errors->any()</code>, rendering each as a dismissible
+                    <code class="font-mono-data">x-ui.alert</code>. Phase 4 controllers flash messages via
+                    <code class="font-mono-data">return redirect()->with('success', '...')</code>.
+                </p>
+            </div>
+
+            {{-- ── Toast — static visual demos (long duration to persist on page) ── --}}
+            <p class="text-label font-semibold text-brand-text-muted uppercase tracking-widest mb-4">x-ui.toast — visual reference (all 4 variants)</p>
+            <div class="space-y-2 mb-4 max-w-sm">
+                <x-ui.toast variant="success" message="Order #ORD-00018472 placed successfully." :duration="999999" />
+                <x-ui.toast variant="error"   message="Payment failed — please retry." :duration="999999" />
+                <x-ui.toast variant="warning" message="Session will expire in 5 minutes." :duration="999999" />
+                <x-ui.toast variant="info"    message="New batch available for BPC-157." :duration="999999" />
+            </div>
+            <p class="text-caption text-brand-text-muted mb-10">
+                Static renders with extended duration for inspection. In production these appear fixed bottom-right and auto-dismiss after 4 s.
+            </p>
+
+            {{-- ── Toast — live trigger ── --}}
+            <p class="text-label font-semibold text-brand-text-muted uppercase tracking-widest mb-4">x-ui.toast-container — live trigger via <code class="font-mono-data normal-case font-normal">window._showToast()</code></p>
+            <div class="flex flex-wrap gap-3 mb-4 p-6 bg-brand-surface rounded-lg border border-brand-border">
+                <x-ui.button
+                    variant="ghost"
+                    size="sm"
+                    icon="check-circle"
+                    onclick="window._showToast && window._showToast('success', 'Order placed successfully.')"
+                >
+                    Success toast
+                </x-ui.button>
+                <x-ui.button
+                    variant="ghost"
+                    size="sm"
+                    icon="x-circle"
+                    onclick="window._showToast && window._showToast('error', 'Payment failed. Please retry.')"
+                >
+                    Error toast
+                </x-ui.button>
+                <x-ui.button
+                    variant="ghost"
+                    size="sm"
+                    icon="exclamation-triangle"
+                    onclick="window._showToast && window._showToast('warning', 'Session will expire in 5 minutes.')"
+                >
+                    Warning toast
+                </x-ui.button>
+                <x-ui.button
+                    variant="ghost"
+                    size="sm"
+                    icon="information-circle"
+                    onclick="window._showToast && window._showToast('info', 'New batch available for BPC-157.')"
+                >
+                    Info toast
+                </x-ui.button>
+            </div>
+            <p class="text-caption text-brand-text-muted mb-6">
+                Each button injects a live toast into the fixed bottom-right container. Toasts auto-dismiss after 4 s and stack with <code class="font-mono-data">gap-2</code>.
+                Phase 4/5 Livewire components will call <code class="font-mono-data">window._showToast()</code> via browser events.
+            </p>
+
+        </x-ui.container>
+    </x-ui.section>
+
     <x-ui.section spacing="tight">
         <x-ui.container>
             <p class="text-caption text-brand-text-faint text-center">
-                PEL Design System · Phase 1 · TASK-1-001 through TASK-1-010
+                PEL Design System &middot; Phase 1 &middot; TASK-1-001 through TASK-1-011
             </p>
         </x-ui.container>
     </x-ui.section>
