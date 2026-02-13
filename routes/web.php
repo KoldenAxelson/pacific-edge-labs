@@ -27,6 +27,11 @@ Route::middleware("auth")->group(function () {
     );
 });
 
+// Design system visual reference — no auth, remove or protect before production
+Route::get("/design", function () {
+    return view("design");
+})->name("design");
+
 Route::get("/test-components", function () {
     return view("test-components");
 })->name("test-components");
@@ -67,11 +72,11 @@ Route::get("/test-s3", function () {
 // Payment test route (REMOVE IN PRODUCTION)
 Route::get('/test-payment', function (PaymentService $paymentService) {
     $user = auth()->user() ?? \App\Models\User::first();
-    
+
     if (!$user) {
         return 'No users found. Create a user first.';
     }
-    
+
     // Test successful payment
     $successTransaction = $paymentService->processPayment(
         user: $user,
@@ -84,7 +89,7 @@ Route::get('/test-payment', function (PaymentService $paymentService) {
         ],
         metadata: ['test' => true, 'description' => 'Test payment']
     );
-    
+
     // Test failed payment
     $failedTransaction = $paymentService->processPayment(
         user: $user,
@@ -97,7 +102,7 @@ Route::get('/test-payment', function (PaymentService $paymentService) {
         ],
         metadata: ['test' => true, 'description' => 'Test failed payment']
     );
-    
+
     return response()->json([
         'gateway_info' => $paymentService->getGatewayInfo(),
         'success_transaction' => [
@@ -117,4 +122,3 @@ Route::get('/test-payment', function (PaymentService $paymentService) {
 })->name('test-payment');
 
 require __DIR__ . "/auth.php";
-

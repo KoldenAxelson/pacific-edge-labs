@@ -14,23 +14,46 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">
-            @include('layouts.navigation')
+    <body class="font-body bg-brand-bg text-brand-navy antialiased">
 
-            <!-- Page Heading -->
-            @isset($header)
-                <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
+        {{-- Primary navigation --}}
+        @include('layouts.navigation')
+
+        {{-- Compliance / disclaimer banner — slot populated in Phase 2 --}}
+        @isset($banner)
+            {{ $banner }}
+        @endisset
+
+        {{-- Page-level header (x-ui.page-header goes here via named slot) --}}
+        @isset($header)
+            {{ $header }}
+        @endisset
+
+        <main>
+            {{-- Flash messages --}}
+            @if(session('status'))
+                <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+                    <div class="bg-brand-success-bg border border-brand-success text-brand-success rounded-md px-4 py-3 text-body-sm">
+                        {{ session('status') }}
                     </div>
-                </header>
-            @endisset
+                </div>
+            @endif
 
-            <!-- Page Content -->
-            <main>
-                {{ $slot }}
-            </main>
-        </div>
+            {{ $slot }}
+        </main>
+
+        {{-- Footer slot — populated in a later task --}}
+        @isset($footer)
+            {{ $footer }}
+        @endisset
+
+        {{-- Toast container — wired up in TASK-1-011 --}}
+        <div
+            id="toast-container"
+            aria-live="polite"
+            aria-atomic="true"
+            class="fixed bottom-4 right-4 z-50 flex flex-col gap-2 w-80 pointer-events-none"
+        ></div>
+
     </body>
 </html>
