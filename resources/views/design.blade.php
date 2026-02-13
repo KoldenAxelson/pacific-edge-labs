@@ -213,10 +213,397 @@
         </x-ui.container>
     </x-ui.section>
 
+    <x-ui.divider />
+
+    {{-- ── ANIMATION VOCABULARY ────────────────────────────────────────── --}}
+    <x-ui.section spacing="tight">
+        <x-ui.container>
+
+            <h2 class="text-h2 mb-6">Animation Vocabulary</h2>
+
+            {{-- x-collapse smoke test --}}
+            <p class="text-label font-semibold text-brand-text-muted uppercase tracking-widest mb-4">x-collapse — Container + content choreography</p>
+            <div class="mb-10 bg-brand-surface rounded-lg border border-brand-border overflow-hidden">
+                <div x-data="{ open: false }">
+                    <button
+                        @click="open = !open"
+                        class="w-full flex items-center justify-between px-6 py-4 text-body font-medium text-brand-navy transition-smooth hover:bg-brand-surface-2"
+                    >
+                        <span>Toggle collapse (click to test x-collapse plugin)</span>
+                        <span x-text="open ? '↑ Close' : '↓ Open'" class="font-mono-data text-brand-cyan text-caption"></span>
+                    </button>
+                    <div x-show="open" x-collapse x-collapse.duration.400ms>
+                        <div :class="open ? 'animate-reveal-left' : ''" class="px-6 py-4 border-t border-brand-border bg-brand-cyan-subtle">
+                            <p class="text-body-sm text-brand-navy">
+                                ✅ <strong>x-collapse is working.</strong> The container height animated (via <code class="font-mono-data">x-collapse</code>),
+                                then this content faded in from the left with a 150ms delay (via <code class="font-mono-data">animate-reveal-left</code>).
+                                That's the two-phase choreography.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Animation class reference --}}
+            {{--
+                NOTE: These cards show each animation firing once on page load.
+                Replaying CSS animations from Alpine requires a forced browser reflow
+                (element.offsetWidth trick) which is too messy for a reference page.
+                To re-see an animation, just reload the page.
+            --}}
+            <p class="text-label font-semibold text-brand-text-muted uppercase tracking-widest mb-4">Animation classes — fires on page load (reload to replay)</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
+                @foreach([
+                    ['animate-reveal-left',   'revealFromLeft',   '400ms · delay 150ms',            'CoA accordion, FAQ answers'],
+                    ['animate-reveal-bottom', 'revealFromBottom', '350ms · delay 100ms',            'Modals, drawers, mobile nav'],
+                    ['animate-scale-in',      'scaleIn',          '200ms · no delay',               'Badges, toasts, tooltips'],
+                    ['animate-fade-in',       'fadeIn',           '300ms · no delay',               'Overlays, subtle transitions'],
+                    ['animate-stagger',       'revealFromBottom', '400ms · --stagger-index × 60ms', 'Product grid cards'],
+                ] as [$class, $keyframe, $timing, $usage])
+                    <div class="bg-brand-surface border border-brand-border rounded-lg p-4 flex flex-col gap-3">
+                        <code class="font-mono-data text-brand-cyan text-caption">{{ $class }}</code>
+                        <div class="{{ $class }} bg-brand-cyan-subtle rounded px-3 py-2">
+                            <span class="text-body-sm font-medium text-brand-cyan-dark">{{ $keyframe }}</span>
+                        </div>
+                        <div class="text-caption text-brand-text-muted space-y-1">
+                            <p><span class="font-medium">Timing:</span> {{ $timing }}</p>
+                            <p><span class="font-medium">Used for:</span> {{ $usage }}</p>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+
+            {{-- Transition utilities --}}
+            <p class="text-label font-semibold text-brand-text-muted uppercase tracking-widest mb-4">Transition utilities — hover to feel</p>
+            <div class="flex flex-wrap gap-4 mb-4">
+                @foreach([
+                    ['transition-smooth', '200ms'],
+                    ['transition-medium', '300ms'],
+                    ['transition-slow',   '400ms'],
+                ] as [$class, $duration])
+                    <div class="{{ $class }} bg-brand-surface hover:bg-brand-cyan hover:text-white border border-brand-border rounded-lg px-5 py-3 cursor-default">
+                        <code class="font-mono-data text-caption">{{ $class }}</code>
+                        <p class="text-caption text-brand-text-muted mt-1">{{ $duration }} ease</p>
+                    </div>
+                @endforeach
+            </div>
+            <p class="text-caption text-brand-text-muted">Hover each card — the background transitions at different speeds using the shared cubic-bezier curve.</p>
+
+        </x-ui.container>
+    </x-ui.section>
+
+    <x-ui.divider />
+
+    {{-- ── BUTTON COMPONENTS ───────────────────────────────────────────── --}}
+    <x-ui.section spacing="tight">
+        <x-ui.container>
+
+            <h2 class="text-h2 mb-6">Button Components</h2>
+
+            {{-- All 5 variants --}}
+            <p class="text-label font-semibold text-brand-text-muted uppercase tracking-widest mb-4">x-ui.button — variants</p>
+            <div class="flex flex-wrap gap-3 mb-10 p-6 bg-brand-surface rounded-lg border border-brand-border">
+                <x-ui.button variant="primary">Primary</x-ui.button>
+                <x-ui.button variant="secondary">Secondary</x-ui.button>
+                <x-ui.button variant="outline">Outline</x-ui.button>
+                <x-ui.button variant="danger">Danger</x-ui.button>
+                <x-ui.button variant="ghost">Ghost</x-ui.button>
+            </div>
+
+            {{-- 3 sizes --}}
+            <p class="text-label font-semibold text-brand-text-muted uppercase tracking-widest mb-4">x-ui.button — sizes</p>
+            <div class="flex flex-wrap items-center gap-3 mb-10 p-6 bg-brand-surface rounded-lg border border-brand-border">
+                <x-ui.button size="sm">Small</x-ui.button>
+                <x-ui.button size="md">Medium (default)</x-ui.button>
+                <x-ui.button size="lg">Large</x-ui.button>
+            </div>
+
+            {{-- href renders as <a> --}}
+            <p class="text-label font-semibold text-brand-text-muted uppercase tracking-widest mb-4">x-ui.button — href renders as &lt;a&gt;</p>
+            <div class="flex flex-wrap gap-3 mb-10 p-6 bg-brand-surface rounded-lg border border-brand-border">
+                <x-ui.button href="#" variant="primary">Link (primary)</x-ui.button>
+                <x-ui.button href="#" variant="secondary">Link (secondary)</x-ui.button>
+                <x-ui.button href="#" variant="outline">Link (outline)</x-ui.button>
+                <x-ui.button href="#" variant="ghost">Link (ghost)</x-ui.button>
+            </div>
+
+            {{-- Disabled state --}}
+            <p class="text-label font-semibold text-brand-text-muted uppercase tracking-widest mb-4">x-ui.button — disabled</p>
+            <div class="flex flex-wrap gap-3 mb-10 p-6 bg-brand-surface rounded-lg border border-brand-border">
+                <x-ui.button variant="primary" disabled>Primary</x-ui.button>
+                <x-ui.button variant="secondary" disabled>Secondary</x-ui.button>
+                <x-ui.button variant="outline" disabled>Outline</x-ui.button>
+                <x-ui.button variant="danger" disabled>Danger</x-ui.button>
+                <x-ui.button variant="ghost" disabled>Ghost</x-ui.button>
+            </div>
+
+            {{-- Button groups --}}
+            <p class="text-label font-semibold text-brand-text-muted uppercase tracking-widest mb-4">x-ui.button-group</p>
+            <div class="space-y-6 mb-10 p-6 bg-brand-surface rounded-lg border border-brand-border">
+                <div>
+                    <p class="text-caption text-brand-text-muted mb-3">gap="3" (default) — typical action bar</p>
+                    <x-ui.button-group>
+                        <x-ui.button variant="primary">Save Changes</x-ui.button>
+                        <x-ui.button variant="outline">Cancel</x-ui.button>
+                        <x-ui.button variant="ghost">Reset</x-ui.button>
+                    </x-ui.button-group>
+                </div>
+                <div>
+                    <p class="text-caption text-brand-text-muted mb-3">gap="2" — tighter, small buttons</p>
+                    <x-ui.button-group gap="2">
+                        <x-ui.button variant="primary" size="sm">Export</x-ui.button>
+                        <x-ui.button variant="secondary" size="sm">Import</x-ui.button>
+                        <x-ui.button variant="ghost" size="sm">Refresh</x-ui.button>
+                    </x-ui.button-group>
+                </div>
+            </div>
+
+            {{-- Icon button --}}
+            <p class="text-label font-semibold text-brand-text-muted uppercase tracking-widest mb-4">x-ui.icon-button — variants</p>
+            <div class="flex flex-wrap items-center gap-3 mb-6 p-6 bg-brand-surface rounded-lg border border-brand-border">
+                <x-ui.icon-button icon="magnifying-glass" label="Search" variant="ghost" />
+                <x-ui.icon-button icon="magnifying-glass" label="Search" variant="primary" />
+                <x-ui.icon-button icon="trash" label="Delete" variant="danger" />
+                <x-ui.icon-button icon="magnifying-glass" label="Search (disabled)" variant="ghost" disabled />
+            </div>
+
+            <p class="text-label font-semibold text-brand-text-muted uppercase tracking-widest mb-4">x-ui.icon-button — sizes (all ≥ 44px touch target)</p>
+            <div class="flex flex-wrap items-center gap-4 mb-6 p-6 bg-brand-surface rounded-lg border border-brand-border">
+                @foreach([
+                    ['sm', 'Small — 44px',  'x-mark'],
+                    ['md', 'Medium — 44px', 'pencil'],
+                    ['lg', 'Large — 56px',  'plus'],
+                ] as [$size, $label, $icon])
+                    <div class="flex flex-col items-center gap-2">
+                        <x-ui.icon-button :icon="$icon" :label="$label" :size="$size" variant="ghost" />
+                        <span class="text-caption text-brand-text-muted font-mono-data">{{ $label }}</span>
+                    </div>
+                @endforeach
+            </div>
+
+            <p class="text-label font-semibold text-brand-text-muted uppercase tracking-widest mb-4">x-ui.icon-button — href renders as &lt;a&gt;</p>
+            <div class="flex flex-wrap items-center gap-3 p-6 bg-brand-surface rounded-lg border border-brand-border">
+                <x-ui.icon-button href="#" icon="arrow-left" label="Go back" variant="ghost" />
+                <x-ui.icon-button href="#" icon="arrow-top-right-on-square" label="Open in new tab" variant="ghost" />
+            </div>
+
+        </x-ui.container>
+    </x-ui.section>
+
+    <x-ui.divider />
+
+    {{-- ── FORM ELEMENTS ──────────────────────────────────────────────── --}}
+    <x-ui.section spacing="tight">
+        <x-ui.container>
+
+            <h2 class="text-h2 mb-6">Form Elements</h2>
+
+            {{-- ── Input ── --}}
+            <p class="text-label font-semibold text-brand-text-muted uppercase tracking-widest mb-4">x-ui.form.input — variants</p>
+            <div class="grid grid-cols-1 gap-5 mb-10 p-6 bg-brand-surface rounded-lg border border-brand-border sm:grid-cols-2">
+
+                <x-ui.form.group label="Standard input" for="demo-input-standard" hint="Helper text appears here when no error is present.">
+                    <x-ui.form.input id="demo-input-standard" type="text" placeholder="Enter value…" />
+                </x-ui.form.group>
+
+                <x-ui.form.group label="Required field" for="demo-input-required" required>
+                    <x-ui.form.input id="demo-input-required" type="text" placeholder="Cannot be blank" />
+                </x-ui.form.group>
+
+                <x-ui.form.group label="With leading icon" for="demo-input-leading">
+                    <x-ui.form.input id="demo-input-leading" type="email" placeholder="you@example.com">
+                        <x-slot:leading>
+                            <x-heroicon-o-envelope class="w-4 h-4" aria-hidden="true" />
+                        </x-slot:leading>
+                    </x-ui.form.input>
+                </x-ui.form.group>
+
+                <x-ui.form.group label="With trailing text" for="demo-input-trailing">
+                    <x-ui.form.input id="demo-input-trailing" type="number" placeholder="0.00">
+                        <x-slot:trailing>
+                            <span class="text-body-sm text-brand-text-muted select-none">USD</span>
+                        </x-slot:trailing>
+                    </x-ui.form.input>
+                </x-ui.form.group>
+
+                <x-ui.form.group label="Batch number — mono data" for="demo-input-mono">
+                    <x-ui.form.input id="demo-input-mono" type="text" class="font-mono-data" placeholder="PEL-2026-04-A0000" />
+                </x-ui.form.group>
+
+                <x-ui.form.group label="Error state" for="demo-input-error" error="This field is required.">
+                    <x-ui.form.input id="demo-input-error" type="text" :error="true" value="bad input" />
+                </x-ui.form.group>
+
+            </div>
+
+            {{-- ── Textarea ── --}}
+            <p class="text-label font-semibold text-brand-text-muted uppercase tracking-widest mb-4">x-ui.form.textarea</p>
+            <div class="grid grid-cols-1 gap-5 mb-10 p-6 bg-brand-surface rounded-lg border border-brand-border sm:grid-cols-2">
+
+                <x-ui.form.group label="Notes" for="demo-textarea" hint="Visible to your team only.">
+                    <x-ui.form.textarea id="demo-textarea" placeholder="Add any relevant notes…" />
+                </x-ui.form.group>
+
+                <x-ui.form.group label="Description (error)" for="demo-textarea-error" error="Please provide a description of at least 20 characters.">
+                    <x-ui.form.textarea id="demo-textarea-error" :error="true" rows="4">Too short.</x-ui.form.textarea>
+                </x-ui.form.group>
+
+            </div>
+
+            {{-- ── Select ── --}}
+            <p class="text-label font-semibold text-brand-text-muted uppercase tracking-widest mb-4">x-ui.form.select — custom chevron, no browser arrow</p>
+            <div class="grid grid-cols-1 gap-5 mb-10 p-6 bg-brand-surface rounded-lg border border-brand-border sm:grid-cols-2">
+
+                <x-ui.form.group label="Purity grade" for="demo-select">
+                    <x-ui.form.select id="demo-select" name="purity_grade">
+                        <option value="">Select grade…</option>
+                        <option value="research">Research Grade (≥ 99.9%)</option>
+                        <option value="analytical">Analytical Grade (≥ 99.5%)</option>
+                        <option value="technical">Technical Grade (≥ 98%)</option>
+                    </x-ui.form.select>
+                </x-ui.form.group>
+
+                <x-ui.form.group label="Shipping region (error)" for="demo-select-error" error="Please select a shipping region.">
+                    <x-ui.form.select id="demo-select-error" name="region" :error="true">
+                        <option value="">Select region…</option>
+                        <option value="us">United States</option>
+                        <option value="ca">Canada</option>
+                    </x-ui.form.select>
+                </x-ui.form.group>
+
+            </div>
+
+            {{-- ── Checkbox ── --}}
+            <p class="text-label font-semibold text-brand-text-muted uppercase tracking-widest mb-4">x-ui.form.checkbox — standard</p>
+            <div class="space-y-4 mb-6 p-6 bg-brand-surface rounded-lg border border-brand-border">
+
+                <x-ui.form.checkbox
+                    id="demo-checkbox-1"
+                    label="Subscribe to order updates"
+                    description="We'll email you when your order ships and is delivered."
+                />
+
+                <x-ui.form.checkbox
+                    id="demo-checkbox-2"
+                    label="Remember this device"
+                />
+
+                <x-ui.form.checkbox
+                    id="demo-checkbox-error"
+                    label="Accept terms of service"
+                    error="You must accept the terms to continue."
+                />
+
+            </div>
+
+            <p class="text-label font-semibold text-brand-text-muted uppercase tracking-widest mb-4">x-ui.form.checkbox — compliance (amber)</p>
+            <div class="space-y-4 mb-10 p-6 bg-brand-surface rounded-lg border border-brand-border">
+
+                <x-ui.form.checkbox
+                    id="demo-compliance-1"
+                    compliance
+                    label="I confirm the intended use is research only"
+                    description="I certify that this product will be used solely for research purposes and will not be used in humans, animals, or for any diagnostic or therapeutic application."
+                />
+
+                <x-ui.form.checkbox
+                    id="demo-compliance-2"
+                    compliance
+                    label="I am a qualified researcher or licensed professional"
+                    description="I hold the appropriate credentials and institutional authorizations required to handle research-grade chemical compounds."
+                />
+
+            </div>
+
+            {{-- ── Radio ── --}}
+            <p class="text-label font-semibold text-brand-text-muted uppercase tracking-widest mb-4">x-ui.form.radio</p>
+            <div class="space-y-3 mb-10 p-6 bg-brand-surface rounded-lg border border-brand-border">
+
+                <x-ui.form.radio
+                    id="demo-radio-standard"
+                    name="shipping"
+                    value="standard"
+                    label="Standard shipping (5–7 business days)"
+                    description="Ships in a plain, unmarked box via USPS Priority Mail."
+                />
+
+                <x-ui.form.radio
+                    id="demo-radio-express"
+                    name="shipping"
+                    value="express"
+                    label="Express shipping (2 business days)"
+                    description="Signature required on delivery."
+                />
+
+                <x-ui.form.radio
+                    id="demo-radio-overnight"
+                    name="shipping"
+                    value="overnight"
+                    label="Overnight (next business day)"
+                />
+
+            </div>
+
+            {{-- ── Composed example ── --}}
+            <p class="text-label font-semibold text-brand-text-muted uppercase tracking-widest mb-4">Composed form example</p>
+            <div class="mb-10 p-6 bg-brand-surface rounded-lg border border-brand-border">
+                <form class="space-y-5 max-w-lg" onsubmit="return false;">
+
+                    <x-ui.form.group label="Full name" for="demo-composed-name" required>
+                        <x-ui.form.input id="demo-composed-name" type="text" placeholder="Dr. Jane Smith" />
+                    </x-ui.form.group>
+
+                    <x-ui.form.group label="Institutional email" for="demo-composed-email" required hint="Must be a .edu or research institution address.">
+                        <x-ui.form.input id="demo-composed-email" type="email" placeholder="jsmith@university.edu">
+                            <x-slot:leading>
+                                <x-heroicon-o-envelope class="w-4 h-4" aria-hidden="true" />
+                            </x-slot:leading>
+                        </x-ui.form.input>
+                    </x-ui.form.group>
+
+                    <x-ui.form.group label="Intended application" for="demo-composed-application" required>
+                        <x-ui.form.select id="demo-composed-application" name="application">
+                            <option value="">Select application…</option>
+                            <option value="synthesis">Chemical synthesis</option>
+                            <option value="assay">Assay development</option>
+                            <option value="reference">Reference standard</option>
+                            <option value="other">Other research use</option>
+                        </x-ui.form.select>
+                    </x-ui.form.group>
+
+                    <x-ui.form.group label="Additional notes" for="demo-composed-notes">
+                        <x-ui.form.textarea id="demo-composed-notes" placeholder="Describe your research application…" rows="3" />
+                    </x-ui.form.group>
+
+                    <x-ui.form.checkbox
+                        id="demo-composed-compliance-1"
+                        compliance
+                        label="I confirm research-only use"
+                        description="This product will not be used in humans, animals, or for diagnostic or therapeutic purposes."
+                    />
+
+                    <x-ui.form.checkbox
+                        id="demo-composed-compliance-2"
+                        compliance
+                        label="I confirm I am a qualified researcher"
+                        description="I hold appropriate credentials and institutional authorizations to handle research-grade compounds."
+                    />
+
+                    <x-ui.button-group>
+                        <x-ui.button type="submit" variant="primary">Submit order</x-ui.button>
+                        <x-ui.button type="button" variant="outline">Cancel</x-ui.button>
+                    </x-ui.button-group>
+
+                </form>
+            </div>
+
+        </x-ui.container>
+    </x-ui.section>
+
     <x-ui.section spacing="tight">
         <x-ui.container>
             <p class="text-caption text-brand-text-faint text-center">
-                PEL Design System · Phase 1 · TASK-1-001 through TASK-1-003
+                PEL Design System · Phase 1 · TASK-1-001 through TASK-1-006
             </p>
         </x-ui.container>
     </x-ui.section>
