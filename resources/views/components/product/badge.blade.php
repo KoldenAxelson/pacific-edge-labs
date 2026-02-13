@@ -30,6 +30,12 @@ $config = match($variant) {
         'text'    => $label ?? $value,
         'mono'    => true,
     ],
+    'sale' => [
+        'classes' => 'bg-brand-success border border-brand-success text-white',
+        'icon'    => 'heroicon-o-tag',
+        'text'    => $label ?? 'Sale',
+        'mono'    => false,
+    ],
     'in_stock' => [
         'classes' => 'bg-emerald-50 border border-emerald-200 text-emerald-700',
         'icon'    => 'heroicon-o-check-circle',

@@ -642,14 +642,16 @@
                 <x-product.badge variant="out_of_stock" size="xs" />
             </div>
 
-            {{-- ── Category + New badges ── --}}
-            <p class="text-label font-semibold text-brand-text-muted uppercase tracking-widest mb-4">x-product.badge — category & new</p>
+            {{-- ── Category + New + Sale badges ── --}}
+            <p class="text-label font-semibold text-brand-text-muted uppercase tracking-widest mb-4">x-product.badge — category, new & sale</p>
             <div class="flex flex-wrap items-center gap-4 mb-10 p-6 bg-brand-surface rounded-lg border border-brand-border">
                 <x-product.badge variant="category" value="Peptides" />
                 <x-product.badge variant="category" value="Nootropics" />
                 <x-product.badge variant="category" value="Reference Standards" />
                 <x-product.badge variant="new" />
                 <x-product.badge variant="new" size="xs" />
+                <x-product.badge variant="sale" />
+                <x-product.badge variant="sale" size="xs" />
             </div>
 
             {{-- ── Size comparison ── --}}
@@ -716,10 +718,99 @@
         </x-ui.container>
     </x-ui.section>
 
+    <x-ui.divider />
+
+    {{-- ── PRODUCT CARD ────────────────────────────────────────────────── --}}
+    <x-ui.section spacing="tight">
+        <x-ui.container>
+
+            <h2 class="text-h2 mb-6">Product Card</h2>
+
+            {{-- ── 3-column grid — all corner badge states + in stock (no badge) ── --}}
+            <p class="text-label font-semibold text-brand-text-muted uppercase tracking-widest mb-4">x-product.card — 3-col grid (hover each card)</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+
+                {{-- In stock, no badge — clean state, corner is empty --}}
+                <x-product.card
+                    name="BPC-157"
+                    category="Peptides"
+                    price="$89.00"
+                    purity="99.9%"
+                    batch-number="PEL-2026-04-A0291"
+                    batch-status="in_stock"
+                    href="#"
+                    research-summary="BPC-157 has been studied for tissue repair and gut lining regeneration in preclinical animal models."
+                />
+
+                {{-- Low stock — amber badge in corner, long name exercises line-clamp-2 --}}
+                <x-product.card
+                    name="TB-500 (Thymosin Beta-4 Fragment)"
+                    category="Peptides"
+                    price="$124.00"
+                    purity="99.5%"
+                    batch-number="PEL-2026-03-B0047"
+                    batch-status="low_stock"
+                    href="#"
+                    research-summary="TB-500 has been studied for actin regulation and cellular migration in preclinical wound-healing models."
+                />
+
+                {{-- Out of stock — gray badge in corner, disabled Notify Me CTA --}}
+                <x-product.card
+                    name="Epithalon"
+                    category="Peptides"
+                    price="$67.00"
+                    purity="98.4%"
+                    batch-status="out_of_stock"
+                    href="#"
+                />
+
+            </div>
+
+            {{-- ── Sale pricing — slash display + green Sale badge in corner ── --}}
+            <p class="text-label font-semibold text-brand-text-muted uppercase tracking-widest mb-4">x-product.card — sale pricing (original-price triggers slash display)</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+
+                {{-- Sale + in stock — green badge corner, struck original, green sale price --}}
+                <x-product.card
+                    name="Hospira Bacteriostatic Water"
+                    category="Solvents"
+                    price="$18.95"
+                    original-price="$25.95"
+                    purity="USP Grade"
+                    batch-status="in_stock"
+                    href="#"
+                />
+
+                {{-- Sale + low stock — sale badge wins corner over low stock --}}
+                <x-product.card
+                    name="Semax"
+                    category="Nootropics"
+                    price="$44.00"
+                    original-price="$54.00"
+                    purity="99.1%"
+                    batch-number="PEL-2026-02-C0183"
+                    batch-status="low_stock"
+                    href="#"
+                    research-summary="Semax has been studied for neuroprotective effects and BDNF upregulation in rodent cognitive models."
+                />
+
+            </div>
+
+            {{-- ── Skeleton ── --}}
+            <p class="text-label font-semibold text-brand-text-muted uppercase tracking-widest mb-4">x-product.card-skeleton — pulse placeholder (3-col)</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
+                <x-product.card-skeleton />
+                <x-product.card-skeleton />
+                <x-product.card-skeleton />
+            </div>
+
+        </x-ui.container>
+    </x-ui.section>
+
     <x-ui.section spacing="tight">
         <x-ui.container>
             <p class="text-caption text-brand-text-faint text-center">
-                PEL Design System · Phase 1 · TASK-1-001 through TASK-1-007
+                PEL Design System · Phase 1 · TASK-1-001 through TASK-1-008
             </p>
         </x-ui.container>
     </x-ui.section>
