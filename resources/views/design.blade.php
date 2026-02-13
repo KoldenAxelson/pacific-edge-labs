@@ -600,10 +600,126 @@
         </x-ui.container>
     </x-ui.section>
 
+    <x-ui.divider />
+
+    {{-- ── BADGE COMPONENTS ───────────────────────────────────────────── --}}
+    <x-ui.section spacing="tight">
+        <x-ui.container>
+
+            <h2 class="text-h2 mb-6">Badge Components</h2>
+
+            {{-- ── Research badge ── --}}
+            <p class="text-label font-semibold text-brand-text-muted uppercase tracking-widest mb-4">x-product.badge — research (compliance signal)</p>
+            <div class="flex flex-wrap items-center gap-4 mb-10 p-6 bg-brand-surface rounded-lg border border-brand-border">
+                <x-product.badge variant="research" />
+                <x-product.badge variant="research" size="xs" />
+                <x-product.badge variant="research" label="For Research Use Only" />
+            </div>
+
+            {{-- ── Purity badge ── --}}
+            <p class="text-label font-semibold text-brand-text-muted uppercase tracking-widest mb-4">x-product.badge — purity (primary trust differentiator)</p>
+            <div class="flex flex-wrap items-center gap-4 mb-10 p-6 bg-brand-surface rounded-lg border border-brand-border">
+                <x-product.badge variant="purity" value="99.9%" />
+                <x-product.badge variant="purity" value="98.4%" />
+                <x-product.badge variant="purity" value="99.9%" size="xs" />
+            </div>
+
+            {{-- ── Batch badge ── --}}
+            <p class="text-label font-semibold text-brand-text-muted uppercase tracking-widest mb-4">x-product.badge — batch (secondary metadata)</p>
+            <div class="flex flex-wrap items-center gap-4 mb-10 p-6 bg-brand-surface rounded-lg border border-brand-border">
+                <x-product.badge variant="batch" value="PEL-2026-04-A0291" />
+                <x-product.badge variant="batch" value="PEL-2026-01-B0047" size="xs" />
+            </div>
+
+            {{-- ── Stock badges ── --}}
+            <p class="text-label font-semibold text-brand-text-muted uppercase tracking-widest mb-4">x-product.badge — stock status</p>
+            <div class="flex flex-wrap items-center gap-4 mb-10 p-6 bg-brand-surface rounded-lg border border-brand-border">
+                <x-product.badge variant="in_stock" />
+                <x-product.badge variant="low_stock" />
+                <x-product.badge variant="out_of_stock" />
+                <x-product.badge variant="in_stock" size="xs" />
+                <x-product.badge variant="low_stock" size="xs" />
+                <x-product.badge variant="out_of_stock" size="xs" />
+            </div>
+
+            {{-- ── Category + New badges ── --}}
+            <p class="text-label font-semibold text-brand-text-muted uppercase tracking-widest mb-4">x-product.badge — category & new</p>
+            <div class="flex flex-wrap items-center gap-4 mb-10 p-6 bg-brand-surface rounded-lg border border-brand-border">
+                <x-product.badge variant="category" value="Peptides" />
+                <x-product.badge variant="category" value="Nootropics" />
+                <x-product.badge variant="category" value="Reference Standards" />
+                <x-product.badge variant="new" />
+                <x-product.badge variant="new" size="xs" />
+            </div>
+
+            {{-- ── Size comparison ── --}}
+            <p class="text-label font-semibold text-brand-text-muted uppercase tracking-widest mb-4">Size comparison — sm (default) vs xs</p>
+            <div class="flex flex-wrap items-end gap-6 mb-10 p-6 bg-brand-surface rounded-lg border border-brand-border">
+                <div class="flex flex-col gap-2">
+                    <p class="text-caption text-brand-text-muted">sm</p>
+                    <div class="flex flex-wrap items-center gap-2">
+                        <x-product.badge variant="research" size="sm" />
+                        <x-product.badge variant="purity" value="99.9%" size="sm" />
+                        <x-product.badge variant="batch" value="PEL-2026-04-A0291" size="sm" />
+                    </div>
+                </div>
+                <div class="flex flex-col gap-2">
+                    <p class="text-caption text-brand-text-muted">xs</p>
+                    <div class="flex flex-wrap items-center gap-2">
+                        <x-product.badge variant="research" size="xs" />
+                        <x-product.badge variant="purity" value="99.9%" size="xs" />
+                        <x-product.badge variant="batch" value="PEL-2026-04-A0291" size="xs" />
+                    </div>
+                </div>
+            </div>
+
+            {{-- ── Badge group — composed product card context ── --}}
+            <p class="text-label font-semibold text-brand-text-muted uppercase tracking-widest mb-4">x-product.badge-group — product card context</p>
+            <div class="space-y-6 mb-6 p-6 bg-brand-surface rounded-lg border border-brand-border">
+
+                {{-- Full badge set (sm) --}}
+                <div>
+                    <p class="text-caption text-brand-text-muted mb-2">Standard product card (sm)</p>
+                    <x-product.badge-group>
+                        <x-product.badge variant="purity" value="99.9%" />
+                        <x-product.badge variant="research" />
+                        <x-product.badge variant="batch" value="PEL-2026-04-A0291" />
+                        <x-product.badge variant="in_stock" />
+                    </x-product.badge-group>
+                </div>
+
+                {{-- Compact card (xs) --}}
+                <div>
+                    <p class="text-caption text-brand-text-muted mb-2">Compact card (xs)</p>
+                    <x-product.badge-group gap="gap-1.5">
+                        <x-product.badge variant="purity" value="98.4%" size="xs" />
+                        <x-product.badge variant="research" size="xs" />
+                        <x-product.badge variant="batch" value="PEL-2026-01-B0047" size="xs" />
+                        <x-product.badge variant="low_stock" size="xs" />
+                    </x-product.badge-group>
+                </div>
+
+                {{-- New product --}}
+                <div>
+                    <p class="text-caption text-brand-text-muted mb-2">New product with category</p>
+                    <x-product.badge-group>
+                        <x-product.badge variant="new" />
+                        <x-product.badge variant="purity" value="99.5%" />
+                        <x-product.badge variant="research" />
+                        <x-product.badge variant="category" value="Peptides" />
+                        <x-product.badge variant="in_stock" />
+                    </x-product.badge-group>
+                </div>
+
+            </div>
+
+        </x-ui.container>
+    </x-ui.section>
+
     <x-ui.section spacing="tight">
         <x-ui.container>
             <p class="text-caption text-brand-text-faint text-center">
-                PEL Design System · Phase 1 · TASK-1-001 through TASK-1-006
+                PEL Design System · Phase 1 · TASK-1-001 through TASK-1-007
             </p>
         </x-ui.container>
     </x-ui.section>
