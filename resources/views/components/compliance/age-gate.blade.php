@@ -5,24 +5,26 @@
   Only exits: "Enter" (sets cookie + dismisses) or "Exit" (navigates away, no cookie).
 
   Cookie: `age_verified=true`, 1 year, path=/, SameSite=Lax.
+  Re-show from outside Alpine: call window._showAgeGate() — registered via init().
   Phase 4: supplement with server-side session for added assurance.
-
-  Window event: dispatching `show-age-gate` re-shows the modal without clearing
-  the cookie — used by the design page demo trigger button.
 --}}
 {{--
-  Outer div: holds x-data and exposes window._showAgeGate via x-init.
-  Never hidden — so the function reference stays live after dismissal.
+  Outer div: holds x-data with init() method that registers window._showAgeGate.
+  init() runs in Alpine's reactive context so this.verified correctly targets
+  the reactive proxy — safe to call from outside Alpine (e.g. design page button).
+  Never hidden — x-show lives on the inner div only.
 --}}
 <div
     x-data="{
         verified: document.cookie.split(';').some(c => c.trim().startsWith('age_verified=true')),
+        init() {
+            window._showAgeGate = () => { this.verified = false }
+        },
         verify() {
             document.cookie = 'age_verified=true; max-age=31536000; path=/; SameSite=Lax';
             this.verified = true;
         }
     }"
-    x-init="window._showAgeGate = () => { verified = false }"
 >
 
 {{-- Inner div: x-show + x-cloak live here. Outer div being always-present keeps the listener above active. --}}
