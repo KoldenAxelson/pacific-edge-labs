@@ -50,16 +50,16 @@
   --color-amber-border: #FCD34D;
 }
 
-/* ─── Tailwind v4 Brand Utilities ─────────────────────────────────────────── */
+/* ─── Tailwind v4 Tokens ──────────────────────────────────────────────────── */
 /*
- * Generates `brand-*` Tailwind color utilities:
- *   bg-brand-navy, text-brand-cyan, border-brand-border, etc.
+ * Colors: generates brand-* Tailwind utilities (bg-brand-navy, text-brand-cyan, etc.)
+ * Note: @theme requires static values at build time — hex values are intentionally
+ * repeated from :root above. :root is the human-readable source of truth.
  *
- * Note: Tailwind v4's @theme requires resolvable static values at build time,
- * so hex values are repeated here intentionally — the :root block above remains
- * the human-readable source of truth, and these mirror it 1:1.
+ * Type scale: generates text-* utilities (text-display, text-h1, text-body-sm, etc.)
  */
 @theme {
+  /* Colors */
   --color-brand-navy:         #0F172A;
   --color-brand-navy-800:     #1E293B;
   --color-brand-navy-700:     #334155;
@@ -92,6 +92,55 @@
   --color-brand-amber:        #D97706;
   --color-brand-amber-bg:     #FEF3C7;
   --color-brand-amber-border: #FCD34D;
+
+  /* Type scale — generates text-{name} font-size utilities */
+  --text-display:  3rem;
+  --text-h1:       2.25rem;
+  --text-h2:       1.875rem;
+  --text-h3:       1.5rem;
+  --text-h4:       1.25rem;
+  --text-body-lg:  1.125rem;
+  --text-body:     1rem;
+  --text-body-sm:  0.875rem;
+  --text-label:    0.875rem;
+  --text-caption:  0.75rem;
+  --text-mono:     0.875rem;
+}
+
+/* ─── Base Layer ──────────────────────────────────────────────────────────── */
+@layer base {
+  html {
+    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    background: var(--color-bg);
+    color: var(--color-text);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
+    font-weight: 600;
+    color: var(--color-navy);
+    line-height: 1.15;
+  }
+
+  /* Heading letter-spacing: tightest at display/h1, eases off toward h3, none below */
+  h1 { letter-spacing: -0.02em; }
+  h2 { letter-spacing: -0.015em; }
+  h3 { letter-spacing: -0.01em; }
+  /* h4 and below: no negative tracking */
+}
+
+/* ─── Typography Utilities ────────────────────────────────────────────────── */
+/*
+ * .font-mono-data — for inline data values: batch numbers, purity percentages,
+ * order IDs. Not decorative — signals "this is a precise value."
+ */
+.font-mono-data {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
 }
 
 /* ─── Custom Pacific Edge Labs styles ─────────────────────────────────────── */

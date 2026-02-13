@@ -13,7 +13,11 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                // Keep sans mapped to Inter so existing font-sans classes don't regress
+                sans:    ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+                heading: ['"DM Sans"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+                body:    ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+                mono:    ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
             },
             colors: {
                 // Pacific Edge Labs brand colors (will be refined in Phase 1)
