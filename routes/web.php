@@ -121,4 +121,9 @@ Route::get('/test-payment', function (PaymentService $paymentService) {
     ], 200, [], JSON_PRETTY_PRINT);
 })->name('test-payment');
 
+// Dev utility: clear age-gate cookie so you can re-test the modal — REMOVE BEFORE PRODUCTION
+Route::get('/dev/clear-age-gate', function () {
+    return redirect('/design')->withCookie(cookie()->forget('age_verified'));
+})->name('dev.clear-age-gate');
+
 require __DIR__ . "/auth.php";

@@ -807,10 +807,130 @@
         </x-ui.container>
     </x-ui.section>
 
+    <x-ui.divider />
+
+    {{-- ── COA ACCORDION ──────────────────────────────────────────────────── --}}
+    <x-ui.section spacing="tight">
+        <x-ui.container>
+
+            <h2 class="text-h2 mb-6">CoA Accordion</h2>
+
+            {{-- ── x-coa.accordion-list + x-coa.card — full accordion stack ── --}}
+            <p class="text-label font-semibold text-brand-text-muted uppercase tracking-widest mb-4">x-coa.accordion-list — stacked with multiple batches</p>
+            <div class="max-w-2xl mb-10">
+                <x-coa.accordion-list>
+
+                    {{-- Current batch — starts expanded --}}
+                    <x-coa.card
+                        batch-number="PEL-2026-02-C0211"
+                        test-date="2026-01-28"
+                        purity="99.4%"
+                        lab="Janoshik Analytical"
+                        download-href="#"
+                        :is-current="true"
+                        :is-open="true"
+                    />
+
+                    {{-- Previous batch — collapsed --}}
+                    <x-coa.card
+                        batch-number="PEL-2025-11-C0183"
+                        test-date="2025-11-03"
+                        purity="98.9%"
+                        lab="Janoshik Analytical"
+                        download-href="#"
+                    />
+
+                    {{-- Older batch — collapsed --}}
+                    <x-coa.card
+                        batch-number="PEL-2025-08-C0149"
+                        test-date="2025-07-22"
+                        purity="99.1%"
+                        lab="Core Lab Sciences"
+                        download-href="#"
+                    />
+
+                </x-coa.accordion-list>
+            </div>
+
+            {{-- ── x-coa.summary-strip — compact inline, order confirmation context ── --}}
+            <p class="text-label font-semibold text-brand-text-muted uppercase tracking-widest mb-4">x-coa.summary-strip — non-interactive, order confirmation use</p>
+            <div class="max-w-2xl mb-6">
+                <x-coa.summary-strip
+                    batch-number="PEL-2026-02-C0211"
+                    test-date="2026-01-28"
+                    purity="99.4%"
+                    lab="Janoshik Analytical"
+                />
+            </div>
+
+        </x-ui.container>
+    </x-ui.section>
+
+    <x-ui.divider />
+
+    {{-- ── COMPLIANCE UI ───────────────────────────────────────────────────── --}}
+    <x-ui.section spacing="tight">
+        <x-ui.container>
+
+            <h2 class="text-h2 mb-6">Compliance UI</h2>
+
+            {{-- ── Disclaimer banner — page-top variant ── --}}
+            <p class="text-label font-semibold text-brand-text-muted uppercase tracking-widest mb-4">x-compliance.disclaimer-banner — page-top variant (default)</p>
+            <div class="mb-8 rounded-xl overflow-hidden border border-brand-border">
+                <x-compliance.disclaimer-banner />
+            </div>
+
+            {{-- ── Disclaimer banner — footer variant ── --}}
+            <p class="text-label font-semibold text-brand-text-muted uppercase tracking-widest mb-4">x-compliance.disclaimer-banner — footer variant</p>
+            <div class="mb-8 rounded-xl overflow-hidden border border-brand-border">
+                <x-compliance.disclaimer-banner variant="footer" />
+            </div>
+
+            {{-- ── Disclaimer banner — compact ── --}}
+            <p class="text-label font-semibold text-brand-text-muted uppercase tracking-widest mb-4">x-compliance.disclaimer-banner — compact</p>
+            <div class="mb-10 rounded-xl overflow-hidden border border-brand-border">
+                <x-compliance.disclaimer-banner :compact="true" />
+            </div>
+
+            {{-- ── Attestation set ── --}}
+            <p class="text-label font-semibold text-brand-text-muted uppercase tracking-widest mb-4">x-compliance.attestation-set — checkout compliance checkboxes</p>
+            <div class="max-w-xl mb-10">
+                <x-compliance.attestation-set />
+            </div>
+
+            {{-- ── Age gate trigger ── --}}
+            <p class="text-label font-semibold text-brand-text-muted uppercase tracking-widest mb-4">x-compliance.age-gate — full-viewport modal</p>
+            <div class="flex flex-wrap items-center gap-4 mb-3">
+                <x-ui.button
+                    variant="secondary"
+                    size="md"
+                    icon="shield-exclamation"
+                    onclick="window._showAgeGate && window._showAgeGate()"
+                >
+                    Preview Age Gate
+                </x-ui.button>
+                <x-ui.button
+                    variant="ghost"
+                    size="sm"
+                    icon="arrow-path"
+                    onclick="document.cookie='age_verified=; max-age=0; path=/'; window.location.reload()"
+                >
+                    Clear cookie &amp; reload
+                </x-ui.button>
+            </div>
+            <p class="text-caption text-brand-text-muted mb-6">
+                "Preview Age Gate" re-shows the modal without clearing your cookie — useful for visual inspection.
+                "Clear cookie &amp; reload" deletes the <code class="font-mono-data">age_verified</code>
+                cookie in-browser and reloads so the gate appears as a fresh visitor would see it.
+            </p>
+
+        </x-ui.container>
+    </x-ui.section>
+
     <x-ui.section spacing="tight">
         <x-ui.container>
             <p class="text-caption text-brand-text-faint text-center">
-                PEL Design System · Phase 1 · TASK-1-001 through TASK-1-008
+                PEL Design System · Phase 1 · TASK-1-001 through TASK-1-010
             </p>
         </x-ui.container>
     </x-ui.section>

@@ -19,7 +19,9 @@
         {{-- Primary navigation --}}
         @include('layouts.navigation')
 
-        {{-- Compliance / disclaimer banner — slot populated in Phase 2 --}}
+        {{-- Compliance disclaimer banner — opt-in per page via named slot.
+             Product pages pass: <x-slot name="banner"><x-compliance.disclaimer-banner /></x-slot>
+             Pages that omit the slot show nothing. --}}
         @isset($banner)
             {{ $banner }}
         @endisset
@@ -54,6 +56,10 @@
             aria-atomic="true"
             class="fixed bottom-4 right-4 z-50 flex flex-col gap-2 w-80 pointer-events-none"
         ></div>
+
+        {{-- Age verification gate — full-viewport Alpine overlay, always shows in Phase 1 demo --}}
+        {{-- Phase 4: replace `verified: false` with cookie/session persistence --}}
+        <x-compliance.age-gate />
 
     </body>
 </html>
