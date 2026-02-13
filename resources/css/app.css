@@ -1,6 +1,100 @@
 @import "tailwindcss";
 
-/* Custom Pacific Edge Labs styles */
+/* ─── Design Tokens ───────────────────────────────────────────────────────── */
+/*
+ * Canonical PEL color tokens as CSS custom properties.
+ * Use these directly in any CSS that isn't covered by Tailwind utilities.
+ * No raw hex values anywhere else in the codebase — all color references
+ * must trace back to one of these variables.
+ */
+:root {
+  /* Core — navy is the structural anchor of the entire UI */
+  --color-navy:         #0F172A;
+  --color-navy-800:     #1E293B;
+  --color-navy-700:     #334155;
+  --color-navy-600:     #475569;
+  --color-navy-500:     #64748B;
+
+  /* Accent — use sparingly, high-value moments only */
+  /* Cyan signals "this matters": purity %, active nav, primary CTAs, logo mark */
+  --color-cyan:         #06B6D4;
+  --color-cyan-dark:    #0891B2;
+  --color-cyan-light:   #67E8F9;
+  --color-cyan-subtle:  #ECFEFF;
+
+  /* Surfaces */
+  --color-bg:           #F8F9FA;
+  --color-surface:      #FFFFFF;
+  --color-surface-2:    #F1F5F9;
+
+  /* Borders */
+  --color-border:       #E2E8F0;
+  --color-border-dark:  #CBD5E1;
+
+  /* Text */
+  --color-text:         #0F172A;
+  --color-text-muted:   #64748B;
+  --color-text-faint:   #94A3B8;
+
+  /* Semantic */
+  --color-success:      #10B981;
+  --color-success-bg:   #ECFDF5;
+  --color-warning:      #F59E0B;
+  --color-warning-bg:   #FFFBEB;
+  --color-error:        #EF4444;
+  --color-error-bg:     #FEF2F2;
+
+  /* Compliance — amber is for research badges and attestation UI ONLY */
+  --color-amber:        #D97706;
+  --color-amber-bg:     #FEF3C7;
+  --color-amber-border: #FCD34D;
+}
+
+/* ─── Tailwind v4 Brand Utilities ─────────────────────────────────────────── */
+/*
+ * Generates `brand-*` Tailwind color utilities:
+ *   bg-brand-navy, text-brand-cyan, border-brand-border, etc.
+ *
+ * Note: Tailwind v4's @theme requires resolvable static values at build time,
+ * so hex values are repeated here intentionally — the :root block above remains
+ * the human-readable source of truth, and these mirror it 1:1.
+ */
+@theme {
+  --color-brand-navy:         #0F172A;
+  --color-brand-navy-800:     #1E293B;
+  --color-brand-navy-700:     #334155;
+  --color-brand-navy-600:     #475569;
+  --color-brand-navy-500:     #64748B;
+
+  --color-brand-cyan:         #06B6D4;
+  --color-brand-cyan-dark:    #0891B2;
+  --color-brand-cyan-light:   #67E8F9;
+  --color-brand-cyan-subtle:  #ECFEFF;
+
+  --color-brand-bg:           #F8F9FA;
+  --color-brand-surface:      #FFFFFF;
+  --color-brand-surface-2:    #F1F5F9;
+
+  --color-brand-border:       #E2E8F0;
+  --color-brand-border-dark:  #CBD5E1;
+
+  --color-brand-text:         #0F172A;
+  --color-brand-text-muted:   #64748B;
+  --color-brand-text-faint:   #94A3B8;
+
+  --color-brand-success:      #10B981;
+  --color-brand-success-bg:   #ECFDF5;
+  --color-brand-warning:      #F59E0B;
+  --color-brand-warning-bg:   #FFFBEB;
+  --color-brand-error:        #EF4444;
+  --color-brand-error-bg:     #FEF2F2;
+
+  --color-brand-amber:        #D97706;
+  --color-brand-amber-bg:     #FEF3C7;
+  --color-brand-amber-border: #FCD34D;
+}
+
+/* ─── Custom Pacific Edge Labs styles ─────────────────────────────────────── */
 /* Prefer Blade components over @apply for reusable patterns */
 
 /* Livewire loading states */
