@@ -209,6 +209,35 @@
                 <x-ui.divider spacing="loose" />
                 <p class="text-body-sm text-brand-text-muted">end</p>
             </div>
+            <div class="mt-6 space-y-1">
+                <x-design.code-block label="Show usage">
+{{-- Default — max-w-6xl, mx-auto, px-4 sm:px-6 --}}
+&lt;x-ui.container&gt;
+    ...page content...
+&lt;/x-ui.container&gt;
+
+{{-- Narrow — max-w-3xl, for articles, forms, reading content --}}
+&lt;x-ui.container size="sm"&gt;
+    ...form or article content...
+&lt;/x-ui.container&gt;
+
+{{-- Wide — max-w-7xl, for data-dense layouts --}}
+&lt;x-ui.container size="lg"&gt;
+    ...dashboard or table content...
+&lt;/x-ui.container&gt;
+
+{{-- Inside x-ui.section (standard page pattern) --}}
+&lt;x-ui.section&gt;
+    &lt;x-ui.container&gt;
+        ...section content...
+    &lt;/x-ui.container&gt;
+&lt;/x-ui.section&gt;
+                </x-design.code-block>
+                <x-design.prop-table :props="[
+                    ['name' => 'size',  'type' => 'string', 'default' => 'default', 'description' => 'sm (max-w-3xl) | default (max-w-6xl) | lg (max-w-7xl)'],
+                    ['name' => 'class', 'type' => 'any',    'default' => '—',       'description' => 'Merged with the container wrapper via \$attributes->merge()'],
+                ]" />
+            </div>
 
         </x-ui.container>
     </x-ui.section>
@@ -385,6 +414,34 @@
             <div class="flex flex-wrap items-center gap-3 p-6 bg-brand-surface rounded-lg border border-brand-border">
                 <x-ui.icon-button href="#" icon="arrow-left" label="Go back" variant="ghost" />
                 <x-ui.icon-button href="#" icon="arrow-top-right-on-square" label="Open in new tab" variant="ghost" />
+            </div>
+            <div class="mt-6 space-y-1">
+                <x-design.code-block label="Show usage">
+&lt;x-ui.button variant="primary" size="md" icon="shopping-cart"&gt;
+  Add to Cart
+&lt;/x-ui.button&gt;
+
+&lt;x-ui.button href="/products" variant="outline"&gt;
+  Browse Products
+&lt;/x-ui.button&gt;
+
+&lt;x-ui.button variant="primary" disabled&gt;
+  Out of Stock
+&lt;/x-ui.button&gt;
+
+&lt;x-ui.button variant="danger" icon="trash" size="sm"&gt;
+  Delete
+&lt;/x-ui.button&gt;
+                </x-design.code-block>
+                <x-design.prop-table :props="[
+                    ['name' => 'variant',  'type' => 'string', 'default' => 'primary', 'description' => 'primary | secondary | outline | danger | ghost'],
+                    ['name' => 'size',     'type' => 'string', 'default' => 'md',      'description' => 'sm | md | lg'],
+                    ['name' => 'type',     'type' => 'string', 'default' => 'button',  'description' => 'HTML button type — button | submit | reset'],
+                    ['name' => 'href',     'type' => 'string', 'default' => 'null',    'description' => 'Renders as &lt;a&gt; when set; disabled adds aria-disabled'],
+                    ['name' => 'disabled', 'type' => 'bool',   'default' => 'false',   'description' => 'Adds opacity-50, cursor-not-allowed, pointer-events-none'],
+                    ['name' => 'icon',     'type' => 'string', 'default' => 'null',    'description' => 'Heroicon name (without heroicon-o- prefix), renders left of label'],
+                    ['name' => 'iconEnd',  'type' => 'string', 'default' => 'null',    'description' => 'Heroicon name, renders right of label'],
+                ]" />
             </div>
 
         </x-ui.container>
@@ -596,6 +653,40 @@
 
                 </form>
             </div>
+            <div class="mt-6 space-y-1">
+                <x-design.code-block label="Show usage">
+{{-- Standard checkbox --}}
+&lt;x-ui.form.checkbox
+    id="remember"
+    label="Remember this device"
+    description="Keeps you signed in for 30 days."
+/&gt;
+
+{{-- Compliance variant (amber) — for regulatory attestations --}}
+&lt;x-ui.form.checkbox
+    id="research-only"
+    compliance
+    label="I confirm the intended use is research only"
+    description="This product will not be used in humans or animals."
+/&gt;
+
+{{-- With error state --}}
+&lt;x-ui.form.checkbox
+    id="tos"
+    label="Accept terms of service"
+    error="You must accept the terms to continue."
+/&gt;
+                </x-design.code-block>
+                <x-design.prop-table :props="[
+                    ['name' => 'id',          'type' => 'string', 'default' => '—',     'description' => 'HTML id; also sets the label for= binding. Required.'],
+                    ['name' => 'label',       'type' => 'string', 'default' => '—',     'description' => 'Checkbox label text. Required.'],
+                    ['name' => 'description', 'type' => 'string', 'default' => 'null',  'description' => 'Helper text rendered below the label'],
+                    ['name' => 'error',       'type' => 'string', 'default' => 'null',  'description' => 'Error message — red border + red text below label'],
+                    ['name' => 'compliance',  'type' => 'bool',   'default' => 'false', 'description' => 'Amber accent styling — reserved for regulatory attestations only'],
+                    ['name' => 'name',        'type' => 'string', 'default' => 'null',  'description' => 'HTML input name; defaults to id when omitted'],
+                    ['name' => 'value',       'type' => 'string', 'default' => '1',     'description' => 'HTML input value submitted when checked'],
+                ]" />
+            </div>
 
         </x-ui.container>
     </x-ui.section>
@@ -714,6 +805,35 @@
                 </div>
 
             </div>
+            <div class="mt-6 space-y-1">
+                <x-design.code-block label="Show usage">
+{{-- Compliance signal — no value needed --}}
+&lt;x-product.badge variant="research" /&gt;
+
+{{-- Purity — pass percentage as value --}}
+&lt;x-product.badge variant="purity" value="99.4%" /&gt;
+&lt;x-product.badge variant="purity" value="99.4%" size="xs" /&gt;
+
+{{-- Batch ID --}}
+&lt;x-product.badge variant="batch" value="PEL-2026-04-A0291" /&gt;
+
+{{-- Stock status — no value needed --}}
+&lt;x-product.badge variant="in_stock" /&gt;
+&lt;x-product.badge variant="low_stock" /&gt;
+&lt;x-product.badge variant="out_of_stock" /&gt;
+
+{{-- Taxonomy + promotional --}}
+&lt;x-product.badge variant="category" value="Peptides" /&gt;
+&lt;x-product.badge variant="new" /&gt;
+&lt;x-product.badge variant="sale" /&gt;
+                </x-design.code-block>
+                <x-design.prop-table :props="[
+                    ['name' => 'variant', 'type' => 'string', 'default' => '—',    'description' => 'research | purity | batch | in_stock | low_stock | out_of_stock | category | new | sale. Required.'],
+                    ['name' => 'value',   'type' => 'string', 'default' => 'null', 'description' => 'Display value. Required for purity, batch, category; ignored for enum-only variants'],
+                    ['name' => 'size',    'type' => 'string', 'default' => 'sm',   'description' => 'sm (default) | xs — xs used inside compact card layouts'],
+                    ['name' => 'label',   'type' => 'string', 'default' => 'null', 'description' => 'Overrides the default label text on the research badge only'],
+                ]" />
+            </div>
 
         </x-ui.container>
     </x-ui.section>
@@ -803,6 +923,46 @@
                 <x-product.card-skeleton />
                 <x-product.card-skeleton />
             </div>
+            <div class="mt-6 space-y-1">
+                <x-design.code-block label="Show usage">
+{{-- In-stock product --}}
+&lt;x-product.card
+    name="BPC-157"
+    category="Peptides"
+    price="$89.00"
+    purity="99.9%"
+    batch-number="PEL-2026-04-A0291"
+    batch-status="in_stock"
+    href="/products/bpc-157"
+    research-summary="BPC-157 has been studied for tissue repair in preclinical models."
+/&gt;
+
+{{-- Sale pricing — original-price triggers strike-through display --}}
+&lt;x-product.card
+    name="Semax"
+    category="Nootropics"
+    price="$44.00"
+    original-price="$54.00"
+    purity="99.1%"
+    batch-status="low_stock"
+    href="/products/semax"
+/&gt;
+
+{{-- Loading skeleton --}}
+&lt;x-product.card-skeleton /&gt;
+                </x-design.code-block>
+                <x-design.prop-table :props="[
+                    ['name' => 'name',             'type' => 'string', 'default' => '—',        'description' => 'Product display name. Required. Long names are line-clamped at 2 lines.'],
+                    ['name' => 'category',         'type' => 'string', 'default' => 'null',     'description' => 'Category label shown above the product name'],
+                    ['name' => 'price',            'type' => 'string', 'default' => '—',        'description' => 'Formatted price string, e.g. $89.00. Required.'],
+                    ['name' => 'original-price',   'type' => 'string', 'default' => 'null',     'description' => 'When set, price shows struck-through and a Sale badge appears in the corner'],
+                    ['name' => 'purity',           'type' => 'string', 'default' => 'null',     'description' => 'Purity percentage or grade — shown as a purity badge'],
+                    ['name' => 'batch-number',     'type' => 'string', 'default' => 'null',     'description' => 'Current batch ID — shown as a batch badge'],
+                    ['name' => 'batch-status',     'type' => 'string', 'default' => 'in_stock', 'description' => 'in_stock | low_stock | out_of_stock — drives corner badge and CTA state'],
+                    ['name' => 'href',             'type' => 'string', 'default' => 'null',     'description' => 'Card link target; card is non-interactive without href'],
+                    ['name' => 'research-summary', 'type' => 'string', 'default' => 'null',     'description' => 'Short research note revealed on hover via blur/overlay animation'],
+                ]" />
+            </div>
 
         </x-ui.container>
     </x-ui.section>
@@ -861,6 +1021,46 @@
                     purity="99.4%"
                     lab="Janoshik Analytical"
                 />
+            </div>
+            <div class="mt-6 space-y-1">
+                <x-design.code-block label="Show usage">
+{{-- Stacked accordion — always wrap x-coa.card in x-coa.accordion-list --}}
+&lt;x-coa.accordion-list&gt;
+    &lt;x-coa.card
+        batch-number="PEL-2026-02-C0211"
+        test-date="2026-01-28"
+        purity="99.4%"
+        lab="Janoshik Analytical"
+        download-href="/coa/pel-2026-02-c0211.pdf"
+        :is-current="true"
+        :is-open="true"
+    /&gt;
+    &lt;x-coa.card
+        batch-number="PEL-2025-11-C0183"
+        test-date="2025-11-03"
+        purity="98.9%"
+        lab="Janoshik Analytical"
+        download-href="/coa/pel-2025-11-c0183.pdf"
+    /&gt;
+&lt;/x-coa.accordion-list&gt;
+
+{{-- Non-interactive strip for order confirmation context --}}
+&lt;x-coa.summary-strip
+    batch-number="PEL-2026-02-C0211"
+    test-date="2026-01-28"
+    purity="99.4%"
+    lab="Janoshik Analytical"
+/&gt;
+                </x-design.code-block>
+                <x-design.prop-table :props="[
+                    ['name' => 'batch-number',   'type' => 'string', 'default' => '—',     'description' => 'Batch identifier shown in mono. Required.'],
+                    ['name' => 'test-date',      'type' => 'string', 'default' => '—',     'description' => 'ISO date string (Y-m-d) of the CoA test. Required.'],
+                    ['name' => 'purity',         'type' => 'string', 'default' => '—',     'description' => 'Purity percentage shown in the expanded body. Required.'],
+                    ['name' => 'lab',            'type' => 'string', 'default' => '—',     'description' => 'Testing laboratory name. Required.'],
+                    ['name' => 'download-href',  'type' => 'string', 'default' => 'null',  'description' => 'CoA PDF download URL; download button is hidden when null'],
+                    ['name' => 'is-current',     'type' => 'bool',   'default' => 'false', 'description' => 'Highlights the card with a Current Batch label'],
+                    ['name' => 'is-open',        'type' => 'bool',   'default' => 'false', 'description' => 'Starts the accordion item expanded; one card per list should set this'],
+                ]" />
             </div>
 
         </x-ui.container>
@@ -1045,6 +1245,32 @@
                 Each button injects a live toast into the fixed bottom-right container. Toasts auto-dismiss after 4 s and stack with <code class="font-mono-data">gap-2</code>.
                 Phase 4/5 Livewire components will call <code class="font-mono-data">window._showToast()</code> via browser events.
             </p>
+            <div class="mt-6 space-y-1">
+                <x-design.code-block label="Show usage">
+&lt;x-ui.alert variant="info"&gt;
+    New batch PEL-2026-04-A0291 is now available.
+&lt;/x-ui.alert&gt;
+
+&lt;x-ui.alert variant="success" title="Order confirmed"&gt;
+    Your order will be dispatched within 1 business day.
+&lt;/x-ui.alert&gt;
+
+&lt;x-ui.alert variant="warning" dismissible&gt;
+    Your session will expire in 5 minutes.
+&lt;/x-ui.alert&gt;
+
+&lt;x-ui.alert variant="error" title="Please correct the following:"&gt;
+    &lt;ul class="list-disc list-inside"&gt;
+        &lt;li&gt;Attestation checkbox 1 is required.&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/x-ui.alert&gt;
+                </x-design.code-block>
+                <x-design.prop-table :props="[
+                    ['name' => 'variant',     'type' => 'string', 'default' => 'info',  'description' => 'info | success | warning | error — drives icon, background, and text color'],
+                    ['name' => 'title',       'type' => 'string', 'default' => 'null',  'description' => 'Optional bold title rendered above the slot body'],
+                    ['name' => 'dismissible', 'type' => 'bool',   'default' => 'false', 'description' => 'Adds × button that hides the alert via Alpine x-show'],
+                ]" />
+            </div>
 
         </x-ui.container>
     </x-ui.section>
