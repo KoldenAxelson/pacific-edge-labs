@@ -14,16 +14,31 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-body bg-brand-bg text-brand-navy antialiased">
 
-        {{-- Primary navigation (sticky header, wordmark, mobile panel) --}}
+    {{--
+      x-data on <body> provides the mobileOpen scope for navigation.blade.php.
+
+      Why here and not in navigation.blade.php:
+        navigation.blade.php contains the sticky <header> (sticky top-0 z-40),
+        the fixed backdrop, and the fixed sidebar. If all three were wrapped in a
+        short <div x-data>, the sticky element's parent would only be ~90px tall
+        and sticky would stop working after scrolling past the announcement bar.
+        Putting x-data on <body> gives the sticky header a full-page-height parent,
+        so it correctly sticks to the top of the viewport throughout the page.
+
+      <body> does not set position or z-index, so it does NOT create a stacking
+      context. The fixed backdrop (z-40) and sidebar (z-50) participate in the
+      root stacking context at their own z values and are not trapped.
+    --}}
+    <body class="font-body bg-brand-bg text-brand-navy antialiased" x-data="{ mobileOpen: false }">
+
+        {{-- Navigation: announcement bar + sticky header + backdrop + sidebar --}}
         @include('layouts.navigation')
 
-        {{-- Compliance disclaimer — always rendered on every page (page-top variant) --}}
-        {{-- Phase 1 requirement: persistent amber strip. Not opt-in. --}}
+        {{-- Compliance disclaimer — always rendered on every page --}}
         <x-compliance.disclaimer-banner variant="page-top" />
 
-        {{-- Page-level header (x-ui.page-header goes here via named slot) --}}
+        {{-- Page-level header slot --}}
         @isset($header)
             {{ $header }}
         @endisset
@@ -35,14 +50,13 @@
             {{ $slot }}
         </main>
 
-        {{-- Site footer — navy background, 4-column grid, legal links --}}
+        {{-- Site footer --}}
         <x-ui.footer />
 
         {{-- Toast container — window._showToast() API, fixed bottom-right z-60 --}}
         <x-ui.toast-container />
 
-        {{-- Age verification gate — full-viewport Alpine overlay --}}
-        {{-- Phase 4: replace `verified: false` with cookie/session persistence --}}
+        {{-- Age verification gate --}}
         <x-compliance.age-gate />
 
     </body>

@@ -4,45 +4,55 @@
 - **Task:** TASK-1-012-Navigation
 - **Phase:** 1 (Design System)
 - **Completed:** 2026-02-13
-- **Duration:** ~2h
+- **Duration:** ~3h (including two revision cycles)
 - **Status:** ✅ Complete
 
 ## What We Did
 
-- Replaced `resources/views/layouts/navigation.blade.php` entirely. Breeze's default nav (gray palette, Dropdown/responsive-nav-link components, `max-w-7xl` container, `h-16` bar) is gone. New header: `sticky top-0 z-40`, white background, `border-b border-brand-border`. Left: beaker-in-navy-box + wordmark. Center: `<x-ui.nav-link>` desktop links (hidden below `md`). Right: search icon, cart icon with cyan `0` badge, auth buttons/avatar chip (desktop), hamburger (mobile only). All wrapped in `x-data="{ mobileOpen: false }"`.
+- Replaced `resources/views/layouts/navigation.blade.php` entirely. Breeze's default nav is gone. Final structure (all direct children of `<body>`, no wrapper div): announcement bar → sticky `<header>` → fixed backdrop → fixed sidebar. The partial defines no `x-data` scope of its own — it consumes `mobileOpen` from `<body x-data>` in `app.blade.php`.
 
-- Created `resources/views/components/ui/nav-link.blade.php`. Props: `href`, `active` (bool, optional). Auto-detection: `parse_url()` extracts the path, strips leading slash, and calls `request()->is($path)` — also matches `$path/*` for sub-routes. Empty path maps to `request()->is('/')`. Active state: `text-brand-cyan bg-brand-cyan-subtle` + `aria-current="page"`. Rest state: `text-brand-navy-700 hover:bg-brand-surface-2 hover:text-brand-navy`. Base class `flex items-center px-3 py-1.5 rounded-lg text-body-sm font-medium transition-smooth` — `flex` (not `inline-flex`) works in both horizontal flex containers and block contexts.
+- Created `resources/views/components/ui/nav-link.blade.php`. Props: `href`, `active` (bool, optional). Auto-detection: `parse_url()` extracts path, strips leading slash, calls `request()->is($path)` — also matches `$path/*` for sub-routes. Empty path maps to `request()->is('/')`. Active state: `text-brand-cyan bg-brand-cyan-subtle` + `aria-current="page"`. Rest state: `text-brand-navy-700 hover:bg-brand-surface-2 hover:text-brand-navy`. Component is used for internal tooling/reference only in the current build — all user-facing nav links live in the sidebar.
 
-- Created `resources/views/components/ui/footer.blade.php`. Structure: (1) `<x-compliance.disclaimer-banner variant="footer" />` amber strip at top, (2) `max-w-7xl` 4-column grid (Brand, Products, Company, Legal) inside `bg-brand-navy py-12`, (3) bottom bar with `{{ date('Y') }}` copyright and research-use-only note. Brand column: wordmark (beaker + "Pacific Edge" / "Labs" mono, white surface), "U.S.A. Tested · Potency Verified · Purity Quantified" tagline verbatim, three `<x-heroicon-o-check-badge>` credential lines. All legal `href` values are `#` placeholders — routes not yet defined. Link colors: `text-slate-400 hover:text-brand-cyan`. Column headers: `text-white uppercase tracking-wider text-body-sm font-semibold`.
+- Created `resources/views/components/ui/footer.blade.php`. Structure: (1) `<x-compliance.disclaimer-banner variant="footer" />` amber strip at top, (2) `max-w-7xl` 4-column grid (Brand, Products, Company, Legal) inside `bg-brand-navy py-12`, (3) bottom bar with `{{ date('Y') }}` copyright and research-use-only note. Brand column: wordmark, "U.S.A. Tested · Potency Verified · Purity Quantified" tagline verbatim, three `<x-heroicon-o-check-badge>` credential lines. All legal `href` values are `#` placeholders. Column links use `.link-underline` for grow-from-left underline on hover.
 
-- Modified `resources/views/layouts/app.blade.php`. Removed the opt-in `@isset($banner)` named-slot pattern — disclaimer is now always-rendered (`<x-compliance.disclaimer-banner variant="page-top" />`). Replaced `@isset($footer) {{ $footer }} @endisset` with `<x-ui.footer />`. Kept `@isset($header)`. Layout order: header include → disclaimer → header slot → main (flash-messages + slot) → footer → toast-container → age-gate.
+- Modified `resources/views/layouts/app.blade.php`. `x-data="{ mobileOpen: false }"` added to `<body>`. Disclaimer always-rendered. `<x-ui.footer />` wired in. `@isset($footer)` slot removed.
+
+- Added to `resources/css/app.css`:
+  - `.link-underline` / `.link-underline::after` / `.link-underline:hover::after` — grow-from-left 1px underline using `currentColor`. Applied to footer column links only.
+  - `.hamburger span` — `background: currentColor`, `transition` for transform + opacity. `.hamburger.active span:nth-child(1/2/3)` — morph to X via rotate + fade.
 
 ## Deviations from Plan
 
-- **Mobile nav uses plain `<a>` tags, not `<x-ui.nav-link>`:** Task spec says to use `<x-ui.nav-link>` for nav links generally but is unambiguous that mobile links should be "block, rounded-xl, hover bg." Passing display/layout overrides via `$attributes->merge()` into a component whose base already declares `flex` works fine — however the mobile active-state detection would require the same `request()->is()` logic anyway, already inlined. Using plain `<a>` tags with inline PHP for active detection in the mobile panel avoids the double-class-string merging and keeps the mobile section legible. The `<x-ui.nav-link>` component comment documents this decision.
+- **Hamburger-only nav — no persistent desktop center links:** Task spec described a center nav with `<x-ui.nav-link>` for desktop and hamburger for mobile. After seeing the design in production, the call was made to go hamburger-only at all screen sizes. It's cleaner and more consistent. `<x-ui.nav-link>` still exists and works correctly for any future use.
 
-- **`$banner` named slot removed from `app.blade.php`:** The existing layout had an opt-in `@isset($banner)` pattern. The task spec says the disclaimer is "always present" on every page. Removing the slot also removes any path for views to accidentally bypass the disclaimer. Any view that was passing `<x-slot name="banner">` would need to be updated — confirmed no other views were using it at the time of this task.
+- **`x-data` on `<body>`, not on a wrapper div or the navigation partial:** Two approaches were tried first. (1) `x-data` on `<header>` — header creates a z-40 stacking context, trapping fixed children; backdrop and sidebar cannot exceed z-40 visually. (2) `x-data` on a wrapper `<div>` containing header + fixed elements — `sticky top-0` only sticks within its parent's height; the wrapper is ~90px tall so the header scrolled away with the page after the announcement bar. Final resolution: `x-data` on `<body>`, which is full-page height and does not set `position` or `z-index`, so it creates no stacking context.
 
-- **Footer wordmark uses `bg-brand-navy-800` for the icon box, header uses `bg-brand-navy`:** Task spec describes "small navy rounded-lg box" without specifying exact shade. Footer is on a `bg-brand-navy` background so the icon box uses `bg-brand-navy-800` (slightly lighter) to remain visible. Header is on a `bg-white` background so `bg-brand-navy` provides sufficient contrast. Both use `text-brand-cyan` for the icon itself.
+- **`$banner` named slot removed from `app.blade.php`:** Task spec described opt-in disclaimer per page. Revised to always-rendered per the task's own stated requirement ("always present"). No views were using the slot at time of removal.
+
+- **Footer wordmark icon box uses `bg-brand-navy-800`, header uses `bg-brand-navy`:** Footer is on a `bg-brand-navy` surface so the box uses `bg-brand-navy-800` to remain distinguishable. Header is on white so `bg-brand-navy` is used directly.
+
+- **`.hamburger` CSS does not set `display`:** Original source CSS had `display: flex` in `.hamburger`. Removed intentionally. Styles outside `@layer` have higher specificity than `@layer utilities`. If `display: flex` were in `.hamburger`, `md:hidden` (inside `@layer utilities`) could never override it at the `md` breakpoint. `display`, `flex-direction`, and `gap` are Tailwind utilities on the `<button>` element; `.hamburger` only handles span transforms and opacity.
 
 ## Confirmed Working
 
-- ✅ Header sticks to top on scroll — `sticky top-0 z-40`
-- ✅ Header sits at `z-40`, below age gate at `z-50`, below future modals
-- ✅ Wordmark: "Pacific Edge" in DM Sans semibold / "Labs" in JetBrains Mono at `text-[10px] tracking-[0.2em] uppercase` renders correctly — micro-detail visually inspected
-- ✅ Desktop nav links show `text-brand-cyan bg-brand-cyan-subtle` active pill on current route
-- ✅ Desktop nav hidden below `md` breakpoint; hamburger hidden above `md`
+- ✅ Header sticks to viewport top throughout full-page scroll — confirmed on `/design` which is a long page
+- ✅ Announcement bar scrolls away; sticky header covers it correctly
+- ✅ Wordmark renders correctly: "Pacific Edge" DM Sans semibold / "Labs" JetBrains Mono `text-[10px] tracking-[0.2em] uppercase`
+- ✅ Hamburger button visible at all screen sizes
+- ✅ Three-span hamburger morphs smoothly to X on open, back to bars on close
+- ✅ Hamburger spans turn cyan on hover (via `currentColor` + `hover:text-brand-cyan` on button)
+- ✅ Sidebar slides in from right with `transition-medium` (300ms)
+- ✅ Backdrop fades in simultaneously at z-40; sidebar sits above at z-50
+- ✅ Sidebar closes on: backdrop click, Escape key, X button inside sidebar, nav link click
+- ✅ Active nav link in sidebar shows `text-brand-cyan bg-brand-cyan-subtle` + `aria-current="page"`
 - ✅ Cart icon shows cyan `0` badge at `-top-0.5 -right-0.5`
-- ✅ Mobile panel opens with `animate-reveal-bottom`, closes with opacity fade
-- ✅ Mobile panel closes on outside click (`@click.outside`) and Escape (`@keydown.escape.window`)
-- ✅ Hamburger icon (bars) swaps to X when panel is open — `x-cloak` prevents X flickering before Alpine boots
-- ✅ Auth: avatar initial chip + name shown when authenticated, login + register buttons when guest
-- ✅ Disclaimer renders on every page — amber strip between header and content
-- ✅ Footer: navy background, amber disclaimer strip at top (`border-t` variant), 4-column grid
+- ✅ Auth: avatar chip when authenticated, login + register buttons when guest
+- ✅ Compliance disclaimer renders on every page — amber strip between header and content
+- ✅ Footer: navy background, amber strip (footer variant), 4-column grid, correct on all breakpoints
 - ✅ Footer tagline "U.S.A. Tested · Potency Verified · Purity Quantified" verbatim
-- ✅ Footer copyright uses `{{ date('Y') }}` — not a hardcoded year
-- ✅ All five legal link placeholders present: Terms of Service, Privacy Policy, Refund Policy, Shipping Policy, Research Use Policy
-- ✅ `<x-ui.footer />` wired into `app.blade.php` — old `@isset($footer)` slot removed
+- ✅ Footer copyright uses `{{ date('Y') }}` — not hardcoded
+- ✅ All five legal placeholder links present in footer
+- ✅ `.link-underline` grow animation fires on hover in footer columns; underline color matches `hover:text-brand-cyan`
 
 ## Known Issues
 
@@ -50,28 +60,34 @@ None.
 
 ## Blockers Encountered
 
-None. All design decisions were resolved from files reviewed before writing.
+- **Sticky header broke when `x-data` was on a wrapper div:** `position: sticky` only sticks within the scrollable bounds of its nearest scrolling ancestor. A short wrapper div (~90px: announcement bar + header) caused the header to stick and then scroll away once the user scrolled past the wrapper. → **Resolution:** `x-data="{ mobileOpen: false }"` moved to `<body>` in `app.blade.php`. Navigation partial has no wrapper element.
+
+- **Fixed sidebar trapped inside header's stacking context:** First attempt put `x-data` on `<header class="sticky z-40">`. `position: sticky` + `z-index` together create a stacking context. Any `fixed` child (backdrop z-40, sidebar z-50) is clipped to that context and cannot visually exceed z-40. → **Resolution:** Sidebar and backdrop are siblings of `<header>` within `<body>`, not children. `<body>` has no `position` or `z-index`, so no stacking context is created; fixed elements participate in the root stacking context at their own z values.
 
 ## Configuration Changes
 
 ```
-No configuration files modified.
+resources/css/app.css — appended:
+  .link-underline and ::after hover animation (grow-from-left underline)
+  .hamburger span — base styles for morph animation
+  .hamburger.active span:nth-child(1/2/3) — X morph transforms
 ```
 
 ## Next Steps
 
 - TASK-1-013 — next Phase 1 task
-- Phase 2+: replace `href="#"` placeholders in nav and footer (Products, About, FAQ, Contact, all Legal links) once routes are defined
-- Phase 4: cart badge count wired to session/Livewire state — the `aria-label` on the cart button is already written to accept a dynamic count (`"Shopping cart, 0 items"`)
-- Phase 4: `window._showToast()` documented in TASK-1-011 is the stable toast API — no changes needed here
-- If `brand-info-bg` token is added, see alert.blade.php comment (from TASK-1-011)
+- Phase 2+: replace `href="#"` placeholders (Products, About, FAQ, Contact, all Legal links) once routes are defined
+- Phase 4: cart badge count wired to session/Livewire — `aria-label` on cart button already written to accept dynamic count
+- Phase 4: search button wired to a search modal/drawer
+- Check `toast-container.blade.php` from TASK-1-011: z-index convention now established at `z-60` for toasts. If that component uses `z-50`, bump it to `z-60`.
 
 ## Files Created/Modified
 
-- `resources/views/layouts/navigation.blade.php` — replaced — sticky header, wordmark, desktop nav, cart, auth, mobile panel
-- `resources/views/components/ui/nav-link.blade.php` — created — active-auto-detecting nav link with brand active/rest states
-- `resources/views/components/ui/footer.blade.php` — created — navy footer with disclaimer, 4-column grid, copyright
-- `resources/views/layouts/app.blade.php` — modified — disclaimer always-rendered, footer component wired in, `$banner` slot removed
+- `resources/views/layouts/navigation.blade.php` — replaced — announcement bar, sticky header, morphing hamburger, fixed backdrop, right sidebar
+- `resources/views/components/ui/nav-link.blade.php` — created — active-auto-detecting nav link component
+- `resources/views/components/ui/footer.blade.php` — created — navy footer with disclaimer, 4-column grid, link-underline hover effect
+- `resources/views/layouts/app.blade.php` — modified — `x-data="{ mobileOpen: false }"` on `<body>`, disclaimer always-rendered, footer component wired in
+- `resources/css/app.css` — modified — `.link-underline` and `.hamburger` CSS appended
 
 ---
-**For Next Claude:** Four files in play. (1) `navigation.blade.php` is a full Breeze replacement — do not reference Breeze's `<x-nav-link>`, `<x-dropdown>`, or `<x-responsive-nav-link>` components; they are no longer used. (2) `<x-ui.nav-link>` auto-detects active state from `href` via `request()->is()` — the `active` prop only needs to be set explicitly for non-URL-based active logic. (3) Mobile nav links are plain `<a>` tags with inline PHP active detection — not `<x-ui.nav-link>` — see component comment for rationale. (4) `app.blade.php` no longer has a `$banner` named slot — disclaimer is always rendered; do not re-introduce the opt-in slot. (5) Z-index convention is now established: `z-30` subnav, `z-40` header, `z-50` modals/age-gate, `z-60` toasts — the toast-container from TASK-1-011 should be updated to `z-60` if it is currently using `z-50`. (6) Footer legal links are `href="#"` placeholders — leave them until routes exist.
+**For Next Claude:** Critical architecture points. (1) `x-data="{ mobileOpen: false }"` is on `<body>` in `app.blade.php` — do NOT move it into a wrapper div or onto `<header>`; either breaks sticky or creates a trapping stacking context (full explanation in Blockers). (2) `navigation.blade.php` has no wrapper element — announcement bar, `<header>`, backdrop, and sidebar are all direct children of `<body>`. (3) Hamburger is visible at all screen sizes; there is no always-visible desktop nav link row. All nav links live in the sidebar. (4) `.hamburger` CSS in `app.css` does NOT set `display` — `flex flex-col gap-1.5` are Tailwind utilities on the `<button>`; mixing display into the CSS class would break `md:hidden` due to specificity. (5) `<x-ui.nav-link>` auto-detects active state from `href` via `request()->is()` — `active` prop only needed for non-URL-based logic. (6) Footer legal links are `href="#"` placeholders. (7) Z-index convention: `z-30` subnav, `z-40` header + backdrop, `z-50` sidebar/modals/age-gate, `z-60` toasts — verify `toast-container.blade.php` uses `z-60`.

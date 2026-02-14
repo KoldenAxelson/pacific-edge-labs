@@ -8,46 +8,46 @@
  * must trace back to one of these variables.
  */
 :root {
-  /* Core — navy is the structural anchor of the entire UI */
-  --color-navy:         #0F172A;
-  --color-navy-800:     #1E293B;
-  --color-navy-700:     #334155;
-  --color-navy-600:     #475569;
-  --color-navy-500:     #64748B;
+    /* Core — navy is the structural anchor of the entire UI */
+    --color-navy: #0f172a;
+    --color-navy-800: #1e293b;
+    --color-navy-700: #334155;
+    --color-navy-600: #475569;
+    --color-navy-500: #64748b;
 
-  /* Accent — use sparingly, high-value moments only */
-  /* Cyan signals "this matters": purity %, active nav, primary CTAs, logo mark */
-  --color-cyan:         #06B6D4;
-  --color-cyan-dark:    #0891B2;
-  --color-cyan-light:   #67E8F9;
-  --color-cyan-subtle:  #ECFEFF;
+    /* Accent — use sparingly, high-value moments only */
+    /* Cyan signals "this matters": purity %, active nav, primary CTAs, logo mark */
+    --color-cyan: #06b6d4;
+    --color-cyan-dark: #0891b2;
+    --color-cyan-light: #67e8f9;
+    --color-cyan-subtle: #ecfeff;
 
-  /* Surfaces */
-  --color-bg:           #F8F9FA;
-  --color-surface:      #FFFFFF;
-  --color-surface-2:    #F1F5F9;
+    /* Surfaces */
+    --color-bg: #f8f9fa;
+    --color-surface: #ffffff;
+    --color-surface-2: #f1f5f9;
 
-  /* Borders */
-  --color-border:       #E2E8F0;
-  --color-border-dark:  #CBD5E1;
+    /* Borders */
+    --color-border: #e2e8f0;
+    --color-border-dark: #cbd5e1;
 
-  /* Text */
-  --color-text:         #0F172A;
-  --color-text-muted:   #64748B;
-  --color-text-faint:   #94A3B8;
+    /* Text */
+    --color-text: #0f172a;
+    --color-text-muted: #64748b;
+    --color-text-faint: #94a3b8;
 
-  /* Semantic */
-  --color-success:      #10B981;
-  --color-success-bg:   #ECFDF5;
-  --color-warning:      #F59E0B;
-  --color-warning-bg:   #FFFBEB;
-  --color-error:        #EF4444;
-  --color-error-bg:     #FEF2F2;
+    /* Semantic */
+    --color-success: #10b981;
+    --color-success-bg: #ecfdf5;
+    --color-warning: #f59e0b;
+    --color-warning-bg: #fffbeb;
+    --color-error: #ef4444;
+    --color-error-bg: #fef2f2;
 
-  /* Compliance — amber is for research badges and attestation UI ONLY */
-  --color-amber:        #D97706;
-  --color-amber-bg:     #FEF3C7;
-  --color-amber-border: #FCD34D;
+    /* Compliance — amber is for research badges and attestation UI ONLY */
+    --color-amber: #d97706;
+    --color-amber-bg: #fef3c7;
+    --color-amber-border: #fcd34d;
 }
 
 /* ─── Tailwind v4 Tokens ──────────────────────────────────────────────────── */
@@ -59,76 +59,85 @@
  * Type scale: generates text-* utilities (text-display, text-h1, text-body-sm, etc.)
  */
 @theme {
-  /* Colors */
-  --color-brand-navy:         #0F172A;
-  --color-brand-navy-800:     #1E293B;
-  --color-brand-navy-700:     #334155;
-  --color-brand-navy-600:     #475569;
-  --color-brand-navy-500:     #64748B;
+    /* Colors */
+    --color-brand-navy: #0f172a;
+    --color-brand-navy-800: #1e293b;
+    --color-brand-navy-700: #334155;
+    --color-brand-navy-600: #475569;
+    --color-brand-navy-500: #64748b;
 
-  --color-brand-cyan:         #06B6D4;
-  --color-brand-cyan-dark:    #0891B2;
-  --color-brand-cyan-light:   #67E8F9;
-  --color-brand-cyan-subtle:  #ECFEFF;
+    --color-brand-cyan: #06b6d4;
+    --color-brand-cyan-dark: #0891b2;
+    --color-brand-cyan-light: #67e8f9;
+    --color-brand-cyan-subtle: #ecfeff;
 
-  --color-brand-bg:           #F8F9FA;
-  --color-brand-surface:      #FFFFFF;
-  --color-brand-surface-2:    #F1F5F9;
+    --color-brand-bg: #f8f9fa;
+    --color-brand-surface: #ffffff;
+    --color-brand-surface-2: #f1f5f9;
 
-  --color-brand-border:       #E2E8F0;
-  --color-brand-border-dark:  #CBD5E1;
+    --color-brand-border: #e2e8f0;
+    --color-brand-border-dark: #cbd5e1;
 
-  --color-brand-text:         #0F172A;
-  --color-brand-text-muted:   #64748B;
-  --color-brand-text-faint:   #94A3B8;
+    --color-brand-text: #0f172a;
+    --color-brand-text-muted: #64748b;
+    --color-brand-text-faint: #94a3b8;
 
-  --color-brand-success:      #10B981;
-  --color-brand-success-bg:   #ECFDF5;
-  --color-brand-warning:      #F59E0B;
-  --color-brand-warning-bg:   #FFFBEB;
-  --color-brand-error:        #EF4444;
-  --color-brand-error-bg:     #FEF2F2;
+    --color-brand-success: #10b981;
+    --color-brand-success-bg: #ecfdf5;
+    --color-brand-warning: #f59e0b;
+    --color-brand-warning-bg: #fffbeb;
+    --color-brand-error: #ef4444;
+    --color-brand-error-bg: #fef2f2;
 
-  --color-brand-amber:        #D97706;
-  --color-brand-amber-bg:     #FEF3C7;
-  --color-brand-amber-border: #FCD34D;
+    --color-brand-amber: #d97706;
+    --color-brand-amber-bg: #fef3c7;
+    --color-brand-amber-border: #fcd34d;
 
-  /* Type scale — generates text-{name} font-size utilities */
-  --text-display:  3rem;
-  --text-h1:       2.25rem;
-  --text-h2:       1.875rem;
-  --text-h3:       1.5rem;
-  --text-h4:       1.25rem;
-  --text-body-lg:  1.125rem;
-  --text-body:     1rem;
-  --text-body-sm:  0.875rem;
-  --text-label:    0.875rem;
-  --text-caption:  0.75rem;
-  --text-mono:     0.875rem;
+    /* Type scale — generates text-{name} font-size utilities */
+    --text-display: 3rem;
+    --text-h1: 2.25rem;
+    --text-h2: 1.875rem;
+    --text-h3: 1.5rem;
+    --text-h4: 1.25rem;
+    --text-body-lg: 1.125rem;
+    --text-body: 1rem;
+    --text-body-sm: 0.875rem;
+    --text-label: 0.875rem;
+    --text-caption: 0.75rem;
+    --text-mono: 0.875rem;
 }
 
 /* ─── Base Layer ──────────────────────────────────────────────────────────── */
 @layer base {
-  html {
-    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
-    background: var(--color-bg);
-    color: var(--color-text);
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
+    html {
+        font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+        background: var(--color-bg);
+        color: var(--color-text);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
 
-  h1, h2, h3, h4 {
-    font-family: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
-    font-weight: 600;
-    color: var(--color-navy);
-    line-height: 1.15;
-  }
+    h1,
+    h2,
+    h3,
+    h4 {
+        font-family: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+        font-weight: 600;
+        color: var(--color-navy);
+        line-height: 1.15;
+    }
 
-  /* Heading letter-spacing: tightest at display/h1, eases off toward h3, none below */
-  h1 { letter-spacing: -0.02em; }
-  h2 { letter-spacing: -0.015em; }
-  h3 { letter-spacing: -0.01em; }
-  /* h4 and below: no negative tracking */
+    /* Heading letter-spacing: tightest at display/h1, eases off toward h3, none below */
+    h1 {
+        letter-spacing: -0.02em;
+    }
+    h2 {
+        letter-spacing: -0.015em;
+    }
+    h3 {
+        letter-spacing: -0.01em;
+    }
+    /* h4 and below: no negative tracking */
 }
 
 /* ─── Typography Utilities ────────────────────────────────────────────────── */
@@ -137,10 +146,10 @@
  * order IDs. Not decorative — signals "this is a precise value."
  */
 .font-mono-data {
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: 0.875rem;
-  font-variant-numeric: tabular-nums;
-  letter-spacing: 0;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.875rem;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0;
 }
 
 /* ─── Custom Pacific Edge Labs styles ─────────────────────────────────────── */
@@ -171,69 +180,165 @@
 /* Reveal from left — content appearing after a container expands */
 /* Used: CoA accordion content, FAQ answers, expandable sections */
 @keyframes revealFromLeft {
-  from { opacity: 0; transform: translateX(-10px); }
-  to   { opacity: 1; transform: translateX(0); }
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 .animate-reveal-left {
-  animation: revealFromLeft 400ms ease-out 150ms both;
+    animation: revealFromLeft 400ms ease-out 150ms both;
 }
 
 /* Reveal from bottom — content that rises into view */
 /* Used: modal content, drawer panels, mobile nav */
 @keyframes revealFromBottom {
-  from { opacity: 0; transform: translateY(8px); }
-  to   { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 .animate-reveal-bottom {
-  animation: revealFromBottom 350ms ease-out 100ms both;
+    animation: revealFromBottom 350ms ease-out 100ms both;
 }
 
 /* Scale in — elements that pop into existence */
 /* Used: badges appearing, toast notifications, tooltips */
 @keyframes scaleIn {
-  from { opacity: 0; transform: scale(0.95); }
-  to   { opacity: 1; transform: scale(1); }
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 .animate-scale-in {
-  animation: scaleIn 200ms ease-out both;
+    animation: scaleIn 200ms ease-out both;
 }
 
 /* Fade in — purely opacity, no movement */
 /* Used: overlay backgrounds, subtle content transitions */
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 .animate-fade-in {
-  animation: fadeIn 300ms ease-out both;
+    animation: fadeIn 300ms ease-out both;
 }
 
 /* Stagger — grid cards loading in sequence via --stagger-index custom property */
 /* Used: product cards loading into grid */
 .animate-stagger {
-  animation: revealFromBottom 400ms ease-out both;
-  animation-delay: calc(var(--stagger-index, 0) * 60ms);
+    animation: revealFromBottom 400ms ease-out both;
+    animation-delay: calc(var(--stagger-index, 0) * 60ms);
 }
 
 /* ─── Transition Utilities ────────────────────────────────────────────────── */
 /* Consistent easing curves for hover/focus states and interactive elements */
-.transition-smooth { transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1); }
-.transition-medium { transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1); }
-.transition-slow   { transition: all 400ms cubic-bezier(0.4, 0, 0.2, 1); }
+.transition-smooth {
+    transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.transition-medium {
+    transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.transition-slow {
+    transition: all 400ms cubic-bezier(0.4, 0, 0.2, 1);
+}
 
 /* ─── Reduced Motion ──────────────────────────────────────────────────────── */
 /* Accessibility requirement — respects user OS preference */
 @media (prefers-reduced-motion: reduce) {
-  .animate-reveal-left,
-  .animate-reveal-bottom,
-  .animate-scale-in,
-  .animate-fade-in,
-  .animate-stagger {
-    animation: none;
-  }
-  .transition-smooth,
-  .transition-medium,
-  .transition-slow {
-    transition: none;
-  }
+    .animate-reveal-left,
+    .animate-reveal-bottom,
+    .animate-scale-in,
+    .animate-fade-in,
+    .animate-stagger {
+        animation: none;
+    }
+    .transition-smooth,
+    .transition-medium,
+    .transition-slow {
+        transition: none;
+    }
+}
+
+/* ─── Link Underline Grow ─────────────────────────────────────────────────── */
+/*
+ * Grow-from-left underline on hover. Apply .link-underline to any <a> tag.
+ * The underline uses currentColor, so it automatically matches whatever text
+ * color is active at hover time (e.g. text-brand-cyan on hover in footer links).
+ * Used on footer nav columns. NOT applied to wordmark or pill-style nav links.
+ */
+.link-underline {
+    position: relative;
+}
+
+.link-underline::after {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 300ms ease;
+}
+
+.link-underline:hover::after {
+    transform: scaleX(1);
+}
+
+/* ─── Hamburger Morph ─────────────────────────────────────────────────────── */
+/*
+ * Three-span hamburger button that morphs into an X on .active.
+ * Applied to <button class="hamburger ..."> in navigation.blade.php.
+ *
+ * IMPORTANT: display, flex-direction, and gap are intentionally NOT set here.
+ * They are set via Tailwind utilities (flex flex-col gap-1.5) on the button element.
+ * Reason: styles outside @layer have higher specificity than @layer utilities.
+ * If display:flex were in .hamburger, md:hidden (inside @layer utilities) could
+ * never override it at the md breakpoint. Splitting avoids the conflict.
+ *
+ * Spans use background:currentColor so they inherit the button's text color.
+ * Tailwind hover:text-brand-cyan on the button turns spans cyan on hover.
+ */
+.hamburger span {
+    width: 28px;
+    height: 2px;
+    background: currentColor;
+    border-radius: 2px;
+    display: block;
+    transition:
+        transform 300ms cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* X morph: span 1 rotates to form \ */
+.hamburger.active span:nth-child(1) {
+    transform: rotate(45deg) translate(0px, 11.5px);
+}
+
+/* X morph: middle span fades out */
+.hamburger.active span:nth-child(2) {
+    opacity: 0;
+}
+
+/* X morph: span 3 rotates to form / */
+.hamburger.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(0px, -11.5px);
 }
