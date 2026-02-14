@@ -246,6 +246,30 @@
     animation-delay: calc(var(--stagger-index, 0) * 60ms);
 }
 
+/* Slide from right — toast notifications entering at bottom-right edge */
+/* Convention: bottom-right toasts should enter from the right, not from below */
+/* 300ms with no delay — slightly faster than content reveals, no awkward gap */
+@keyframes revealFromRight {
+    from {
+        opacity: 0;
+        transform: translateX(16px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+.animate-reveal-right {
+    animation: revealFromRight 300ms ease-out both;
+}
+
+/* Fast bottom reveal — mobile nav panel, contextual menus */
+/* Nav interactions must feel snappier than content reveals (250ms vs 350ms) */
+/* Reuses revealFromBottom keyframe — only duration and delay differ */
+.animate-reveal-nav {
+    animation: revealFromBottom 250ms ease-out both;
+}
+
 /* ─── Transition Utilities ────────────────────────────────────────────────── */
 /* Consistent easing curves for hover/focus states and interactive elements */
 .transition-smooth {
@@ -263,6 +287,8 @@
 @media (prefers-reduced-motion: reduce) {
     .animate-reveal-left,
     .animate-reveal-bottom,
+    .animate-reveal-right,
+    .animate-reveal-nav,
     .animate-scale-in,
     .animate-fade-in,
     .animate-stagger {

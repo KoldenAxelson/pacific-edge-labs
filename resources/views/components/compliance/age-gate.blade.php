@@ -31,6 +31,7 @@
 <div
     x-show="!verified"
     x-cloak
+    x-transition:enter="animate-fade-in"
     class="fixed inset-0 z-[9999] flex items-center justify-center p-4"
     style="backdrop-filter: blur(8px); background-color: rgba(15, 23, 42, 0.75);"
     role="dialog"
@@ -39,7 +40,7 @@
 >
     {{-- ── MODAL CARD ──────────────────────────────────────────────────────── --}}
     {{-- No @click.self on the backdrop — click-outside dismissal is explicitly prohibited --}}
-    <div class="w-full max-w-md rounded-2xl overflow-hidden shadow-2xl">
+    <div :class="!verified ? 'animate-scale-in' : ''" class="w-full max-w-md rounded-2xl overflow-hidden shadow-2xl">
 
         {{-- ── HEADER: dark navy ───────────────────────────────────────────── --}}
         <div class="bg-brand-navy px-6 py-6 flex flex-col items-center gap-3 text-center">

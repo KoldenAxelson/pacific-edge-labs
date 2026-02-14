@@ -70,7 +70,7 @@
                 >
                     <x-heroicon-o-shopping-cart class="w-5 h-5" aria-hidden="true" />
                     <span
-                        class="absolute -top-0.5 -right-0.5 w-4 h-4 bg-brand-cyan text-white text-[10px] font-bold rounded-full flex items-center justify-center leading-none pointer-events-none"
+                        class="absolute -top-0.5 -right-0.5 w-4 h-4 bg-brand-cyan text-white text-[10px] font-bold rounded-full flex items-center justify-center leading-none pointer-events-none ring-2 ring-white"
                         aria-hidden="true"
                     >0</span>
                 </button>

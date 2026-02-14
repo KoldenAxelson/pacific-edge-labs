@@ -26,7 +26,14 @@
         add(variant, message, duration) {
             const id  = Date.now() + Math.random();
             const ms  = duration || 4000;
-            this.toasts.push({ id, variant, message, duration: ms, show: true });
+            // Push with show:false first so Alpine registers the false→true
+            // change in $nextTick — without this x-transition:enter never fires
+            // because the element is created with x-show already true.
+            this.toasts.push({ id, variant, message, duration: ms, show: false });
+            this.$nextTick(() => {
+                const t = this.toasts.find(t => t.id === id);
+                if (t) t.show = true;
+            });
             setTimeout(() => this.dismiss(id), ms);
         },
         dismiss(id) {
@@ -42,7 +49,7 @@
     <template x-for="toast in toasts" :key="toast.id">
         <div
             x-show="toast.show"
-            x-transition:enter="animate-reveal-bottom"
+            x-transition:enter="animate-reveal-right"
             x-transition:leave="transition-medium"
             x-transition:leave-start="opacity-100"
             x-transition:leave-end="opacity-0"

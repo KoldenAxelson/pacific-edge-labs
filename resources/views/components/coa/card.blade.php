@@ -48,7 +48,7 @@
                 {{-- Purity — hero value: larger mono cyan --}}
                 <div>
                     <dt class="text-caption font-medium uppercase tracking-widest text-brand-text-muted mb-1">Purity</dt>
-                    <dd class="font-mono text-brand-cyan text-2xl font-semibold leading-none">{{ $purity }}</dd>
+                    <dd class="font-mono tabular-nums text-brand-cyan text-2xl font-semibold leading-none">{{ $purity }}</dd>
                 </div>
 
                 {{-- Test Date --}}

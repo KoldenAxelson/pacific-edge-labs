@@ -31,7 +31,7 @@ $config = match($variant) {
     x-data="{ show: true }"
     x-init="setTimeout(() => show = false, {{ (int) $duration }})"
     x-show="show"
-    x-transition:enter="animate-reveal-bottom"
+    x-transition:enter="animate-reveal-right"
     x-transition:leave="transition-medium"
     x-transition:leave-start="opacity-100"
     x-transition:leave-end="opacity-0"
