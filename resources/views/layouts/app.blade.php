@@ -16,15 +16,12 @@
     </head>
     <body class="font-body bg-brand-bg text-brand-navy antialiased">
 
-        {{-- Primary navigation --}}
+        {{-- Primary navigation (sticky header, wordmark, mobile panel) --}}
         @include('layouts.navigation')
 
-        {{-- Compliance disclaimer banner — opt-in per page via named slot.
-             Product pages pass: <x-slot name="banner"><x-compliance.disclaimer-banner /></x-slot>
-             Pages that omit the slot show nothing. --}}
-        @isset($banner)
-            {{ $banner }}
-        @endisset
+        {{-- Compliance disclaimer — always rendered on every page (page-top variant) --}}
+        {{-- Phase 1 requirement: persistent amber strip. Not opt-in. --}}
+        <x-compliance.disclaimer-banner variant="page-top" />
 
         {{-- Page-level header (x-ui.page-header goes here via named slot) --}}
         @isset($header)
@@ -38,15 +35,13 @@
             {{ $slot }}
         </main>
 
-        {{-- Footer slot — populated in a later task --}}
-        @isset($footer)
-            {{ $footer }}
-        @endisset
+        {{-- Site footer — navy background, 4-column grid, legal links --}}
+        <x-ui.footer />
 
-        {{-- Toast container — receives toasts from window._showToast() and Livewire (Phase 4/5) --}}
+        {{-- Toast container — window._showToast() API, fixed bottom-right z-60 --}}
         <x-ui.toast-container />
 
-        {{-- Age verification gate — full-viewport Alpine overlay, always shows in Phase 1 demo --}}
+        {{-- Age verification gate — full-viewport Alpine overlay --}}
         {{-- Phase 4: replace `verified: false` with cookie/session persistence --}}
         <x-compliance.age-gate />
 
