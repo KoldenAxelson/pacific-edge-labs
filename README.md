@@ -109,13 +109,15 @@ This platform prioritizes:
 - Payment and email abstraction layers
 - Testing framework and seeders
 
-### Phase 1: Design System & Brand (Up Next)
-- Typography, color palette, spacing system
-- Reusable Blade components (buttons, cards, badges, forms)
-- Responsive layout foundations
-- Mobile-first design approach
+### Phase 1: Design System & Brand ✅
+- Thorne-inspired clinical aesthetic (Deep Navy primary, Cyan accent, Amber compliance)
+- Typography: DM Sans headings, Inter body, JetBrains Mono data values
+- 34 reusable Blade components (buttons, cards, badges, forms, compliance UI, CoA display)
+- Animation vocabulary with two-phase choreography and reduced-motion support
+- `/design` showcase route for client presentation
+- Responsive layout foundations with mobile drawer navigation
 
-### Phase 2: Product Catalog
+### Phase 2: Product Catalog (Up Next)
 - Product and category models with relationships
 - Public product listing and detail pages
 - Search and filter functionality
@@ -249,11 +251,12 @@ sail artisan test --filter=test_users_can_authenticate
 sail artisan test --coverage
 ```
 
-### Current Test Coverage (Phase 0)
+### Current Test Coverage (Through Phase 1)
 - **Authentication:** Registration, login, logout, password reset, email verification
 - **Role/Permissions:** Role assignment, permission checks, role-based access
 - **Admin Panel:** Filament access gated by role
 - **Payment Service:** Charge, refund, card masking, error handling
+- **Design System:** `/design` route renders without errors or database queries
 
 ### Coverage Goals
 - **Authentication:** 100%
@@ -287,13 +290,20 @@ sail artisan test --coverage
 ├── docs/
 │   ├── architecture/       # Architecture decision docs (payment, email)
 │   ├── Execution/          # Phase task files (TASK-*) and completion reports (INFO-*)
+│   │   ├── Phase 0/        # 10 tasks + 10 completion reports (complete)
+│   │   ├── Phase 1/        # 15 tasks + 16 completion reports (complete)
+│   │   ├── Phase 2/        # Product Catalog (up next)
+│   │   └── TASK-X-000-Overview.md  # Phase overview files (3–8)
 │   ├── Guides and Templates/ # Coding conventions, documentation guide, templates
 │   ├── history/            # Project brief, phase completion summaries
-│   └── reference/          # Testing guide, seeding guide
+│   └── reference/          # Testing guide, seeding guide, color reference
 ├── resources/
-│   ├── css/                # Tailwind CSS
-│   ├── js/                 # Alpine.js entry point
+│   ├── css/                # Tailwind CSS + design tokens + animation keyframes
+│   ├── js/                 # Alpine.js + Collapse plugin
 │   └── views/              # Blade templates
+│       ├── components/     # 34 reusable Blade components (ui/, product/, coa/, compliance/, design/)
+│       ├── layouts/        # App shell, guest, navigation
+│       └── design.blade.php # /design showcase route
 ├── routes/
 │   ├── web.php             # Web routes
 │   └── api.php             # API routes (future)
@@ -305,7 +315,7 @@ sail artisan test --coverage
 
 ## 🔐 Security Features
 
-**Implemented (Phase 0):**
+**Implemented (Phases 0–1):**
 - **CSRF protection** (Laravel default)
 - **XSS protection** (escaped output in Blade)
 - **SQL injection prevention** (Eloquent ORM, no raw queries with user input)
@@ -313,22 +323,26 @@ sail artisan test --coverage
 - **Role-based access control** (Spatie Permission with three roles)
 - **Payment data** never fully stored (last 4 digits only, PCI-aware)
 - **Admin panel** gated to admin+ roles via Filament Shield
+- **Age gate UI component** built (enforcement logic in Phase 4)
+- **Research attestation UI** built (checkout integration in Phase 4)
+- **Disclaimer banners** on every page via app layout
 
 **Planned (Future Phases):**
-- **Age verification gate** with IP logging for compliance (Phase 4)
+- **Age verification gate** enforcement with IP logging for compliance (Phase 4)
 - **Research attestation checkboxes** at checkout (Phase 4)
 - **Rate limiting** on authentication and checkout endpoints (Phase 7)
 - **CAPTCHA** on age verification gate (Phase 7)
 - **SSL/HTTPS enforcement** in production (Phase 8)
 
-## 🎨 Design System (Phase 1)
+## 🎨 Design System (Phase 1 — Complete)
 
-The design system will be built in Phase 1. Planned elements:
+Thorne-inspired clinical aesthetic. White surfaces, structured layouts, data-forward presentation. The `/design` route showcases all components live.
 
-- **Brand colors:** Primary blue palette, gray scale, accent colors
-- **Typography:** Figtree (sans-serif), clear heading hierarchy
-- **Reusable Blade components:** Buttons, cards, badges, forms, modals, alerts
-- **Mobile-first responsive layout** foundations
+- **Colors:** Deep Navy `#0F172A` primary, Cyan `#06B6D4` accent (sparingly), Amber for compliance badges, Off-white `#F8F9FA` backgrounds
+- **Typography:** DM Sans 600 headings, Inter body, JetBrains Mono for data values (purity %, batch numbers)
+- **Components (34 total):** Buttons (pill-shaped), product cards (hover blur reveal), CoA accordion, age gate, attestation checkboxes, disclaimer banners, alerts, toasts, badges, form elements, navigation, footer
+- **Animation:** Seven named classes with two-phase choreography (container first, content follows). All disabled via `prefers-reduced-motion`
+- **Layouts:** `app.blade.php` (authenticated), `guest.blade.php` (auth pages), responsive navigation with mobile drawer
 
 ## 📊 Database Schema
 

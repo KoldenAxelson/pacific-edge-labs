@@ -1,0 +1,579 @@
+# [TASK-2-005] Product Seeder with Realistic Data
+
+## Overview
+Replace the placeholder `ProductSeeder.php` with all 30 real Pacific Edge Labs
+products, using actual names and prices scraped from the live site. Each product
+includes a `short_description` (research summary for product cards), specifications,
+and at least one seeded research link.
+
+**Phase:** 2 — Product Catalog & Pages
+**Estimated time:** 2–3 hrs
+**Depends on:** TASK-2-004
+**Blocks:** TASK-2-006
+
+---
+
+## File to Modify
+
+```
+database/seeders/ProductSeeder.php    ← replace placeholder contents
+```
+
+---
+
+## Seeder Structure
+
+```php
+<?php
+
+namespace Database\Seeders;
+
+use App\Models\Category;
+use App\Models\Product;
+use App\Models\ProductResearchLink;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
+
+class ProductSeeder extends Seeder
+{
+    public function run(): void
+    {
+        // Resolve category IDs once
+        $cats = Category::pluck('id', 'slug');
+
+        foreach ($this->products($cats) as $data) {
+            $links = $data['research_links'] ?? [];
+            unset($data['research_links']);
+
+            $product = Product::updateOrCreate(
+                ['sku' => $data['sku']],
+                $data
+            );
+
+            // Seed research links (idempotent: delete and re-insert)
+            $product->researchLinks()->delete();
+            foreach ($links as $i => $link) {
+                $product->researchLinks()->create(array_merge($link, ['sort_order' => $i]));
+            }
+        }
+    }
+
+    private function products(array $cats): array
+    {
+        return [
+            // ── GLP-1 & Metabolic ──────────────────────────────────────────
+            [
+                'category_id'        => $cats['glp-1-metabolic'],
+                'sku'                => 'PEL-SEM-15',
+                'name'               => 'Semaglutide 15mg',
+                'slug'               => 'semaglutide-15mg',
+                'short_description'  => 'Semaglutide has been studied as a long-acting GLP-1 receptor agonist in metabolic signaling, appetite regulation, and glucose homeostasis research.',
+                'description'        => 'Semaglutide 15mg is a long-acting GLP-1 receptor agonist research compound studied for its role in metabolic signaling, appetite regulation pathways, and glucose homeostasis mechanisms. It is widely utilized in advanced receptor binding, endocrine system modeling, and metabolic efficiency research due to its high receptor affinity and extended activity profile.',
+                'form'               => 'Lyophilized powder',
+                'concentration'      => '15mg per vial',
+                'storage_conditions' => 'Store in a cool, dry environment and protect from direct light exposure.',
+                'price'              => 74.99,
+                'active'             => true,
+                'featured'           => true,
+                'research_links'     => [
+                    [
+                        'title'            => 'Semaglutide and Cardiovascular Outcomes in Obesity without Diabetes',
+                        'authors'          => 'Lincoff AM, Brown-Frandsen K, Colhoun HM, et al.',
+                        'publication_year' => 2023,
+                        'journal'          => 'New England Journal of Medicine',
+                        'pubmed_id'        => '37713702',
+                        'url'              => 'https://pubmed.ncbi.nlm.nih.gov/37713702',
+                    ],
+                ],
+            ],
+            [
+                'category_id'        => $cats['glp-1-metabolic'],
+                'sku'                => 'PEL-TRZ-60',
+                'name'               => 'Tirzepatide 60mg',
+                'slug'               => 'tirzepatide-60mg',
+                'short_description'  => 'Tirzepatide has been studied as a dual GIP/GLP-1 receptor agonist in metabolic research, with focus on insulin secretion, glucagon suppression, and body weight endpoints.',
+                'description'        => 'Tirzepatide (GLP-2 TRZ) is a dual glucose-dependent insulinotropic polypeptide (GIP) and GLP-1 receptor agonist studied for its mechanisms in glucose regulation and metabolic homeostasis. Research applications include endocrine pathway modeling, insulin sensitivity studies, and comparative GLP-1 receptor pharmacology.',
+                'form'               => 'Lyophilized powder',
+                'concentration'      => '60mg per vial',
+                'storage_conditions' => 'Store in a cool, dry environment and protect from direct light exposure.',
+                'price'              => 84.95,
+                'active'             => true,
+                'featured'           => true,
+                'research_links'     => [
+                    [
+                        'title'            => 'Tirzepatide versus Semaglutide Once Weekly in Patients with Type 2 Diabetes',
+                        'authors'          => 'Frías JP, Davies MJ, Rosenstock J, et al.',
+                        'publication_year' => 2021,
+                        'journal'          => 'New England Journal of Medicine',
+                        'pubmed_id'        => '34170647',
+                        'url'              => 'https://pubmed.ncbi.nlm.nih.gov/34170647',
+                    ],
+                ],
+            ],
+            [
+                'category_id'        => $cats['glp-1-metabolic'],
+                'sku'                => 'PEL-RET-30',
+                'name'               => 'Retatrutide 30mg',
+                'slug'               => 'retatrutide-30mg',
+                'short_description'  => 'Retatrutide has been studied as a triple GIP/GLP-1/glucagon receptor agonist in obesity-related metabolic and cardiovascular research.',
+                'description'        => 'Retatrutide (GLP-3 Reta) is a triple agonist targeting GIP, GLP-1, and glucagon receptors. Research applications focus on multi-receptor metabolic signaling, adipose tissue regulation, and cardiovascular risk pathway modeling in preclinical and clinical settings.',
+                'form'               => 'Lyophilized powder',
+                'concentration'      => '30mg per vial',
+                'storage_conditions' => 'Store in a cool, dry environment and protect from direct light exposure.',
+                'price'              => 139.95,
+                'active'             => true,
+                'featured'           => false,
+                'research_links'     => [
+                    [
+                        'title'            => 'Retatrutide, a GIP, GLP-1 and glucagon receptor agonist, for people with type 2 diabetes: a randomised, double-blind, placebo and active-controlled, parallel-group, phase 2 trial',
+                        'authors'          => 'Rosenstock J, Wysham C, Frías JP, et al.',
+                        'publication_year' => 2023,
+                        'journal'          => 'Lancet',
+                        'pubmed_id'        => '37385278',
+                        'url'              => 'https://pubmed.ncbi.nlm.nih.gov/37385278',
+                    ],
+                ],
+            ],
+            [
+                'category_id'        => $cats['glp-1-metabolic'],
+                'sku'                => 'PEL-CAG-10',
+                'name'               => 'Cagrilintide 10mg',
+                'slug'               => 'cagrilintide-10mg',
+                'short_description'  => 'Cagrilintide has been studied as a long-acting amylin analogue in appetite and energy expenditure regulation research.',
+                'description'        => 'Cagrilintide is a long-acting amylin analogue investigated for its role in appetite suppression, satiety signaling, and energy balance regulation. Research applications include amylin receptor pharmacology and combination metabolic pathway studies.',
+                'form'               => 'Lyophilized powder',
+                'concentration'      => '10mg per vial',
+                'storage_conditions' => 'Store in a cool, dry environment and protect from direct light exposure.',
+                'price'              => 95.99,
+                'active'             => true,
+                'featured'           => false,
+                'research_links'     => [],
+            ],
+            [
+                'category_id'        => $cats['glp-1-metabolic'],
+                'sku'                => 'PEL-AOD-5',
+                'name'               => 'AOD-9604 5mg',
+                'slug'               => 'aod-9604-5mg',
+                'short_description'  => 'AOD-9604 has been studied as a growth hormone fragment (176–191) in adipose tissue metabolism and lipolytic signaling research.',
+                'description'        => 'AOD-9604 is a peptide derived from the C-terminal fragment of human growth hormone (hGH 176–191). Research has examined its role in lipid metabolism, fat cell regulation, and adipogenic signaling pathways while minimizing broader GH-like anabolic activity.',
+                'form'               => 'Lyophilized powder',
+                'concentration'      => '5mg per vial',
+                'storage_conditions' => 'Store in a cool, dry environment and protect from direct light exposure.',
+                'price'              => 59.95,
+                'active'             => true,
+                'featured'           => false,
+                'research_links'     => [],
+            ],
+            [
+                'category_id'        => $cats['glp-1-metabolic'],
+                'sku'                => 'PEL-ADP-5',
+                'name'               => 'Adipotide (FTPP) 5mg',
+                'slug'               => 'adipotide-ftpp-5mg',
+                'short_description'  => 'Adipotide has been studied as a pro-apoptotic peptide targeting vasculature in adipose tissue in preclinical obesity research models.',
+                'description'        => 'Adipotide (FTPP) is a peptidomimetic research compound studied for its selective targeting of blood vessels in white adipose tissue. Preclinical research has explored its mechanism in diet-induced obesity models and adipose vasculature biology.',
+                'form'               => 'Lyophilized powder',
+                'concentration'      => '5mg per vial',
+                'storage_conditions' => 'Store in a cool, dry environment and protect from direct light exposure.',
+                'price'              => 43.95,
+                'active'             => true,
+                'featured'           => false,
+                'research_links'     => [],
+            ],
+
+            // ── Recovery & Healing ─────────────────────────────────────────
+            [
+                'category_id'        => $cats['recovery-healing'],
+                'sku'                => 'PEL-TB5-10',
+                'name'               => 'TB-500 10mg',
+                'slug'               => 'tb-500-10mg',
+                'short_description'  => 'TB-500 (Thymosin Beta-4) has been studied for tissue repair, actin regulation, and inflammatory pathway modulation in musculoskeletal research.',
+                'description'        => 'TB-500 is a synthetic form of Thymosin Beta-4, a naturally occurring peptide present in nearly all human and animal cells. Research has focused on its role in cellular migration, actin polymerization, wound healing, and anti-inflammatory signaling in soft tissue and vascular models.',
+                'form'               => 'Lyophilized powder',
+                'concentration'      => '10mg per vial',
+                'storage_conditions' => 'Store in a cool, dry environment and protect from direct light exposure.',
+                'price'              => 49.99,
+                'active'             => true,
+                'featured'           => true,
+                'research_links'     => [
+                    [
+                        'title'            => 'Thymosin beta4 and its role in wound healing and immune modulation',
+                        'authors'          => 'Goldstein AL, Hannappel E, Kleinman HK.',
+                        'publication_year' => 2005,
+                        'journal'          => 'Trends in Molecular Medicine',
+                        'pubmed_id'        => '15809048',
+                        'url'              => 'https://pubmed.ncbi.nlm.nih.gov/15809048',
+                    ],
+                ],
+            ],
+            [
+                'category_id'        => $cats['recovery-healing'],
+                'sku'                => 'PEL-WLV-STACK',
+                'name'               => 'Wolverine Stack – TB-500 10mg & BPC-157 10mg',
+                'slug'               => 'wolverine-stack-tb500-bpc157',
+                'short_description'  => 'A dual-peptide research combination of TB-500 and BPC-157, studied for complementary roles in tissue repair and regenerative signaling.',
+                'description'        => 'The Wolverine Stack combines TB-500 (Thymosin Beta-4) and BPC-157 in a single research kit. Both peptides have been independently studied for tissue healing properties; this combination is used in research exploring potential synergistic effects on musculoskeletal recovery, anti-inflammatory pathways, and cellular regeneration.',
+                'form'               => 'Lyophilized powder',
+                'concentration'      => 'TB-500 10mg + BPC-157 10mg (two separate vials)',
+                'storage_conditions' => 'Store in a cool, dry environment and protect from direct light exposure.',
+                'price'              => 79.95,
+                'active'             => true,
+                'featured'           => false,
+                'research_links'     => [],
+            ],
+            [
+                'category_id'        => $cats['recovery-healing'],
+                'sku'                => 'PEL-GHK-50',
+                'name'               => 'GHK-CU 50mg',
+                'slug'               => 'ghk-cu-50mg',
+                'short_description'  => 'GHK-Cu has been studied for its copper-binding properties and role in wound healing, collagen synthesis, and anti-inflammatory signaling.',
+                'description'        => 'GHK-Cu is a tripeptide with high copper(II) affinity extensively studied for its roles in wound healing acceleration, collagen and glycosaminoglycan synthesis stimulation, antioxidant activity, and anti-inflammatory effects. Research also examines its gene-regulatory properties and potential neuroprotective mechanisms.',
+                'form'               => 'Lyophilized powder',
+                'concentration'      => '50mg per vial',
+                'storage_conditions' => 'Store in a cool, dry environment and protect from direct light exposure.',
+                'price'              => 42.95,
+                'active'             => true,
+                'featured'           => false,
+                'research_links'     => [],
+            ],
+            [
+                'category_id'        => $cats['recovery-healing'],
+                'sku'                => 'PEL-LL37-5',
+                'name'               => 'LL-37 5mg',
+                'slug'               => 'll-37-5mg',
+                'short_description'  => 'LL-37 has been studied as an antimicrobial peptide with roles in innate immunity, wound healing, and immunomodulatory signaling.',
+                'description'        => 'LL-37 is the only member of the human cathelicidin family of antimicrobial peptides. Research has examined its broad-spectrum antimicrobial activity, role in innate immune defense, modulation of inflammatory responses, and contribution to wound closure and epithelial cell migration.',
+                'form'               => 'Lyophilized powder',
+                'concentration'      => '5mg per vial',
+                'storage_conditions' => 'Store in a cool, dry environment and protect from direct light exposure.',
+                'price'              => 44.95,
+                'active'             => true,
+                'featured'           => false,
+                'research_links'     => [],
+            ],
+            [
+                'category_id'        => $cats['recovery-healing'],
+                'sku'                => 'PEL-TA1-5',
+                'name'               => 'Thymosin Alpha-1 5mg',
+                'slug'               => 'thymosin-alpha-1-5mg',
+                'short_description'  => 'Thymosin Alpha-1 has been studied for its immunomodulatory properties, including T-cell activation and enhancement of adaptive immune responses.',
+                'description'        => 'Thymosin Alpha-1 is a 28-amino acid peptide naturally produced by the thymus gland. Research has examined its capacity to potentiate T-cell maturation, enhance dendritic cell function, modulate cytokine production, and support immune system activation in immunocompromised models.',
+                'form'               => 'Lyophilized powder',
+                'concentration'      => '5mg per vial',
+                'storage_conditions' => 'Store in a cool, dry environment and protect from direct light exposure.',
+                'price'              => 39.99,
+                'active'             => true,
+                'featured'           => false,
+                'research_links'     => [],
+            ],
+
+            // ── Performance & Growth ───────────────────────────────────────
+            [
+                'category_id'        => $cats['performance-growth'],
+                'sku'                => 'PEL-IGF-1',
+                'name'               => 'IGF-1 LR3 1mg',
+                'slug'               => 'igf-1-lr3-1mg',
+                'short_description'  => 'IGF-1 LR3 has been studied as a long-acting IGF-1 analogue in muscle protein synthesis, cellular proliferation, and anabolic signaling research.',
+                'description'        => 'IGF-1 LR3 (Long R3 Insulin-like Growth Factor-1) is a modified form of IGF-1 with an extended half-life due to reduced IGF-binding protein affinity. Research applications include studies of anabolic signaling pathways, muscle satellite cell activation, and downstream insulin receptor substrate (IRS) phosphorylation.',
+                'form'               => 'Lyophilized powder',
+                'concentration'      => '1mg per vial',
+                'storage_conditions' => 'Store in a cool, dry environment and protect from direct light exposure.',
+                'price'              => 74.99,
+                'active'             => true,
+                'featured'           => false,
+                'research_links'     => [],
+            ],
+            [
+                'category_id'        => $cats['performance-growth'],
+                'sku'                => 'PEL-CJC-IPA',
+                'name'               => 'CJC-1295 (No DAC) 5mg + Ipamorelin 5mg',
+                'slug'               => 'cjc-1295-no-dac-ipamorelin',
+                'short_description'  => 'CJC-1295 and Ipamorelin have been studied as complementary GHRH and GHRP agonists for growth hormone secretagogue research.',
+                'description'        => 'This research combination pairs CJC-1295 (without DAC), a GHRH analogue, with Ipamorelin, a selective GH secretagogue. Research examines their complementary mechanisms: CJC-1295 increases GH pulse amplitude while Ipamorelin increases GH pulse frequency, making this pairing a common model for GH-axis stimulation studies.',
+                'form'               => 'Lyophilized powder',
+                'concentration'      => 'CJC-1295 5mg + Ipamorelin 5mg (two separate vials)',
+                'storage_conditions' => 'Store in a cool, dry environment and protect from direct light exposure.',
+                'price'              => 84.99,
+                'active'             => true,
+                'featured'           => true,
+                'research_links'     => [],
+            ],
+            [
+                'category_id'        => $cats['performance-growth'],
+                'sku'                => 'PEL-SRM-5',
+                'name'               => 'Sermorelin 5mg',
+                'slug'               => 'sermorelin-5mg',
+                'short_description'  => 'Sermorelin has been studied as a GHRH analogue for pituitary growth hormone release, somatopause research, and GH-axis restoration models.',
+                'description'        => 'Sermorelin is a synthetic analogue of the first 29 amino acids of endogenous growth hormone-releasing hormone (GHRH). Research applications include pituitary function studies, age-related GH decline (somatopause) models, and investigations of sleep quality and cardiac function as downstream endpoints of GH-axis modulation.',
+                'form'               => 'Lyophilized powder',
+                'concentration'      => '5mg per vial',
+                'storage_conditions' => 'Store in a cool, dry environment and protect from direct light exposure.',
+                'price'              => 42.99,
+                'active'             => true,
+                'featured'           => false,
+                'research_links'     => [],
+            ],
+            [
+                'category_id'        => $cats['performance-growth'],
+                'sku'                => 'PEL-GND-5',
+                'name'               => 'Gonadorelin 5mg',
+                'slug'               => 'gonadorelin-5mg',
+                'short_description'  => 'Gonadorelin has been studied as a GnRH analogue for HPG axis research, LH/FSH stimulation, and gonadal function models.',
+                'description'        => 'Gonadorelin is a synthetic form of gonadotropin-releasing hormone (GnRH) used in research to study hypothalamic-pituitary-gonadal (HPG) axis signaling. Applications include LH and FSH release studies, reproductive endocrinology research, and gonadal steroidogenesis pathway modeling.',
+                'form'               => 'Lyophilized powder',
+                'concentration'      => '5mg per vial',
+                'storage_conditions' => 'Store in a cool, dry environment and protect from direct light exposure.',
+                'price'              => 79.95,
+                'active'             => true,
+                'featured'           => false,
+                'research_links'     => [],
+            ],
+            [
+                'category_id'        => $cats['performance-growth'],
+                'sku'                => 'PEL-HCG-5K',
+                'name'               => 'HCG 5000IU',
+                'slug'               => 'hcg-5000iu',
+                'short_description'  => 'Human Chorionic Gonadotropin (HCG) has been studied for its role in LH receptor stimulation, gonadal steroidogenesis, and reproductive signaling research.',
+                'description'        => 'HCG (Human Chorionic Gonadotropin) is a glycoprotein hormone that binds to LH receptors and has been extensively used in research studying gonadal steroidogenesis, testosterone production pathways, and HPG axis signaling in both male and female reproductive models.',
+                'form'               => 'Lyophilized powder',
+                'concentration'      => '5000 IU per vial',
+                'storage_conditions' => 'Store in a cool, dry environment and protect from direct light exposure.',
+                'price'              => 49.99,
+                'active'             => true,
+                'featured'           => false,
+                'research_links'     => [],
+            ],
+            [
+                'category_id'        => $cats['performance-growth'],
+                'sku'                => 'PEL-SLU-5',
+                'name'               => 'SLU-PP-332 5mg',
+                'slug'               => 'slu-pp-332-5mg',
+                'short_description'  => 'SLU-PP-332 has been studied as an ERR agonist in mitochondrial biogenesis, metabolic endurance, and oxidative phosphorylation research.',
+                'description'        => 'SLU-PP-332 is a small-molecule agonist of estrogen-related receptors (ERRα, ERRβ, ERRγ). Research has examined its role in stimulating mitochondrial biogenesis, enhancing oxidative metabolism, and modeling the molecular effects of endurance exercise on skeletal muscle metabolism.',
+                'form'               => 'Lyophilized powder',
+                'concentration'      => '5mg per vial',
+                'storage_conditions' => 'Store in a cool, dry environment and protect from direct light exposure.',
+                'price'              => 59.99,
+                'active'             => true,
+                'featured'           => false,
+                'research_links'     => [],
+            ],
+            [
+                'category_id'        => $cats['performance-growth'],
+                'sku'                => 'PEL-KLOW-80',
+                'name'               => 'KLOW 80mg Quad Peptide Blend',
+                'slug'               => 'klow-80mg-quad-blend',
+                'short_description'  => 'KLOW is a quad-peptide research blend combining BPC-157, TB-500, GHK-Cu, and KPV studied for synergistic tissue regeneration and inflammation modulation.',
+                'description'        => 'KLOW is a 80mg four-peptide research combination containing BPC-157, TB-500 (Thymosin Beta-4), GHK-Cu, and KPV. Research applications explore the potential synergistic effects of these compounds on tissue regeneration, inflammatory pathway regulation, and cellular repair mechanisms.',
+                'form'               => 'Lyophilized powder',
+                'concentration'      => '80mg total (four-peptide blend)',
+                'storage_conditions' => 'Store in a cool, dry environment and protect from direct light exposure.',
+                'price'              => 118.95,
+                'active'             => true,
+                'featured'           => false,
+                'research_links'     => [],
+            ],
+
+            // ── Cognitive & Longevity ──────────────────────────────────────
+            [
+                'category_id'        => $cats['cognitive-longevity'],
+                'sku'                => 'PEL-SMX-5',
+                'name'               => 'Semax 5mg',
+                'slug'               => 'semax-5mg',
+                'short_description'  => 'Semax has been studied as an ACTH-derived nootropic peptide for cognitive performance, neurotrophin signaling, and neuroprotective mechanisms.',
+                'description'        => 'Semax is a synthetic heptapeptide derived from adrenocorticotropic hormone (ACTH). Research has examined its effects on BDNF expression, serotonin and dopamine receptor modulation, gene expression changes in the immune and nervous systems, and neuroprotective activity in ischemic models.',
+                'form'               => 'Lyophilized powder',
+                'concentration'      => '5mg per vial',
+                'storage_conditions' => 'Store in a cool, dry environment and protect from direct light exposure.',
+                'price'              => 34.99,
+                'active'             => true,
+                'featured'           => false,
+                'research_links'     => [],
+            ],
+            [
+                'category_id'        => $cats['cognitive-longevity'],
+                'sku'                => 'PEL-SLK-10',
+                'name'               => 'Selank 10mg',
+                'slug'               => 'selank-10mg',
+                'short_description'  => 'Selank has been studied as a tuftsin-derived anxiolytic peptide for anxiety modulation, GABAergic signaling, and cognitive performance research.',
+                'description'        => 'Selank is a synthetic analogue of tuftsin, an endogenous immunomodulatory peptide. Research has examined its anxiolytic properties through GABAergic receptor interaction, its influence on gene expression in anxiety-related pathways, and its effects on cognitive function and stress resilience in rodent models.',
+                'form'               => 'Lyophilized powder',
+                'concentration'      => '10mg per vial',
+                'storage_conditions' => 'Store in a cool, dry environment and protect from direct light exposure.',
+                'price'              => 34.99,
+                'active'             => true,
+                'featured'           => false,
+                'research_links'     => [],
+            ],
+            [
+                'category_id'        => $cats['cognitive-longevity'],
+                'sku'                => 'PEL-DSIP-10',
+                'name'               => 'DSIP 10mg',
+                'slug'               => 'dsip-10mg',
+                'short_description'  => 'DSIP (Delta Sleep-Inducing Peptide) has been studied for its role in slow-wave sleep regulation, endocrine modulation during sleep, and stress response pathways.',
+                'description'        => 'Delta Sleep-Inducing Peptide (DSIP) is a naturally occurring neuropeptide originally isolated from rabbit cerebral venous blood during slow-wave sleep. Research has studied its roles in sleep architecture regulation, pituitary hormone secretion, pain modulation, and antioxidant activity.',
+                'form'               => 'Lyophilized powder',
+                'concentration'      => '10mg per vial',
+                'storage_conditions' => 'Store in a cool, dry environment and protect from direct light exposure.',
+                'price'              => 39.00,
+                'active'             => true,
+                'featured'           => false,
+                'research_links'     => [],
+            ],
+            [
+                'category_id'        => $cats['cognitive-longevity'],
+                'sku'                => 'PEL-NAD-500',
+                'name'               => 'NAD+ 500mg',
+                'slug'               => 'nad-plus-500mg',
+                'short_description'  => 'NAD+ has been studied for its role in cellular energy metabolism, sirtuin activation, DNA repair, and mitochondrial function in aging research.',
+                'description'        => 'NAD+ (Nicotinamide Adenine Dinucleotide) is a critical coenzyme in cellular energy metabolism, serving as an electron carrier in oxidative phosphorylation. Research has examined its roles in sirtuin-mediated gene regulation, DNA damage repair via PARP enzymes, and mitochondrial function in the context of cellular aging.',
+                'form'               => 'Lyophilized powder',
+                'concentration'      => '500mg per vial',
+                'storage_conditions' => 'Store in a cool, dry environment and protect from direct light exposure.',
+                'price'              => 48.99,
+                'active'             => true,
+                'featured'           => false,
+                'research_links'     => [],
+            ],
+            [
+                'category_id'        => $cats['cognitive-longevity'],
+                'sku'                => 'PEL-OXT-10',
+                'name'               => 'Oxytocin Acetate 10mg',
+                'slug'               => 'oxytocin-acetate-10mg',
+                'short_description'  => 'Oxytocin has been studied as a nonapeptide neuromodulator in social bonding, stress response, and neuroendocrine signaling research.',
+                'description'        => 'Oxytocin is a nine-amino-acid neuropeptide produced in the hypothalamus and released by the pituitary gland. Research applications include studies of social behavior, trust and bonding mechanisms, HPA axis stress response modulation, and neuroendocrine signaling in both central and peripheral systems.',
+                'form'               => 'Lyophilized powder',
+                'concentration'      => '10mg per vial',
+                'storage_conditions' => 'Store in a cool, dry environment and protect from direct light exposure.',
+                'price'              => 44.95,
+                'active'             => true,
+                'featured'           => false,
+                'research_links'     => [],
+            ],
+            [
+                'category_id'        => $cats['cognitive-longevity'],
+                'sku'                => 'PEL-KP10-10',
+                'name'               => 'Kisspeptin-10 10mg',
+                'slug'               => 'kisspeptin-10-10mg',
+                'short_description'  => 'Kisspeptin-10 has been studied as a GPR54 agonist in hypothalamic GnRH pulsatility, reproductive endocrinology, and puberty initiation research.',
+                'description'        => 'Kisspeptin-10 is the shortest active fragment of the kisspeptin family, acting as a potent agonist of the GPR54 receptor. Research applications include hypothalamic-pituitary signaling studies, GnRH pulsatility modeling, and investigation of reproductive endocrine axis regulation and puberty onset mechanisms.',
+                'form'               => 'Lyophilized powder',
+                'concentration'      => '10mg per vial',
+                'storage_conditions' => 'Store in a cool, dry environment and protect from direct light exposure.',
+                'price'              => 59.95,
+                'active'             => true,
+                'featured'           => false,
+                'research_links'     => [],
+            ],
+            [
+                'category_id'        => $cats['cognitive-longevity'],
+                'sku'                => 'PEL-GLU-1500',
+                'name'               => 'Glutathione 1500mg',
+                'slug'               => 'glutathione-1500mg',
+                'short_description'  => 'Glutathione has been studied as the body\'s master antioxidant tripeptide in oxidative stress modulation, immune function, and cellular detoxification research.',
+                'description'        => 'Glutathione (GSH) is a tripeptide (γ-Glu-Cys-Gly) and the predominant intracellular antioxidant. Research has examined its roles in neutralizing reactive oxygen species, supporting immune cell function, facilitating phase II detoxification reactions, and its relationship to aging and mitochondrial health.',
+                'form'               => 'Lyophilized powder',
+                'concentration'      => '1500mg per vial',
+                'storage_conditions' => 'Store in a cool, dry environment and protect from direct light exposure.',
+                'price'              => 74.99,
+                'active'             => true,
+                'featured'           => false,
+                'research_links'     => [],
+            ],
+            [
+                'category_id'        => $cats['cognitive-longevity'],
+                'sku'                => 'PEL-EPT-50',
+                'name'               => 'Epithalon 50mg',
+                'slug'               => 'epithalon-50mg',
+                'short_description'  => 'Epithalon has been studied as a synthetic pineal tetrapeptide for telomerase activation, telomere elongation, and cellular longevity research.',
+                'description'        => 'Epithalon (Epitalon) is a synthetic tetrapeptide (Ala-Glu-Asp-Gly) derived from the pineal gland peptide Epithalamin. Research has focused on its capacity to activate telomerase, extend telomere length in somatic cells, modulate melatonin secretion, and influence antioxidant activity in aging-related experimental models.',
+                'form'               => 'Lyophilized powder',
+                'concentration'      => '50mg per vial',
+                'storage_conditions' => 'Store in a cool, dry environment and protect from direct light exposure.',
+                'price'              => 69.95,
+                'active'             => true,
+                'featured'           => false,
+                'research_links'     => [],
+            ],
+
+            // ── Sexual Health ──────────────────────────────────────────────
+            [
+                'category_id'        => $cats['sexual-health'],
+                'sku'                => 'PEL-PT141-10',
+                'name'               => 'PT-141 10mg',
+                'slug'               => 'pt-141-10mg',
+                'short_description'  => 'PT-141 has been studied as a melanocortin receptor agonist in central sexual arousal signaling and hypothalamic neuroendocrine research.',
+                'description'        => 'PT-141 (Bremelanotide) is a cyclic heptapeptide derived from Melanotan II that acts as a melanocortin receptor (MC1R/MC4R) agonist. Unlike PDE5 inhibitors, PT-141 acts centrally through hypothalamic pathways. Research has examined its effects on sexual motivation signaling, autonomic nervous system modulation, and melanocortin receptor pharmacology.',
+                'form'               => 'Lyophilized powder',
+                'concentration'      => '10mg per vial',
+                'storage_conditions' => 'Store in a cool, dry environment and protect from direct light exposure.',
+                'price'              => 42.99,
+                'active'             => true,
+                'featured'           => false,
+                'research_links'     => [],
+            ],
+            [
+                'category_id'        => $cats['sexual-health'],
+                'sku'                => 'PEL-MT2-10',
+                'name'               => 'Melanotan 2 10mg',
+                'slug'               => 'melanotan-2-10mg',
+                'short_description'  => 'Melanotan II has been studied as a non-selective melanocortin agonist for skin pigmentation, appetite suppression, and sexual behavior signaling research.',
+                'description'        => 'Melanotan II is a synthetic analogue of alpha-melanocyte stimulating hormone (α-MSH), acting on melanocortin receptors 1, 3, 4, and 5. Research has examined its effects on melanogenesis (skin tanning), appetite regulation, sexual motivation, and lipolysis through MC4R-mediated central signaling pathways.',
+                'form'               => 'Lyophilized powder',
+                'concentration'      => '10mg per vial',
+                'storage_conditions' => 'Store in a cool, dry environment and protect from direct light exposure.',
+                'price'              => 34.99,
+                'active'             => true,
+                'featured'           => false,
+                'research_links'     => [],
+            ],
+            [
+                'category_id'        => $cats['sexual-health'],
+                'sku'                => 'PEL-MT1-10',
+                'name'               => 'Melanotan 1 10mg',
+                'slug'               => 'melanotan-1-10mg',
+                'short_description'  => 'Melanotan I has been studied as a selective MC1R agonist in melanogenesis, UV protection mechanisms, and photoprotection research.',
+                'description'        => 'Melanotan I (Afamelanotide) is a potent analogue of α-MSH with selective activity at the MC1R receptor. Research has focused on its role in stimulating melanogenesis and increasing skin pigmentation, with particular interest in photoprotection mechanisms and erythropoietic protoporphyria models.',
+                'form'               => 'Lyophilized powder',
+                'concentration'      => '10mg per vial',
+                'storage_conditions' => 'Store in a cool, dry environment and protect from direct light exposure.',
+                'price'              => 34.99,
+                'active'             => true,
+                'featured'           => false,
+                'research_links'     => [],
+            ],
+
+            // ── Ancillaries ────────────────────────────────────────────────
+            [
+                'category_id'        => $cats['ancillaries'],
+                'sku'                => 'PEL-BAC-30',
+                'name'               => 'Hospira Bacteriostatic Water 30ml',
+                'slug'               => 'hospira-bac-water-30ml',
+                'short_description'  => 'Pharmaceutical-grade bacteriostatic water (0.9% benzyl alcohol) for peptide reconstitution in laboratory research applications.',
+                'description'        => 'Hospira Bacteriostatic Water for Injection, USP is 0.9% benzyl alcohol in sterile water. Bacteriostatic water is used in research settings as the standard diluent for reconstituting lyophilized peptides. The benzyl alcohol preservative permits multiple-use vial access while inhibiting microbial growth, extending usability compared to standard sterile water.',
+                'form'               => 'Sterile liquid',
+                'concentration'      => '30ml per vial (0.9% benzyl alcohol)',
+                'storage_conditions' => 'Store at room temperature, away from direct light. Do not freeze.',
+                'price'              => 18.95,
+                'compare_price'      => 25.95,
+                'active'             => true,
+                'featured'           => false,
+                'research_links'     => [],
+            ],
+        ];
+    }
+}
+```
+
+---
+
+## Acceptance Criteria
+- [ ] `php artisan db:seed --class=ProductSeeder` runs without errors
+- [ ] All 30 products exist with correct SKUs, prices, and category assignments
+- [ ] `Product::inCategory('glp-1-metabolic')->count()` returns 6
+- [ ] `Product::inCategory('sexual-health')->count()` returns 3
+- [ ] `Product::inCategory('ancillaries')->count()` returns 1
+- [ ] `Product::featured()->count()` returns expected number (Semaglutide, Tirzepatide, TB-500, CJC+Ipa)
+- [ ] Research links seeded for Semaglutide, Tirzepatide, Retatrutide, TB-500
+- [ ] BAC Water has `compare_price` set (enables sale display)
+- [ ] Re-running seeder is idempotent
+- [ ] `short_description` is populated for all 30 products (feeds `<x-product.card>` `researchSummary` prop)
