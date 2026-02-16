@@ -846,8 +846,8 @@
 
             <h2 class="text-h2 mb-6">Product Card</h2>
 
-            {{-- ── 3-column grid — all corner badge states + in stock (no badge) ── --}}
-            <p class="text-label font-semibold text-brand-text-muted uppercase tracking-widest mb-4">x-product.card — 3-col grid (hover each card)</p>
+            {{-- ── 3-column grid — in stock, low stock, out of stock ── --}}
+            <p class="text-label font-semibold text-brand-text-muted uppercase tracking-widest mb-4">x-product.card — 3-col grid (hover any card with a research-summary to see tooltip)</p>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
 
                 {{-- In stock, no badge — clean state, corner is empty --}}
@@ -856,25 +856,25 @@
                     category="Peptides"
                     price="$89.00"
                     purity="99.9%"
-                    batch-number="PEL-2026-04-A0291"
                     batch-status="in_stock"
                     href="#"
+                    research-tagline="Tissue repair & gut lining regeneration"
                     research-summary="BPC-157 has been studied for tissue repair and gut lining regeneration in preclinical animal models."
                 />
 
-                {{-- Low stock — amber badge in corner, long name exercises line-clamp-2 --}}
+                {{-- Low stock — amber badge top-right, long name exercises line-clamp-2 --}}
                 <x-product.card
                     name="TB-500 (Thymosin Beta-4 Fragment)"
                     category="Peptides"
                     price="$124.00"
                     purity="99.5%"
-                    batch-number="PEL-2026-03-B0047"
                     batch-status="low_stock"
                     href="#"
+                    research-tagline="Actin regulation & cellular migration"
                     research-summary="TB-500 has been studied for actin regulation and cellular migration in preclinical wound-healing models."
                 />
 
-                {{-- Out of stock — gray badge in corner, disabled Notify Me CTA --}}
+                {{-- Out of stock — gray badge top-right, bell icon CTA (disabled) --}}
                 <x-product.card
                     name="Epithalon"
                     category="Peptides"
@@ -886,11 +886,11 @@
 
             </div>
 
-            {{-- ── Sale pricing — slash display + green Sale badge in corner ── --}}
-            <p class="text-label font-semibold text-brand-text-muted uppercase tracking-widest mb-4">x-product.card — sale pricing (original-price triggers slash display)</p>
+            {{-- ── Sale pricing — stacked price pills on image ── --}}
+            <p class="text-label font-semibold text-brand-text-muted uppercase tracking-widest mb-4">x-product.card — sale pricing (original-price shows stacked price pills on image)</p>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
 
-                {{-- Sale + in stock — green badge corner, struck original, green sale price --}}
+                {{-- Sale + in stock — faded struck pill + green price pill, no corner badge --}}
                 <x-product.card
                     name="Hospira Bacteriostatic Water"
                     category="Solvents"
@@ -901,16 +901,16 @@
                     href="#"
                 />
 
-                {{-- Sale + low stock — sale badge wins corner over low stock --}}
+                {{-- Sale + low stock — price pills + low-stock badge top-right (stock badge still shows) --}}
                 <x-product.card
                     name="Semax"
                     category="Nootropics"
                     price="$44.00"
                     original-price="$54.00"
                     purity="99.1%"
-                    batch-number="PEL-2026-02-C0183"
                     batch-status="low_stock"
                     href="#"
+                    research-tagline="Neuroprotection & BDNF upregulation"
                     research-summary="Semax has been studied for neuroprotective effects and BDNF upregulation in rodent cognitive models."
                 />
 
@@ -925,19 +925,19 @@
             </div>
             <div class="mt-6 space-y-1">
                 <x-design.code-block label="Show usage">
-{{-- In-stock product --}}
+{{-- In-stock product with hover overlay --}}
 &lt;x-product.card
     name="BPC-157"
     category="Peptides"
     price="$89.00"
     purity="99.9%"
-    batch-number="PEL-2026-04-A0291"
     batch-status="in_stock"
     href="/products/bpc-157"
+    research-tagline="Tissue repair &amp; gut lining regeneration"
     research-summary="BPC-157 has been studied for tissue repair in preclinical models."
 /&gt;
 
-{{-- Sale pricing — original-price triggers strike-through display --}}
+{{-- Sale pricing — original-price triggers stacked price pills on image --}}
 &lt;x-product.card
     name="Semax"
     category="Nootropics"
@@ -952,15 +952,17 @@
 &lt;x-product.card-skeleton /&gt;
                 </x-design.code-block>
                 <x-design.prop-table :props="[
-                    ['name' => 'name',             'type' => 'string', 'default' => '—',        'description' => 'Product display name. Required. Long names are line-clamped at 2 lines.'],
-                    ['name' => 'category',         'type' => 'string', 'default' => 'null',     'description' => 'Category label shown above the product name'],
-                    ['name' => 'price',            'type' => 'string', 'default' => '—',        'description' => 'Formatted price string, e.g. $89.00. Required.'],
-                    ['name' => 'original-price',   'type' => 'string', 'default' => 'null',     'description' => 'When set, price shows struck-through and a Sale badge appears in the corner'],
-                    ['name' => 'purity',           'type' => 'string', 'default' => 'null',     'description' => 'Purity percentage or grade — shown as a purity badge'],
-                    ['name' => 'batch-number',     'type' => 'string', 'default' => 'null',     'description' => 'Current batch ID — shown as a batch badge'],
-                    ['name' => 'batch-status',     'type' => 'string', 'default' => 'in_stock', 'description' => 'in_stock | low_stock | out_of_stock — drives corner badge and CTA state'],
-                    ['name' => 'href',             'type' => 'string', 'default' => 'null',     'description' => 'Card link target; card is non-interactive without href'],
-                    ['name' => 'research-summary', 'type' => 'string', 'default' => 'null',     'description' => 'Short research note revealed on hover via blur/overlay animation'],
+                    ['name' => 'name',              'type' => 'string', 'default' => '—',        'description' => 'Product display name. Required. Long names are line-clamped at 2 lines.'],
+                    ['name' => 'category',          'type' => 'string', 'default' => 'null',     'description' => 'Category eyebrow shown above the product name'],
+                    ['name' => 'price',             'type' => 'string', 'default' => '—',        'description' => 'Formatted price string, e.g. $89.00. Required. Shown as a pill overlaid on the image.'],
+                    ['name' => 'original-price',    'type' => 'string', 'default' => 'null',     'description' => 'When set, shows a faded struck pill (original) stacked above a green pill (sale price) on the image. No corner badge.'],
+                    ['name' => 'purity',            'type' => 'string', 'default' => 'null',     'description' => 'Purity percentage or grade — shown as a purity badge below the product name, in place of a rating.'],
+                    ['name' => 'batch-status',      'type' => 'string', 'default' => 'in_stock', 'description' => 'in_stock | low_stock | out_of_stock — drives top-right corner badge and CTA (cart → notify toggle when out of stock).'],
+                    ['name' => 'href',              'type' => 'string', 'default' => 'null',     'description' => 'Product page URL. Used when wiring the card as a link at the usage site.'],
+                    ['name' => 'research-tagline',  'type' => 'string', 'default' => 'null',     'description' => 'Bold headline shown first in the hover overlay. Use a short, punchy phrase. Optional — overlay still renders with summary alone.'],
+                    ['name' => 'research-summary',  'type' => 'string', 'default' => 'null',     'description' => 'Regular-weight body text shown below the tagline in the hover overlay. Fades in from above over 500ms; fades out over 300ms.'],
+                    ['name' => 'image-src',         'type' => 'string', 'default' => 'null',     'description' => 'Product image URL. Falls back to a beaker placeholder icon when omitted.'],
+                    ['name' => 'image-alt',         'type' => 'string', 'default' => 'null',     'description' => 'Alt text for the product image. Defaults to the name prop when omitted.'],
                 ]" />
             </div>
 
