@@ -25,7 +25,8 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             UserSeeder::class,
 
-            // Phase 2: Products & Inventory (placeholder for now)
+            // Phase 2: Products & Inventory
+            CategorySeeder::class,
             ProductSeeder::class,
             BatchSeeder::class,
 
