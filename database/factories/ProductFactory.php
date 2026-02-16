@@ -13,19 +13,19 @@ class ProductFactory extends Factory
 
     public function definition(): array
     {
-        $name = $this->faker->unique()->words(3, true);
+        $name = fake()->unique()->words(3, true);
 
         return [
             'category_id'        => Category::factory(),
-            'sku'                => 'PEL-' . strtoupper($this->faker->lexify('???-##')),
+            'sku'                => 'PEL-' . strtoupper(fake()->lexify('???-##')),
             'name'               => ucwords($name),
             'slug'               => Str::slug($name),
-            'short_description'  => $this->faker->sentence(12),
-            'description'        => $this->faker->paragraphs(3, true),
+            'short_description'  => fake()->sentence(12),
+            'description'        => fake()->paragraphs(3, true),
             'form'               => 'Lyophilized powder',
-            'concentration'      => $this->faker->randomElement(['5mg per vial', '10mg per vial', '15mg per vial']),
+            'concentration'      => fake()->randomElement(['5mg per vial', '10mg per vial', '15mg per vial']),
             'storage_conditions' => 'Store in a cool, dry environment and protect from direct light.',
-            'price'              => $this->faker->randomFloat(2, 29.99, 149.99),
+            'price'              => fake()->randomFloat(2, 29.99, 149.99),
             'compare_price'      => null,
             'featured'           => false,
             'active'             => true,

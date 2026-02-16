@@ -12,7 +12,7 @@ class CategoryFactory extends Factory
 
     public function definition(): array
     {
-        $name = $this->faker->unique()->randomElement([
+        $name = fake()->unique()->randomElement([
             'GLP-1 & Metabolic', 'Recovery & Healing',
             'Performance & Growth', 'Cognitive & Longevity',
             'Sexual Health', 'Ancillaries',
@@ -22,9 +22,9 @@ class CategoryFactory extends Factory
             'parent_id'   => null,
             'name'        => $name,
             'slug'        => Str::slug($name),
-            'description' => $this->faker->paragraph(),
+            'description' => fake()->paragraph(),
             'hero_title'  => null,
-            'sort_order'  => $this->faker->numberBetween(1, 10),
+            'sort_order'  => fake()->numberBetween(1, 10),
             'active'      => true,
         ];
     }
