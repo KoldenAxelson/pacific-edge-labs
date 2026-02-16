@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Services\PaymentService;
 use Illuminate\Support\Facades\Route;
@@ -125,5 +127,13 @@ Route::get('/test-payment', function (PaymentService $paymentService) {
 Route::get('/dev/clear-age-gate', function () {
     return redirect('/design')->withCookie(cookie()->forget('age_verified'));
 })->name('dev.clear-age-gate');
+
+// Phase 2: Product Catalog
+Route::get('/products', [ProductController::class, 'index'])
+    ->name('products.index');
+Route::get('/products/{slug}', [ProductController::class, 'show'])
+    ->name('products.show');
+Route::get('/categories/{slug}', [CategoryController::class, 'show'])
+    ->name('categories.show');
 
 require __DIR__ . "/auth.php";
