@@ -68,10 +68,10 @@ class Product extends Model
     {
         $safe = '%' . trim($term) . '%';
         return $query->where(function ($q) use ($safe) {
-            $q->whereILike('name', $safe)
-              ->orWhereILike('description', $safe)
-              ->orWhereILike('short_description', $safe)
-              ->orWhereILike('sku', $safe);
+            $q->whereRaw('name ILIKE ?', [$safe])
+              ->orWhereRaw('description ILIKE ?', [$safe])
+              ->orWhereRaw('short_description ILIKE ?', [$safe])
+              ->orWhereRaw('sku ILIKE ?', [$safe]);
         });
     }
 
