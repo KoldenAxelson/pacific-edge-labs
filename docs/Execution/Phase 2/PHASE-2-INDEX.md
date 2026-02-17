@@ -192,21 +192,21 @@ updated_at      timestamp
 
 Before calling Phase 2 complete and moving to Phase 3 (Batch & CoA System):
 
-- [ ] `categories` table migrated with seed data (3–4 categories)
-- [ ] `products` table migrated with seed data (10–15 realistic peptide products)
-- [ ] Product and Category models with relationships, scopes, and accessors
-- [ ] Category listing pages rendering product cards from database
-- [ ] Product detail page with all content sections (description, research, placeholder CoA)
-- [ ] "All Products" page with category filter
-- [ ] Basic keyword search working on name + description
-- [ ] Filament resources for product and category CRUD
-- [ ] SEO meta tags on product and category pages
-- [ ] Clean URL slugs (`/products/semaglutide-15mg`)
-- [ ] "Add to Cart" button rendered (non-functional, ready for Phase 4)
-- [ ] Research-only disclaimers visible on product pages
-- [ ] Responsive on mobile/tablet
-- [ ] Page loads under 2 seconds
-- [ ] Product card `researchSummary` populated for all seeded products
+- [x] `categories` table migrated with seed data (6 categories)
+- [x] `products` table migrated with seed data (30 realistic peptide products)
+- [x] Product and Category models with relationships, scopes, and accessors
+- [x] Category listing pages rendering product cards from database
+- [x] Product detail page with all content sections (description, research, placeholder CoA)
+- [x] "All Products" page with category filter
+- [x] Basic keyword search working on name + description + SKU
+- [x] Filament resources for product and category CRUD
+- [x] SEO meta tags on product and category pages
+- [x] Clean URL slugs (`/products/semaglutide-15mg`)
+- [x] "Add to Cart" button rendered (non-functional, ready for Phase 4)
+- [x] Research-only disclaimers visible on product pages (compliance banner in app layout)
+- [x] Responsive on mobile/tablet
+- [ ] Page loads under 2 seconds (needs testing on Sail/Lightsail)
+- [x] Product card `researchSummary` populated for all seeded products
 
 ---
 

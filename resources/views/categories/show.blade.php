@@ -1,5 +1,17 @@
 <x-app-layout>
 
+    {{-- SEO: page title --}}
+    <x-slot:title>{{ ($category->hero_title ?? $category->name) . ' | Pacific Edge Labs' }}</x-slot:title>
+
+    {{-- SEO: meta tags --}}
+    <x-slot:meta>
+        @include('partials.seo-meta', [
+            'metaTitle'    => ($category->hero_title ?? $category->name) . ' | Pacific Edge Labs',
+            'metaDesc'     => Str::limit(strip_tags($category->description ?? ''), 155),
+            'canonicalUrl' => route('categories.show', $category->slug),
+        ])
+    </x-slot:meta>
+
     {{-- Category Hero --}}
     <x-ui.page-header
         :title="$category->hero_title ?? $category->name"

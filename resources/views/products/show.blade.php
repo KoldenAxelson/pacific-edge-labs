@@ -1,5 +1,22 @@
 <x-app-layout>
 
+    {{-- SEO: page title --}}
+    <x-slot:title>{{ $product->effective_meta_title }}</x-slot:title>
+
+    {{-- SEO: meta tags --}}
+    <x-slot:meta>
+        @include('partials.seo-meta', [
+            'metaTitle'    => $product->effective_meta_title,
+            'metaDesc'     => $product->effective_meta_description,
+            'canonicalUrl' => route('products.show', $product->slug),
+            'ogType'       => 'product',
+            'ogImage'      => $product->primaryImage?->url ?? asset('images/og-default.png'),
+        ])
+    </x-slot:meta>
+
+    {{-- Schema.org structured data --}}
+    @include('partials.schema-product', ['product' => $product])
+
     {{-- Mobile sub-nav for product sections (hidden on md+ where header nav takes over) --}}
     <div
         :class="searchOpen ? 'opacity-0 pointer-events-none -translate-y-1' : 'opacity-100 translate-y-0'"

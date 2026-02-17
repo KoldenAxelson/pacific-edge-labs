@@ -15,7 +15,7 @@ class CategoryController extends Controller
 
         $products = $category->products()
             ->active()
-            ->with('images')
+            ->with(['images', 'category'])
             ->orderBy('name')
             ->get();
 

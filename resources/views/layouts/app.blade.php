@@ -5,7 +5,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>{{ $title ?? 'Pacific Edge Labs | Premium Research Peptides' }}</title>
+
+        {{-- SEO meta tags (description, canonical, OG, Twitter) --}}
+        @yield('meta')
+        {{ $meta ?? '' }}
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -108,6 +112,9 @@
 
         {{-- Age verification gate --}}
         <x-compliance.age-gate />
+
+        {{-- Schema.org JSON-LD structured data --}}
+        @stack('schema')
 
     </body>
 </html>

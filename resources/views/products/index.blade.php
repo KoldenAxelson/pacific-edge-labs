@@ -1,5 +1,17 @@
 <x-app-layout>
 
+    {{-- SEO: page title --}}
+    <x-slot:title>Research Peptides for Sale | Pacific Edge Labs</x-slot:title>
+
+    {{-- SEO: meta tags --}}
+    <x-slot:meta>
+        @include('partials.seo-meta', [
+            'metaTitle'    => 'Research Peptides for Sale | Pacific Edge Labs',
+            'metaDesc'     => 'Browse Pacific Edge Labs\' complete catalog of USA-tested, purity-verified research peptides. GLP-1 agonists, recovery peptides, nootropics, and more.',
+            'canonicalUrl' => route('products.index'),
+        ])
+    </x-slot:meta>
+
     <x-ui.container class="pt-8 pb-6">
 
         {{-- Filter Bar --}}
