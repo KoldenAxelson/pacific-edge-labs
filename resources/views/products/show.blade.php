@@ -1,6 +1,18 @@
 <x-app-layout>
 
-    <x-ui.container class="py-8 pb-16">
+    {{-- Mobile sub-nav for product sections (hidden on md+ where header nav takes over) --}}
+    <div class="sticky top-16 z-30 md:hidden bg-white border-b border-brand-border overflow-x-auto">
+        <nav class="flex items-center gap-1 px-4 py-2 min-w-max" aria-label="Page sections">
+            @foreach(['overview' => 'Overview', 'specifications' => 'Specs', 'description' => 'Description', 'research' => 'Research', 'coa' => 'CoA'] as $anchor => $label)
+                <a
+                    href="#{{ $anchor }}"
+                    class="px-2.5 py-1 text-body-sm font-medium text-brand-navy-600 hover:text-brand-cyan hover:bg-brand-surface-2 rounded-lg transition-smooth whitespace-nowrap"
+                >{{ $label }}</a>
+            @endforeach
+        </nav>
+    </div>
+
+    <x-ui.container class="pt-8 pb-10">
 
         {{-- Breadcrumb --}}
         <nav class="text-sm text-brand-text-muted mb-6" aria-label="Breadcrumb">
@@ -14,7 +26,7 @@
         </nav>
 
         {{-- SECTION 1: Overview --}}
-        <section id="overview" class="scroll-mt-20 grid md:grid-cols-2 gap-10 mb-16">
+        <section id="overview" class="scroll-mt-28 md:scroll-mt-20 grid md:grid-cols-2 gap-10 mb-16">
 
             {{-- Product Image --}}
             <div class="aspect-square bg-brand-surface rounded-xl overflow-hidden flex items-center justify-center border border-brand-border">
@@ -86,7 +98,7 @@
         </section>
 
         {{-- SECTION 2: Specifications --}}
-        <section id="specifications" class="scroll-mt-20 mb-12">
+        <section id="specifications" class="scroll-mt-28 md:scroll-mt-20 mb-12">
             <h2 class="text-xl font-semibold text-brand-navy mb-4">Specifications</h2>
             <dl class="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-4 text-sm">
                 @foreach([
@@ -106,7 +118,7 @@
         </section>
 
         {{-- SECTION 3: Description --}}
-        <section id="description" class="scroll-mt-20 mb-12">
+        <section id="description" class="scroll-mt-28 md:scroll-mt-20 mb-12">
             <h2 class="text-xl font-semibold text-brand-navy mb-4">Research Overview</h2>
             <div class="prose prose-sm max-w-none text-brand-text-muted leading-relaxed">
                 {!! nl2br(e($product->description)) !!}
@@ -114,7 +126,7 @@
         </section>
 
         {{-- SECTION 4: Research Links --}}
-        <section id="research" class="scroll-mt-20 mb-12">
+        <section id="research" class="scroll-mt-28 md:scroll-mt-20 mb-12">
             <h2 class="text-xl font-semibold text-brand-navy mb-4">Cited Research</h2>
             @if($product->researchLinks->isEmpty())
                 <p class="text-brand-text-faint text-sm italic">
@@ -143,7 +155,7 @@
         </section>
 
         {{-- SECTION 5: CoA Placeholder (Phase 3) --}}
-        <section id="coa" class="scroll-mt-20 mb-12">
+        <section id="coa" class="scroll-mt-28 md:scroll-mt-20 mb-12">
             <h2 class="text-xl font-semibold text-brand-navy mb-4">Certificate of Analysis</h2>
             <div class="border border-dashed border-brand-border rounded-lg p-8 text-center text-brand-text-muted text-sm">
                 <p class="font-medium text-brand-text-muted mb-1">Batch CoA — Coming in Phase 3</p>

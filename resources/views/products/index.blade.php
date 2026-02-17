@@ -1,17 +1,12 @@
 <x-app-layout>
 
-    <x-ui.page-header
-        title="All Research Compounds"
-        subtitle="Browse our complete catalog of USA-tested peptides. Potency verified, purity quantified."
-    />
-
-    <x-ui.container class="mt-8 pb-16">
+    <x-ui.container class="pt-8 pb-10">
 
         {{-- Filter Bar --}}
         <form method="GET" action="{{ route('products.index') }}" class="flex flex-wrap gap-3 mb-8 items-end">
             <div class="flex-1 min-w-[200px]">
                 <label for="category-filter" class="block text-sm font-medium text-brand-text-muted mb-1">Category</label>
-                <x-ui.form.select name="category" id="category-filter">
+                <x-ui.form.select name="category" id="category-filter" onchange="this.form.submit()">
                     <option value="">All Categories</option>
                     @foreach($categories as $cat)
                         <option value="{{ $cat->slug }}" @selected($cat->slug === $selected)>
@@ -20,9 +15,8 @@
                     @endforeach
                 </x-ui.form.select>
             </div>
-            <x-ui.button type="submit" variant="secondary">Filter</x-ui.button>
             @if($selected)
-                <x-ui.button href="{{ route('products.index') }}" variant="outline" size="sm">
+                <x-ui.button href="{{ route('products.index') }}" variant="outline">
                     Clear
                 </x-ui.button>
             @endif
