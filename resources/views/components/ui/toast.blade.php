@@ -37,7 +37,7 @@ $config = match($variant) {
     x-transition:leave-end="opacity-0"
     role="status"
     aria-live="polite"
-    {{ $attributes->merge(['class' => 'flex items-center gap-3 bg-brand-navy border border-brand-navy-700 text-white rounded-lg px-4 py-3 shadow-lg pointer-events-auto w-full']) }}
+    {{ $attributes->merge(['class' => 'flex items-center gap-3 bg-brand-navy toast-dark border border-brand-navy-700 text-white rounded-lg px-4 py-3 shadow-lg pointer-events-auto w-full']) }}
 >
     <x-dynamic-component
         :component="$config['icon']"

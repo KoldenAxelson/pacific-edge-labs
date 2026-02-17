@@ -15,7 +15,7 @@
     </x-slot:meta>
 
     {{-- Schema.org structured data --}}
-    {{-- @include('partials.schema-product', ['product' => $product]) --}}
+    @include('partials.schema-product', ['product' => $product])
 
     {{-- Mobile sub-nav for product sections (hidden on md+ where header nav takes over) --}}
     <div

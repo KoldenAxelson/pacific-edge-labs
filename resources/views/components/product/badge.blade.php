@@ -55,7 +55,7 @@ $config = match($variant) {
         'mono'    => false,
     ],
     'category' => [
-        'classes' => 'bg-white border border-brand-navy text-brand-navy',
+        'classes' => 'bg-brand-surface border border-brand-border-dark text-brand-text',
         'icon'    => null,
         'text'    => $label ?? $value,
         'mono'    => false,

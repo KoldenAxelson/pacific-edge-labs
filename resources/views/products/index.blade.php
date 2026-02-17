@@ -99,7 +99,7 @@
             x-transition:leave-end="opacity-0 translate-y-2"
             x-cloak
             @click="window.scrollTo({ top: 0, behavior: 'smooth' })"
-            class="fixed bottom-6 left-4 z-30 w-10 h-10 bg-brand-navy text-white rounded-full shadow-lg flex items-center justify-center hover:bg-brand-navy-800 active:scale-95 transition-smooth"
+            class="fixed bottom-6 right-4 z-30 w-10 h-10 bg-brand-navy text-white rounded-full shadow-lg flex items-center justify-center hover:bg-brand-navy-800 active:scale-95 transition-smooth"
             aria-label="Scroll to top"
         >
             <x-heroicon-o-chevron-up class="w-5 h-5" />

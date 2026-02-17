@@ -407,50 +407,150 @@ html.dark {
     transform: scaleX(1);
 }
 
-/* ─── Dark Mode Hardcoded-Color Overrides ────────────────────────────────── */
+/* ─── iOS Safe Area ──────────────────────────────────────────────────────── */
 /*
- * Elements using raw Tailwind colors (bg-white, text-white, bg-black, etc.)
- * instead of brand tokens need explicit dark overrides here.
- * This keeps Blade templates free of dark: variant clutter.
+ * With viewport-fit=cover the page extends behind the iOS home indicator.
+ * Without explicit safe-area padding, a white strip (body bg) bleeds through
+ * beneath the dark footer, sidebar, and backdrop overlay.
  */
-html.dark .dark\:bg-dark-surface,
-html.dark header,
-html.dark [id="mobile-nav"] {
+footer {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+[id="mobile-nav"] {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════ */
+/*  DARK MODE OVERRIDES                                                       */
+/*                                                                            */
+/*  The brand-navy CSS token inverts light↔dark — correct for HEADINGS and    */
+/*  BODY TEXT (dark text on light bg → light text on dark bg).                 */
+/*                                                                            */
+/*  But some elements use navy as an INTENTIONALLY-DARK BACKGROUND:           */
+/*  buttons, banners, avatars, logos. These must stay dark in dark mode.       */
+/*                                                                            */
+/*  Strategy:                                                                 */
+/*    1. .dark-stable — marker class for any element whose bg-brand-navy      */
+/*       should stay visually dark. One class, one override, no guessing.     */
+/*    2. .btn-secondary / .btn-outline — variant markers from button.blade    */
+/*       for button-specific dark treatment.                                  */
+/*    3. Structural overrides — html, header, footer, sidebar, etc.           */
+/*    4. Utility overrides — bg-white, ring-white, and other raw Tailwind     */
+/*       colors that don't use brand tokens.                                  */
+/* ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── 1. Dark-Stable: elements that stay visually dark ────────────────────── */
+/*
+ * Apply .dark-stable to any element using bg-brand-navy that should NOT
+ * invert to light gray. Covers: announcement bar, logos, avatars, register
+ * button, and any future intentionally-dark element.
+ */
+html.dark .dark-stable {
+    background-color: #0f172a !important;
+    color: #ffffff !important;
+}
+html.dark .dark-stable .text-brand-cyan {
+    color: #22d3ee !important;
+}
+html.dark .dark-stable:hover {
+    background-color: #0a1121 !important;
+}
+
+/* ── 2. Button variant overrides ─────────────────────────────────────────── */
+/*
+ * Secondary (filled dark) — keep the dark "navy slab" look in dark mode.
+ * Outline — flip to light border+text on dark bg; solid fill on hover.
+ */
+html.dark .btn-secondary {
+    background-color: #1e293b !important;
+    color: #f1f5f9 !important;
+}
+html.dark .btn-secondary:hover {
+    background-color: #334155 !important;
+}
+
+html.dark .btn-outline {
+    border-color: #94a3b8 !important;
+    color: #e2e8f0 !important;
+    background-color: transparent !important;
+}
+html.dark .btn-outline:hover {
+    background-color: #334155 !important;
+    border-color: #334155 !important;
+    color: #f1f5f9 !important;
+}
+
+/* ── 3. Structural overrides ─────────────────────────────────────────────── */
+/* iOS overscroll — html background must stay dark in both modes */
+html.dark {
+    background: #0b1120;
+}
+
+/* Sticky header — dark surface with subtle border */
+html.dark header {
     background-color: #1e293b !important;
 }
-
-html.dark footer {
-    background-color: #0b1120 !important;
-}
-
-html.dark footer .border-brand-navy-800 {
-    border-color: #1e293b !important;
-}
-
-/* Search result cards and product cards with bg-white */
-html.dark .bg-white {
-    background-color: #1e293b;
-}
-
-/* Sticky header border */
 html.dark header.border-brand-border {
     border-color: #334155;
 }
 
-/* Product image placeholder bg */
-html.dark .bg-brand-surface {
-    background-color: #334155;
+/* Sidebar nav panel */
+html.dark [id="mobile-nav"] {
+    background-color: #1e293b !important;
 }
 
-/* Ring on cart badge, etc. */
+/* Footer — darkest surface */
+html.dark footer {
+    background-color: #0b1120 !important;
+}
+html.dark footer .border-brand-navy-800 {
+    border-color: #1e293b !important;
+}
+
+/* Product card two-tone: subtle divider between image area and content */
+html.dark .product-card > div:last-child {
+    border-top: 1px solid #334155;
+}
+
+/* ── 4. Utility overrides (raw Tailwind colors) ──────────────────────────── */
+/* bg-white: cards, search results, any element using white directly */
+html.dark .bg-white {
+    background-color: #1e293b;
+}
+
+/* Ring on cart badge — match header bg so ring blends */
 html.dark .ring-white {
     --tw-ring-color: #1e293b;
 }
 
-/* iOS overscroll: keep navy in dark mode */
-html.dark {
-    background: #0b1120;
+/* ── 5. Component overrides ──────────────────────────────────────────────── */
+
+/*
+ * Toast — intentionally dark in light mode (bg-brand-navy). Must stay dark
+ * in dark mode. Same concept as the announcement banner.
+ */
+html.dark .toast-dark {
+    background-color: #0f172a !important;
+    border-color: #1e293b !important;
+    color: #f1f5f9 !important;
 }
+
+/*
+ * Alert — uses hardcoded Tailwind *-900 text colors (nearly black) for
+ * contrast on light tinted backgrounds. In dark mode the tinted backgrounds
+ * go semi-transparent on dark surfaces, so the *-900 text becomes invisible.
+ * Fix: lighten text to *-300 equivalent, darken borders to *-600 equivalent.
+ */
+html.dark .text-emerald-900 { color: #6ee7b7 !important; }  /* emerald-300 */
+html.dark .text-amber-900   { color: #fcd34d !important; }  /* amber-300   */
+html.dark .text-red-900     { color: #fca5a5 !important; }  /* red-300     */
+html.dark .text-cyan-900    { color: #67e8f9 !important; }  /* cyan-300    */
+
+html.dark .border-emerald-200 { border-color: #059669 !important; }  /* emerald-600 */
+html.dark .border-amber-200   { border-color: #d97706 !important; }  /* amber-600   */
+html.dark .border-red-200     { border-color: #dc2626 !important; }  /* red-600     */
+html.dark .border-cyan-200    { border-color: #0891b2 !important; }  /* cyan-600    */
 
 /* ─── Hamburger Morph ─────────────────────────────────────────────────────── */
 /*

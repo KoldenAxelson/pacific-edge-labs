@@ -29,7 +29,7 @@ if ($batchStatus === 'low_stock') {
     x-init="window.matchMedia('(min-width: 768px)').addEventListener('change', e => canHover = e.matches)"
     @mouseenter="if (canHover) hovered = true"
     @mouseleave="hovered = false"
-    {{ $attributes->merge(['class' => 'group flex flex-col bg-brand-surface rounded-xl border border-brand-border hover:border-brand-cyan transition-smooth overflow-hidden cursor-pointer']) }}
+    {{ $attributes->merge(['class' => 'product-card group flex flex-col bg-brand-surface rounded-xl border border-brand-border hover:border-brand-cyan transition-smooth overflow-hidden cursor-pointer']) }}
 >
 
     {{-- ── IMAGE ─────────────────────────────────────────────────────────── --}}

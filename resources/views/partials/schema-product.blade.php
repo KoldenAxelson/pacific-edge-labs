@@ -1,52 +1,48 @@
 @push('schema')
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Product",
-  "name": "{{ e($product->name) }}",
-  "description": "{{ e(Str::limit(strip_tags($product->description), 300)) }}",
-  "sku": "{{ e($product->sku) }}",
-  "brand": {
-    "@type": "Brand",
-    "name": "Pacific Edge Labs"
-  },
-  "url": "{{ $product->url }}",
-  "offers": {
-    "@type": "Offer",
-    "price": "{{ $product->price }}",
-    "priceCurrency": "USD",
-    "availability": "https://schema.org/InStock",
-    "seller": {
-      "@type": "Organization",
-      "name": "Pacific Edge Labs"
-    }
-  }
-  @if($product->primaryImage)
-  ,"image": "{{ $product->primaryImage->url }}"
-  @endif
-}
-</script>
+@php
+    $productSchema = [
+        '@context' => 'https://schema.org',
+        '@type'    => 'Product',
+        'name'     => $product->name,
+        'description' => Str::limit(strip_tags($product->description), 300),
+        'sku'      => $product->sku,
+        'brand'    => ['@type' => 'Brand', 'name' => 'Pacific Edge Labs'],
+        'url'      => $product->url,
+        'offers'   => [
+            '@type'         => 'Offer',
+            'price'         => (string) $product->price,
+            'priceCurrency' => 'USD',
+            'availability'  => 'https://schema.org/InStock',
+            'seller'        => ['@type' => 'Organization', 'name' => 'Pacific Edge Labs'],
+        ],
+    ];
 
-@foreach($product->researchLinks as $link)
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "ScholarlyArticle",
-  "name": "{{ e($link->title) }}",
-  "url": "{{ e($link->url) }}"
-  @if($link->authors)
-  ,"author": "{{ e($link->authors) }}"
-  @endif
-  @if($link->publication_year)
-  ,"datePublished": "{{ $link->publication_year }}"
-  @endif
-  @if($link->journal)
-  ,"publisher": {
-    "@type": "Organization",
-    "name": "{{ e($link->journal) }}"
-  }
-  @endif
-}
-</script>
+    if ($product->primaryImage) {
+        $productSchema['image'] = $product->primaryImage->url;
+    }
+
+    $articleSchemas = [];
+    foreach ($product->researchLinks as $link) {
+        $article = [
+            '@context' => 'https://schema.org',
+            '@type'    => 'ScholarlyArticle',
+            'name'     => $link->title,
+            'url'      => $link->url,
+        ];
+        if ($link->authors) {
+            $article['author'] = $link->authors;
+        }
+        if ($link->publication_year) {
+            $article['datePublished'] = (string) $link->publication_year;
+        }
+        if ($link->journal) {
+            $article['publisher'] = ['@type' => 'Organization', 'name' => $link->journal];
+        }
+        $articleSchemas[] = $article;
+    }
+@endphp
+<script type="application/ld+json">{!! json_encode($productSchema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}</script>
+@foreach($articleSchemas as $articleData)
+<script type="application/ld+json">{!! json_encode($articleData, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}</script>
 @endforeach
 @endpush

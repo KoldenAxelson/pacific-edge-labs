@@ -24,8 +24,8 @@ $iconSize = match($size) {
 // Filled variants (primary, secondary, danger) get active:scale-[0.98] press feedback.
 // All variants get transition-smooth for consistent hover behaviour.
 $variantClasses = match($variant) {
-    'secondary' => 'bg-brand-navy text-white hover:bg-brand-navy-800 active:scale-[0.98] active:duration-100 focus:ring-brand-navy',
-    'outline'   => 'border-2 border-brand-navy text-brand-navy hover:bg-brand-navy hover:text-white focus:ring-brand-navy',
+    'secondary' => 'btn-secondary bg-brand-navy text-white hover:bg-brand-navy-800 active:scale-[0.98] active:duration-100 focus:ring-brand-navy',
+    'outline'   => 'btn-outline border-2 border-brand-navy text-brand-navy hover:bg-brand-navy hover:text-white focus:ring-brand-navy',
     'danger'    => 'bg-red-600 text-white hover:bg-red-700 active:scale-[0.98] active:duration-100 focus:ring-red-600',
     'ghost'     => 'text-brand-navy hover:bg-brand-surface-2 focus:ring-brand-navy',
     default     => 'bg-brand-cyan text-white hover:bg-brand-cyan-dark active:scale-[0.98] active:duration-100 focus:ring-brand-cyan',

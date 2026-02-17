@@ -24,7 +24,7 @@
 --}}
 
 {{-- ── Announcement bar ──────────────────────────────────────────────────── --}}
-<div class="w-full bg-brand-navy">
+<div class="w-full bg-brand-navy dark-stable">
     <p class="text-center text-caption py-2 px-4">
         <span class="text-white">Free U.S. shipping on orders $150+</span>
         <span class="mx-2 text-brand-cyan" aria-hidden="true">&bull;</span>
@@ -39,7 +39,7 @@
 
             {{-- Left: Wordmark (always visible) --}}
             <a href="/" class="flex items-center gap-3 flex-shrink-0" aria-label="Pacific Edge Labs — home">
-                <div class="w-8 h-8 bg-brand-navy rounded-lg flex items-center justify-center flex-shrink-0">
+                <div class="w-8 h-8 bg-brand-navy dark-stable rounded-lg flex items-center justify-center flex-shrink-0">
                     <x-heroicon-o-beaker class="w-4 h-4 text-brand-cyan" aria-hidden="true" />
                 </div>
                 <div class="flex flex-col leading-none">
@@ -155,7 +155,7 @@
                         aria-label="Your profile"
                     >
                         <div
-                            class="w-7 h-7 rounded-full bg-brand-navy flex items-center justify-center text-white text-caption font-semibold flex-shrink-0"
+                            class="w-7 h-7 rounded-full bg-brand-navy dark-stable flex items-center justify-center text-white text-caption font-semibold flex-shrink-0"
                             aria-hidden="true"
                         >{{ strtoupper(substr(Auth::user()->name, 0, 1)) }}</div>
                         <span class="text-body-sm font-medium text-brand-navy-700 hidden sm:block">
@@ -284,7 +284,7 @@
     {{-- Sidebar header --}}
     <div class="flex items-center justify-between px-5 py-4 border-b border-brand-border flex-shrink-0">
         <div class="flex items-center gap-2.5">
-            <div class="w-7 h-7 bg-brand-navy rounded-md flex items-center justify-center flex-shrink-0">
+            <div class="w-7 h-7 bg-brand-navy dark-stable rounded-md flex items-center justify-center flex-shrink-0">
                 <x-heroicon-o-beaker class="w-3.5 h-3.5 text-brand-cyan" aria-hidden="true" />
             </div>
             <div class="flex flex-col leading-none">
@@ -374,7 +374,7 @@
         @auth
             <div class="flex items-center gap-3 px-4 py-2 mb-1">
                 <div
-                    class="w-8 h-8 rounded-full bg-brand-navy flex items-center justify-center text-white text-body-sm font-semibold flex-shrink-0"
+                    class="w-8 h-8 rounded-full bg-brand-navy dark-stable flex items-center justify-center text-white text-body-sm font-semibold flex-shrink-0"
                     aria-hidden="true"
                 >{{ strtoupper(substr(Auth::user()->name, 0, 1)) }}</div>
                 <div class="min-w-0">
@@ -389,7 +389,7 @@
             </form>
         @else
             <a href="{{ route('login') }}" class="{{ $link }} {{ $rest }}" @click="mobileOpen = false">Log in</a>
-            <a href="{{ route('register') }}" class="{{ $link }} text-white bg-brand-navy hover:bg-brand-navy-800 mt-1 text-center" @click="mobileOpen = false">Register</a>
+            <a href="{{ route('register') }}" class="{{ $link }} text-white bg-brand-navy dark-stable hover:bg-brand-navy-800 mt-1 text-center" @click="mobileOpen = false">Register</a>
         @endauth
     </div>
 
