@@ -25,8 +25,9 @@ if ($batchStatus === 'low_stock') {
 
 <a
     href="{{ $href }}"
-    x-data="{ hovered: false, notified: false }"
-    @mouseenter="hovered = true"
+    x-data="{ hovered: false, notified: false, canHover: window.matchMedia('(min-width: 768px)').matches }"
+    x-init="window.matchMedia('(min-width: 768px)').addEventListener('change', e => canHover = e.matches)"
+    @mouseenter="if (canHover) hovered = true"
     @mouseleave="hovered = false"
     {{ $attributes->merge(['class' => 'group flex flex-col bg-brand-surface rounded-xl border border-brand-border hover:border-brand-cyan transition-smooth overflow-hidden cursor-pointer']) }}
 >

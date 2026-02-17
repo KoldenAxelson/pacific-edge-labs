@@ -67,11 +67,13 @@ class Product extends Model
     public function scopeSearch(Builder $query, string $term): Builder
     {
         $safe = '%' . trim($term) . '%';
-        return $query->where(function ($q) use ($safe) {
-            $q->whereRaw('name ILIKE ?', [$safe])
-              ->orWhereRaw('description ILIKE ?', [$safe])
-              ->orWhereRaw('short_description ILIKE ?', [$safe])
-              ->orWhereRaw('sku ILIKE ?', [$safe]);
+        // ILIKE for PostgreSQL (case-insensitive), LIKE for SQLite (case-insensitive by default for ASCII)
+        $like = $query->getConnection()->getDriverName() === 'pgsql' ? 'ILIKE' : 'LIKE';
+        return $query->where(function ($q) use ($safe, $like) {
+            $q->whereRaw("name {$like} ?", [$safe])
+              ->orWhereRaw("description {$like} ?", [$safe])
+              ->orWhereRaw("short_description {$like} ?", [$safe])
+              ->orWhereRaw("sku {$like} ?", [$safe]);
         });
     }
 

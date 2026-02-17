@@ -1,6 +1,6 @@
 <x-app-layout>
 
-    <x-ui.container class="pt-8 pb-10">
+    <x-ui.container class="pt-8 pb-6">
 
         {{-- Filter Bar --}}
         <form method="GET" action="{{ route('products.index') }}" class="flex flex-wrap gap-3 mb-8 items-end">
@@ -62,6 +62,7 @@
                         :href="route('products.show', $product->slug)"
                         :imageSrc="$product->primary_image?->url"
                         :imageAlt="$product->primary_image?->alt_text ?? $product->name"
+                        :researchTagline="$product->name"
                         :researchSummary="$product->short_description"
                     />
                 @endforeach

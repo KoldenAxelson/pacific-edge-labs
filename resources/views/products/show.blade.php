@@ -12,7 +12,7 @@
         </nav>
     </div>
 
-    <x-ui.container class="pt-8 pb-10">
+    <x-ui.container class="pt-8 pb-6">
 
         {{-- Breadcrumb --}}
         <nav class="text-sm text-brand-text-muted mb-6" aria-label="Breadcrumb">
@@ -179,6 +179,7 @@
                             :href="route('products.show', $related->slug)"
                             :imageSrc="$related->primary_image?->url"
                             :imageAlt="$related->primary_image?->alt_text ?? $related->name"
+                            :researchTagline="$related->name"
                             :researchSummary="$related->short_description"
                         />
                     @endforeach

@@ -6,7 +6,7 @@
         :subtitle="$category->description"
     />
 
-    <x-ui.container class="pb-10">
+    <x-ui.container class="pb-6">
 
         {{-- Category Nav Pills --}}
         <div class="flex flex-wrap gap-2 mb-8 mt-8">
@@ -48,6 +48,7 @@
                         :href="route('products.show', $product->slug)"
                         :imageSrc="$product->primary_image?->url"
                         :imageAlt="$product->primary_image?->alt_text ?? $product->name"
+                        :researchTagline="$product->name"
                         :researchSummary="$product->short_description"
                     />
                 @endforeach
