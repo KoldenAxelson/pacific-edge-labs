@@ -57,12 +57,12 @@
                 <h3 class="text-white uppercase tracking-wider text-body-sm font-semibold mb-4">
                     Products
                 </h3>
+                @php $footerCategories = \App\Models\Category::active()->ordered()->get(); @endphp
                 <ul class="space-y-3" role="list">
-                    <li><a href="#" class="link-underline text-slate-400 hover:text-brand-cyan text-body-sm transition-smooth">Peptides</a></li>
-                    <li><a href="#" class="link-underline text-slate-400 hover:text-brand-cyan text-body-sm transition-smooth">Research Chemicals</a></li>
-                    <li><a href="#" class="link-underline text-slate-400 hover:text-brand-cyan text-body-sm transition-smooth">Solvents &amp; Accessories</a></li>
-                    <li><a href="#" class="link-underline text-slate-400 hover:text-brand-cyan text-body-sm transition-smooth">Bundles</a></li>
-                    <li><a href="#" class="link-underline text-slate-400 hover:text-brand-cyan text-body-sm transition-smooth">New Arrivals</a></li>
+                    <li><a href="{{ route('products.index') }}" class="link-underline text-slate-400 hover:text-brand-cyan text-body-sm transition-smooth">All Products</a></li>
+                    @foreach($footerCategories as $footerCat)
+                        <li><a href="{{ route('categories.show', $footerCat->slug) }}" class="link-underline text-slate-400 hover:text-brand-cyan text-body-sm transition-smooth">{{ $footerCat->name }}</a></li>
+                    @endforeach
                 </ul>
             </div>
 

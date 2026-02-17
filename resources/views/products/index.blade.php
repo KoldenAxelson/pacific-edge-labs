@@ -83,4 +83,27 @@
 
     </x-ui.container>
 
+    {{-- Mobile scroll-to-top button (bottom-left, appears after scrolling down) --}}
+    <div
+        x-data="{ showTop: false }"
+        x-on:scroll.window="showTop = window.scrollY > 400"
+        class="md:hidden"
+    >
+        <button
+            x-show="showTop"
+            x-transition:enter="transition ease-out duration-200"
+            x-transition:enter-start="opacity-0 translate-y-2"
+            x-transition:enter-end="opacity-100 translate-y-0"
+            x-transition:leave="transition ease-in duration-150"
+            x-transition:leave-start="opacity-100 translate-y-0"
+            x-transition:leave-end="opacity-0 translate-y-2"
+            x-cloak
+            @click="window.scrollTo({ top: 0, behavior: 'smooth' })"
+            class="fixed bottom-6 left-4 z-30 w-10 h-10 bg-brand-navy text-white rounded-full shadow-lg flex items-center justify-center hover:bg-brand-navy-800 active:scale-95 transition-smooth"
+            aria-label="Scroll to top"
+        >
+            <x-heroicon-o-chevron-up class="w-5 h-5" />
+        </button>
+    </div>
+
 </x-app-layout>

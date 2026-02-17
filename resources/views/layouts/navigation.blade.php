@@ -260,7 +260,8 @@
     x-transition:leave-start="opacity-100"
     x-transition:leave-end="opacity-0"
     @click="mobileOpen = false"
-    class="fixed inset-0 bg-black/40 z-40"
+    class="fixed bg-black/40 z-40"
+    style="top: -50px; left: 0; right: 0; bottom: -50px;"
     aria-hidden="true"
 ></div>
 
@@ -315,11 +316,58 @@
             @if(request()->is('/')) aria-current="page" @endif
             @click="mobileOpen = false"
         >Home</a>
-        <a href="#" class="{{ $link }} {{ $rest }}" @click="mobileOpen = false">Products</a>
+        <a
+            href="{{ route('products.index') }}"
+            class="{{ $link }} {{ request()->routeIs('products.index') ? $active : $rest }}"
+            @if(request()->routeIs('products.index')) aria-current="page" @endif
+            @click="mobileOpen = false"
+        >All Products</a>
+
+        {{-- Category sub-links (indented) --}}
+        @php $navCategories = \App\Models\Category::active()->ordered()->get(); @endphp
+        @foreach($navCategories as $navCat)
+            <a
+                href="{{ route('categories.show', $navCat->slug) }}"
+                class="{{ $link }} pl-8 text-caption {{ request()->is('categories/' . $navCat->slug) ? $active : $rest }}"
+                @click="mobileOpen = false"
+            >{{ $navCat->name }}</a>
+        @endforeach
+
+        <div class="h-px bg-brand-border my-2 mx-4"></div>
+
         <a href="#" class="{{ $link }} {{ $rest }}" @click="mobileOpen = false">About</a>
         <a href="#" class="{{ $link }} {{ $rest }}" @click="mobileOpen = false">FAQ</a>
         <a href="#" class="{{ $link }} {{ $rest }}" @click="mobileOpen = false">Contact</a>
     </nav>
+
+    {{-- Dark mode toggle --}}
+    <div class="px-3 py-2 border-t border-brand-border flex-shrink-0">
+        <button
+            type="button"
+            @click="toggleDark()"
+            class="flex items-center justify-between w-full px-4 py-2.5 rounded-xl text-body-sm font-medium transition-smooth text-brand-navy-700 hover:bg-brand-surface-2 hover:text-brand-navy"
+        >
+            <span class="flex items-center gap-2.5">
+                <template x-if="!darkMode">
+                    <x-heroicon-o-moon class="w-4.5 h-4.5" />
+                </template>
+                <template x-if="darkMode">
+                    <x-heroicon-o-sun class="w-4.5 h-4.5" />
+                </template>
+                <span x-text="darkMode ? 'Light Mode' : 'Dark Mode'"></span>
+            </span>
+            {{-- Toggle pill --}}
+            <span
+                class="relative inline-flex h-5 w-9 items-center rounded-full transition-colors duration-200"
+                :class="darkMode ? 'bg-brand-cyan' : 'bg-brand-text-faint'"
+            >
+                <span
+                    class="inline-block h-3.5 w-3.5 rounded-full bg-white shadow transform transition-transform duration-200"
+                    :class="darkMode ? 'translate-x-4' : 'translate-x-1'"
+                ></span>
+            </span>
+        </button>
+    </div>
 
     {{-- Auth section --}}
     <div class="px-3 py-3 border-t border-brand-border flex-shrink-0">

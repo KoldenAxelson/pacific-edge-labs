@@ -2,7 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>{{ $title ?? 'Pacific Edge Labs | Premium Research Peptides' }}</title>
@@ -17,6 +17,14 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+        {{-- Dark mode: apply class before paint to prevent FOUC --}}
+        <script>
+            (function(){
+                var c = document.cookie.match('(^|;)\\s*pel_dark\\s*=\\s*([^;]+)');
+                if (c && c[2] === '1') document.documentElement.classList.add('dark');
+            })();
+        </script>
     </head>
 
     {{--
@@ -35,6 +43,12 @@
       root stacking context at their own z values and are not trapped.
     --}}
     <body class="font-body bg-brand-bg text-brand-navy antialiased" x-data="{
+        darkMode: document.documentElement.classList.contains('dark'),
+        toggleDark() {
+            this.darkMode = !this.darkMode;
+            document.documentElement.classList.toggle('dark', this.darkMode);
+            document.cookie = 'pel_dark=' + (this.darkMode ? '1' : '0') + ';path=/;max-age=' + (365*86400) + ';SameSite=Lax';
+        },
         mobileOpen: false,
         searchOpen: false,
         searchQuery: '',
