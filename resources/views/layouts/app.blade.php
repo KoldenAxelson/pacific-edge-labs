@@ -30,7 +30,57 @@
       context. The fixed backdrop (z-40) and sidebar (z-50) participate in the
       root stacking context at their own z values and are not trapped.
     --}}
-    <body class="font-body bg-brand-bg text-brand-navy antialiased" x-data="{ mobileOpen: false }">
+    <body class="font-body bg-brand-bg text-brand-navy antialiased" x-data="{
+        mobileOpen: false,
+        searchOpen: false,
+        searchQuery: '',
+        searchResults: [],
+        searchCount: 0,
+        searchLoading: false,
+        searchSearched: false,
+        searchTrayOpen: false,
+        _searchTimer: null,
+        openSearch() {
+            this.searchOpen = true;
+            this.$nextTick(() => document.getElementById('nav-search-input')?.focus());
+        },
+        closeSearch() {
+            this.searchOpen = false;
+            this.searchTrayOpen = false;
+            this.searchQuery = '';
+            this.searchResults = [];
+            this.searchCount = 0;
+            this.searchSearched = false;
+            this.searchLoading = false;
+            clearTimeout(this._searchTimer);
+        },
+        doSearch() {
+            clearTimeout(this._searchTimer);
+            const q = this.searchQuery.trim();
+            if (q.length < 2) {
+                this.searchResults = [];
+                this.searchCount = 0;
+                this.searchSearched = false;
+                this.searchTrayOpen = false;
+                this.searchLoading = false;
+                return;
+            }
+            this.searchLoading = true;
+            this.searchTrayOpen = false;
+            this._searchTimer = setTimeout(() => {
+                fetch('/search?q=' + encodeURIComponent(q))
+                    .then(r => r.json())
+                    .then(data => {
+                        this.searchResults = data.results;
+                        this.searchCount = data.count;
+                        this.searchSearched = true;
+                        this.searchLoading = false;
+                        this.$nextTick(() => { this.searchTrayOpen = true; });
+                    })
+                    .catch(() => { this.searchLoading = false; });
+            }, 300);
+        }
+    }">
 
         {{-- Navigation: announcement bar + sticky header + backdrop + sidebar --}}
         @include('layouts.navigation')

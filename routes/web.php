@@ -129,6 +129,8 @@ Route::get('/dev/clear-age-gate', function () {
 })->name('dev.clear-age-gate');
 
 // Phase 2: Product Catalog
+Route::get('/search', [ProductController::class, 'search'])
+    ->name('products.search');
 Route::get('/products', [ProductController::class, 'index'])
     ->name('products.index');
 Route::get('/products/{slug}', [ProductController::class, 'show'])

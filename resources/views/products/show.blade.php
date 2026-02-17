@@ -1,12 +1,35 @@
 <x-app-layout>
 
     {{-- Mobile sub-nav for product sections (hidden on md+ where header nav takes over) --}}
-    <div class="sticky top-16 z-30 md:hidden bg-white border-b border-brand-border overflow-x-auto">
+    <div
+        :class="searchOpen ? 'opacity-0 pointer-events-none -translate-y-1' : 'opacity-100 translate-y-0'"
+        class="sticky top-16 z-30 md:hidden bg-white border-b border-brand-border overflow-x-auto transition-all duration-200 ease-in-out"
+        x-data="{
+            active: 'overview',
+            sections: ['overview', 'specifications', 'description', 'research', 'coa'],
+            init() {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            this.active = entry.target.id;
+                        }
+                    });
+                }, { rootMargin: '-120px 0px -60% 0px', threshold: 0 });
+                this.sections.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) observer.observe(el);
+                });
+            }
+        }"
+    >
         <nav class="flex items-center gap-1 px-4 py-2 min-w-max" aria-label="Page sections">
             @foreach(['overview' => 'Overview', 'specifications' => 'Specs', 'description' => 'Description', 'research' => 'Research', 'coa' => 'CoA'] as $anchor => $label)
                 <a
                     href="#{{ $anchor }}"
-                    class="px-2.5 py-1 text-body-sm font-medium text-brand-navy-600 hover:text-brand-cyan hover:bg-brand-surface-2 rounded-lg transition-smooth whitespace-nowrap"
+                    :class="active === '{{ $anchor }}'
+                        ? 'bg-brand-cyan/10 text-brand-cyan'
+                        : 'text-brand-navy-600 hover:text-brand-cyan hover:bg-brand-surface-2'"
+                    class="px-2.5 py-1 text-body-sm font-medium rounded-lg transition-smooth whitespace-nowrap"
                 >{{ $label }}</a>
             @endforeach
         </nav>

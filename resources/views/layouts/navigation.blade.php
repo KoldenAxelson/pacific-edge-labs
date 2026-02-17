@@ -1,20 +1,20 @@
 {{--
-  [TASK-1-012 rev.2] Site Header
+  [TASK-1-012 rev.4] Site Header — with inline animated search
   Architecture notes:
-  
-  Alpine scope: x-data="{ mobileOpen: false }" lives on <body> in app.blade.php.
-  This file does NOT define its own x-data wrapper.
-  Reason: wrapping <header sticky> in a short div breaks sticky — the header can
-  only stick within its parent's height. With x-data on <body>, the header's parent
-  is <body> which spans the full page, and sticky works correctly across the whole page.
-  
-  Backdrop and sidebar are fixed elements and siblings of <header> within <body>.
-  They are NOT children of <header>, so they are not trapped inside header's z-40
-  stacking context. They participate in the root stacking context at their own z values.
 
-  Nav design: hamburger-only. No always-visible center nav links.
-  Desktop center nav block has been removed. Hamburger is visible at all screen sizes.
-  All nav links live exclusively in the sidebar.
+  Alpine scope: x-data lives on <body> in app.blade.php.
+  Body-level state includes: mobileOpen, searchOpen, searchQuery, searchResults,
+  searchCount, searchLoading, searchSearched, openSearch(), closeSearch(), doSearch().
+
+  Search animation flow:
+    1. User clicks search icon → openSearch()
+    2. Center nav (product anchors) + right buttons (cart, auth, hamburger) fade out via CSS transition
+    3. Search input stretches from w-0 to flex-1, filling available header space
+    4. Cancel (X) button scales in at far right
+    5. Input autofocuses — user types immediately
+    6. On results: tray x-collapses open below header bar with compact horizontal-scroll cards
+    7. Cancel reverses everything — bar shrinks, buttons fade back, tray collapses
+    8. Mobile product sub-nav also fades out when searching (handled in products/show.blade.php)
 
   Z-index convention:
     z-30  secondary sticky subnav
@@ -23,9 +23,7 @@
     z-60  toast notifications
 --}}
 
-{{-- ── Announcement bar ────────────────────────────────────────────────────
-     Not sticky. Scrolls away — header covers it on scroll.
---}}
+{{-- ── Announcement bar ──────────────────────────────────────────────────── --}}
 <div class="w-full bg-brand-navy">
     <p class="text-center text-caption py-2 px-4">
         <span class="text-white">Free U.S. shipping on orders $150+</span>
@@ -34,12 +32,12 @@
     </p>
 </div>
 
-{{-- ── Sticky header ──────────────────────────────────────────────────────── --}}
+{{-- ── Sticky header ─────────────────────────────────────────────────────── --}}
 <header class="sticky top-0 z-40 bg-white border-b border-brand-border">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between h-16">
+        <div class="flex items-center h-16 gap-3">
 
-            {{-- Left: Wordmark --}}
+            {{-- Left: Wordmark (always visible) --}}
             <a href="/" class="flex items-center gap-3 flex-shrink-0" aria-label="Pacific Edge Labs — home">
                 <div class="w-8 h-8 bg-brand-navy rounded-lg flex items-center justify-center flex-shrink-0">
                     <x-heroicon-o-beaker class="w-4 h-4 text-brand-cyan" aria-hidden="true" />
@@ -50,9 +48,19 @@
                 </div>
             </a>
 
-            {{-- Center: Product anchor nav (product pages only) --}}
+            {{-- Left spacer (keeps center nav centered; collapses when searching) --}}
+            <div
+                :class="searchOpen ? 'w-0 flex-none' : 'flex-1'"
+                class="transition-all duration-300 ease-out"
+            ></div>
+
+            {{-- Center: Product anchor nav (product pages only — fades out when searching) --}}
             @if(request()->routeIs('products.show'))
-                <nav class="hidden md:flex items-center gap-1" aria-label="Page sections">
+                <nav
+                    :class="searchOpen ? 'opacity-0 pointer-events-none scale-95' : 'opacity-100 scale-100'"
+                    class="hidden md:flex items-center gap-1 flex-shrink-0 justify-center transition-all duration-200 ease-in"
+                    aria-label="Page sections"
+                >
                     @foreach(['overview' => 'Overview', 'specifications' => 'Specs', 'description' => 'Description', 'research' => 'Research', 'coa' => 'CoA'] as $anchor => $label)
                         <a
                             href="#{{ $anchor }}"
@@ -62,14 +70,66 @@
                 </nav>
             @endif
 
-            {{-- Right: Actions + Hamburger --}}
-            <div class="flex items-center gap-0.5">
+            {{-- Right spacer (mirrors left spacer; collapses when searching) --}}
+            <div
+                :class="searchOpen ? 'w-0 flex-none' : 'flex-1'"
+                class="transition-all duration-300 ease-out"
+            ></div>
 
-                {{-- Search --}}
+            {{-- Search bar + cancel grouped together (stretches from nothing to fill available space) --}}
+            <div
+                :class="searchOpen ? 'flex-1 opacity-100' : 'w-0 opacity-0 overflow-hidden'"
+                class="flex items-center gap-2 transition-all duration-300 ease-out min-w-0"
+            >
+                <div class="relative flex-1 min-w-0">
+                    <div class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-brand-text-muted">
+                        <x-heroicon-o-magnifying-glass class="w-4 h-4" />
+                    </div>
+                    <input
+                        id="nav-search-input"
+                        type="search"
+                        x-model="searchQuery"
+                        @input="doSearch()"
+                        @keydown.escape="closeSearch()"
+                        placeholder="Search compounds, SKUs..."
+                        class="w-full pl-9 pr-8 py-2 rounded-lg border border-brand-border bg-brand-surface text-body-sm text-brand-text placeholder:text-brand-text-faint focus:border-brand-cyan focus:ring-2 focus:ring-brand-cyan/20 focus:outline-none transition-smooth"
+                    />
+                    {{-- Inline loading spinner --}}
+                    <div
+                        x-show="searchLoading"
+                        x-transition.opacity.duration.150ms
+                        class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2"
+                    >
+                        <svg class="animate-spin w-4 h-4 text-brand-cyan" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                        </svg>
+                    </div>
+                </div>
+
+                {{-- Cancel search button (right next to the input) --}}
                 <button
                     type="button"
+                    @click="closeSearch()"
+                    class="flex-shrink-0 p-2 text-brand-navy-500 hover:text-brand-navy hover:bg-brand-surface-2 rounded-lg transition-smooth"
+                    aria-label="Close search"
+                >
+                    <x-heroicon-o-x-mark class="w-5 h-5" />
+                </button>
+            </div>
+
+            {{-- Right: Action buttons (fade out when searching) --}}
+            <div
+                :class="searchOpen ? 'opacity-0 pointer-events-none w-0 overflow-hidden' : 'opacity-100'"
+                class="flex items-center gap-0.5 flex-shrink-0 transition-all duration-200 ease-in"
+            >
+
+                {{-- Search trigger --}}
+                <button
+                    type="button"
+                    @click="openSearch()"
                     class="p-2 text-brand-navy-600 hover:text-brand-navy hover:bg-brand-surface-2 rounded-lg transition-smooth"
-                    aria-label="Search"
+                    aria-label="Search products"
                 >
                     <x-heroicon-o-magnifying-glass class="w-5 h-5" aria-hidden="true" />
                 </button>
@@ -104,13 +164,7 @@
                     </a>
                 @endauth
 
-                {{--
-                  Morphing hamburger — visible at ALL screen sizes.
-                  .hamburger CSS in app.css handles span transforms only.
-                  display/flex-direction/gap are Tailwind utilities so nothing
-                  in .hamburger fights with responsive display utilities.
-                  :class="{ 'active': mobileOpen }" triggers CSS morph to X.
-                --}}
+                {{-- Morphing hamburger --}}
                 <button
                     type="button"
                     @click="mobileOpen = !mobileOpen"
@@ -126,20 +180,76 @@
                 </button>
 
             </div>
-            {{-- /Right --}}
+            {{-- /Right buttons --}}
 
         </div>
     </div>
+
+    {{-- ── Search results tray (x-collapses below header bar) ─────────── --}}
+    <div
+        x-show="searchOpen && searchTrayOpen"
+        x-collapse
+        x-cloak
+        class="border-t border-brand-border bg-brand-surface"
+    >
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            {{-- No results --}}
+            <div x-show="searchCount === 0" class="py-4 text-center text-sm text-brand-text-muted">
+                No compounds matched "<span x-text="searchQuery" class="font-medium text-brand-navy"></span>"
+            </div>
+
+            {{-- Result cards — horizontal scroll with staggered fade-in-from-bottom --}}
+            <div x-show="searchCount > 0" class="py-3">
+                <style>
+                    @keyframes fadeUpIn {
+                        from { opacity: 0; transform: translateY(10px); }
+                        to   { opacity: 1; transform: translateY(0); }
+                    }
+                    .search-card-enter {
+                        animation: fadeUpIn 0.3s ease-out both;
+                    }
+                </style>
+                <div class="flex items-start gap-3 overflow-x-auto pb-1 -mx-1 px-1 snap-x">
+                    <template x-for="(item, idx) in searchResults" :key="item.url">
+                        <a
+                            :href="item.url"
+                            :style="'animation-delay: ' + (idx * 60) + 'ms'"
+                            class="search-card-enter flex-shrink-0 w-36 sm:w-40 group rounded-lg border border-brand-border bg-white hover:border-brand-cyan transition-smooth overflow-hidden snap-start"
+                        >
+                            {{-- Tiny image --}}
+                            <div class="aspect-square bg-brand-surface-2 overflow-hidden">
+                                <template x-if="item.image">
+                                    <img :src="item.image" :alt="item.name" class="w-full h-full object-cover" />
+                                </template>
+                                <template x-if="!item.image">
+                                    <div class="w-full h-full flex items-center justify-center">
+                                        <x-heroicon-o-beaker class="w-8 h-8 text-brand-text-faint" />
+                                    </div>
+                                </template>
+                            </div>
+                            {{-- Info --}}
+                            <div class="p-2 space-y-0.5">
+                                <p class="text-[10px] font-medium tracking-widest uppercase text-brand-text-muted truncate" x-text="item.category"></p>
+                                <h4 class="text-caption font-semibold text-brand-navy leading-snug line-clamp-1" x-text="item.name"></h4>
+                                <span class="text-caption font-semibold text-brand-cyan" x-text="item.price"></span>
+                            </div>
+                        </a>
+                    </template>
+                </div>
+                <p class="text-[11px] text-brand-text-muted mt-1">
+                    <span x-text="searchCount"></span> <span x-text="searchCount === 1 ? 'result' : 'results'"></span>
+                </p>
+            </div>
+
+        </div>
+    </div>
+
 </header>
 {{-- /Sticky header --}}
 
 
-{{-- ── Backdrop ──────────────────────────────────────────────────────────────
-     Fixed full-screen. z-40 — same layer as header. Renders after header in DOM
-     so sits visually on top when open. Clicking closes the sidebar.
-     This element is a sibling of <header> within <body>, so it is NOT inside
-     header's stacking context. It participates in the root stacking context.
---}}
+{{-- ── Backdrop ──────────────────────────────────────────────────────────── --}}
 <div
     x-show="mobileOpen"
     x-cloak
@@ -155,10 +265,7 @@
 ></div>
 
 
-{{-- ── Sidebar ────────────────────────────────────────────────────────────────
-     Fixed right-side panel. z-50 — above backdrop and header.
-     Sibling of <header> within <body>: not trapped in header's stacking context.
---}}
+{{-- ── Sidebar ───────────────────────────────────────────────────────────── --}}
 <div
     id="mobile-nav"
     x-show="mobileOpen"
