@@ -43,7 +43,6 @@
         }
     }"
     class="fixed bottom-4 right-4 z-50 flex flex-col gap-2 items-end w-80 pointer-events-none"
-    {{ $attributes->merge(['class' => 'flex items-center gap-3 bg-brand-navy toast-dark border border-brand-navy-700 text-white rounded-lg px-4 py-3 shadow-lg pointer-events-auto w-full']) }}
     aria-live="polite"
     aria-atomic="false"
 >
@@ -54,7 +53,7 @@
             x-transition:leave="transition-medium"
             x-transition:leave-start="opacity-100"
             x-transition:leave-end="opacity-0"
-            class="flex items-center gap-3 bg-brand-navy border border-brand-navy-700 text-white rounded-lg px-4 py-3 shadow-lg pointer-events-auto w-full"
+            class="flex items-center gap-3 bg-brand-navy toast-dark border border-brand-navy-700 text-white rounded-lg px-4 py-3 shadow-lg pointer-events-auto w-full"
             role="status"
         >
             {{-- check-circle — success --}}
