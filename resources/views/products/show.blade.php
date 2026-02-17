@@ -1,6 +1,6 @@
 <x-app-layout>
 
-    <x-ui.container class="py-8">
+    <x-ui.container class="py-8 pb-16">
 
         {{-- Breadcrumb --}}
         <nav class="text-sm text-brand-text-muted mb-6" aria-label="Breadcrumb">
@@ -12,15 +12,6 @@
             <span class="mx-2">/</span>
             <span class="text-brand-text">{{ $product->name }}</span>
         </nav>
-
-        {{-- Anchor Jump Nav --}}
-        <div class="hidden md:flex gap-6 text-sm text-brand-text-muted border-b border-brand-border mb-8 pb-2">
-            @foreach(['overview' => 'Overview', 'specifications' => 'Specifications', 'description' => 'Description', 'research' => 'Research', 'coa' => 'CoA'] as $anchor => $label)
-                <a href="#{{ $anchor }}" class="hover:text-brand-cyan transition pb-2 border-b-2 border-transparent hover:border-brand-cyan">
-                    {{ $label }}
-                </a>
-            @endforeach
-        </div>
 
         {{-- SECTION 1: Overview --}}
         <section id="overview" class="scroll-mt-20 grid md:grid-cols-2 gap-10 mb-16">

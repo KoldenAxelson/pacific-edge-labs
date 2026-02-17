@@ -5,7 +5,7 @@
         subtitle="Browse our complete catalog of USA-tested peptides. Potency verified, purity quantified."
     />
 
-    <x-ui.container class="mt-8">
+    <x-ui.container class="mt-8 pb-16">
 
         {{-- Filter Bar --}}
         <form method="GET" action="{{ route('products.index') }}" class="flex flex-wrap gap-3 mb-8 items-end">
@@ -22,9 +22,9 @@
             </div>
             <x-ui.button type="submit" variant="secondary">Filter</x-ui.button>
             @if($selected)
-                <a href="{{ route('products.index') }}" class="text-sm text-brand-text-muted hover:text-brand-cyan transition self-center">
+                <x-ui.button href="{{ route('products.index') }}" variant="outline" size="sm">
                     Clear
-                </a>
+                </x-ui.button>
             @endif
         </form>
 

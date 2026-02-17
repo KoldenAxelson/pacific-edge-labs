@@ -6,7 +6,7 @@
         :subtitle="$category->description"
     />
 
-    <x-ui.container>
+    <x-ui.container class="pb-16">
 
         {{-- Category Nav Pills --}}
         <div class="flex flex-wrap gap-2 mb-8 mt-8">

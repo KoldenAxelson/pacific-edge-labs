@@ -50,6 +50,18 @@
                 </div>
             </a>
 
+            {{-- Center: Product anchor nav (product pages only) --}}
+            @if(request()->routeIs('products.show'))
+                <nav class="hidden md:flex items-center gap-1" aria-label="Page sections">
+                    @foreach(['overview' => 'Overview', 'specifications' => 'Specs', 'description' => 'Description', 'research' => 'Research', 'coa' => 'CoA'] as $anchor => $label)
+                        <a
+                            href="#{{ $anchor }}"
+                            class="px-2.5 py-1 text-body-sm font-medium text-brand-navy-600 hover:text-brand-cyan hover:bg-brand-surface-2 rounded-lg transition-smooth"
+                        >{{ $label }}</a>
+                    @endforeach
+                </nav>
+            @endif
+
             {{-- Right: Actions + Hamburger --}}
             <div class="flex items-center gap-0.5">
 
@@ -90,17 +102,6 @@
                             {{ Auth::user()->name }}
                         </span>
                     </a>
-                @else
-                    <div class="hidden sm:flex items-center gap-2 ml-1">
-                        <a
-                            href="{{ route('login') }}"
-                            class="px-3 py-1.5 text-body-sm font-medium text-brand-navy-700 hover:text-brand-navy hover:bg-brand-surface-2 rounded-lg transition-smooth"
-                        >Log in</a>
-                        <a
-                            href="{{ route('register') }}"
-                            class="px-3 py-1.5 text-body-sm font-medium text-white bg-brand-navy hover:bg-brand-navy-800 rounded-lg transition-smooth"
-                        >Register</a>
-                    </div>
                 @endauth
 
                 {{--

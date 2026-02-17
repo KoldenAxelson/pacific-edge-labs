@@ -23,11 +23,12 @@ if ($batchStatus === 'low_stock') {
 }
 @endphp
 
-<div
+<a
+    href="{{ $href }}"
     x-data="{ hovered: false, notified: false }"
     @mouseenter="hovered = true"
     @mouseleave="hovered = false"
-    {{ $attributes->merge(['class' => 'group flex flex-col bg-brand-surface rounded-xl border border-brand-border hover:border-brand-cyan transition-smooth overflow-hidden']) }}
+    {{ $attributes->merge(['class' => 'group flex flex-col bg-brand-surface rounded-xl border border-brand-border hover:border-brand-cyan transition-smooth overflow-hidden cursor-pointer']) }}
 >
 
     {{-- ── IMAGE ─────────────────────────────────────────────────────────── --}}
@@ -128,7 +129,7 @@ if ($batchStatus === 'low_stock') {
             @if($batchStatus === 'out_of_stock')
                 <button
                     type="button"
-                    @click="notified = !notified"
+                    @click.prevent.stop="notified = !notified"
                     :aria-label="notified ? 'Cancel notification for {{ $name }}' : 'Notify me when {{ $name }} is back in stock'"
                     :class="notified
                         ? 'bg-brand-success text-white hover:bg-brand-success/85'
@@ -141,6 +142,7 @@ if ($batchStatus === 'low_stock') {
             @else
                 <button
                     type="button"
+                    @click.prevent.stop
                     aria-label="Add {{ $name }} to cart"
                     class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-brand-cyan hover:bg-brand-cyan-dark text-white transition-smooth"
                 >
@@ -170,4 +172,4 @@ if ($batchStatus === 'low_stock') {
 
     </div>
 
-</div>
+</a>
