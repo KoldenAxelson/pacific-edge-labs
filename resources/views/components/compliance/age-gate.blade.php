@@ -43,7 +43,7 @@
     <div :class="!verified ? 'animate-scale-in' : ''" class="w-full max-w-md rounded-2xl overflow-hidden shadow-2xl">
 
         {{-- ── HEADER: dark navy ───────────────────────────────────────────── --}}
-        <div class="bg-brand-navy px-6 py-6 flex flex-col items-center gap-3 text-center">
+        <div class="bg-brand-navy dark-stable px-6 py-6 flex flex-col items-center gap-3 text-center">
 
             {{-- Beaker icon in translucent cyan circle --}}
             <div class="w-12 h-12 rounded-full bg-brand-cyan/20 flex items-center justify-center">

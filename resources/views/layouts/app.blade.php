@@ -130,5 +130,40 @@
         {{-- Schema.org JSON-LD structured data --}}
         @stack('schema')
 
+        {{--
+          iOS Safe Area Guard — dark bar behind the home indicator.
+          iOS Safari shows the body background color in the safe area inset zone.
+          When the footer is in view or the hamburger overlay is open, the light body
+          bg creates a visible white strip beneath the dark footer/overlay.
+          Fix: a fixed element sized to env(safe-area-inset-bottom) that fades in
+          when the footer enters the viewport or the sidebar is open.
+          z-39 keeps it below the backdrop (z-40) so it doesn't interfere with taps.
+        --}}
+        <div
+            x-data="{
+                footerVisible: false,
+                init() {
+                    const footer = document.querySelector('footer');
+                    if (footer && 'IntersectionObserver' in window) {
+                        new IntersectionObserver(
+                            ([entry]) => { this.footerVisible = entry.isIntersecting },
+                            { threshold: 0 }
+                        ).observe(footer);
+                    }
+                }
+            }"
+            x-show="mobileOpen || footerVisible"
+            x-transition:enter="transition duration-200 ease-out"
+            x-transition:enter-start="opacity-0"
+            x-transition:enter-end="opacity-100"
+            x-transition:leave="transition duration-150 ease-in"
+            x-transition:leave-start="opacity-100"
+            x-transition:leave-end="opacity-0"
+            x-cloak
+            class="fixed bottom-0 left-0 right-0 z-[39] pointer-events-none md:hidden"
+            style="height: env(safe-area-inset-bottom, 0px); background-color: #0b1120;"
+            aria-hidden="true"
+        ></div>
+
     </body>
 </html>
