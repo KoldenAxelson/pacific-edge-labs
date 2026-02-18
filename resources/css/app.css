@@ -421,10 +421,11 @@ footer {
     padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
-/* Fixed bottom elements — nudge above the home indicator so they aren't clipped */
-[id="toast-mount"] {
-    bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
-}
+/*
+ * KNOWN ISSUE: iOS Safari home indicator zone
+ * env(safe-area-inset-bottom) padding on footer/sidebar is correct CSS but iOS
+ * Safari composites its own layer behind the indicator on some devices. Tracked.
+ */
 
 /* ═══════════════════════════════════════════════════════════════════════════ */
 /*  DARK MODE OVERRIDES                                                       */

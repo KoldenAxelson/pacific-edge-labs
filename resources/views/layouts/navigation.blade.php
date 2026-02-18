@@ -49,9 +49,10 @@
             </a>
 
             {{-- Left spacer (keeps center nav centered; collapses when searching) --}}
+            {{-- flex-1 in static class = correct layout before Alpine boots (prevents icon jump) --}}
             <div
                 :class="searchOpen ? 'w-0 flex-none' : 'flex-1'"
-                class="transition-all duration-300 ease-out"
+                class="flex-1 transition-all duration-300 ease-out"
             ></div>
 
             {{-- Center: Product anchor nav (product pages only — fades out when searching) --}}
@@ -73,7 +74,7 @@
             {{-- Right spacer (mirrors left spacer; collapses when searching) --}}
             <div
                 :class="searchOpen ? 'w-0 flex-none' : 'flex-1'"
-                class="transition-all duration-300 ease-out"
+                class="flex-1 transition-all duration-300 ease-out"
             ></div>
 
             {{-- Search bar + cancel grouped together (stretches from nothing to fill available space) --}}
@@ -123,7 +124,7 @@
             {{-- Right: Action buttons (fade out when searching) --}}
             <div
                 :class="searchOpen ? 'opacity-0 pointer-events-none w-0 overflow-hidden' : 'opacity-100'"
-                class="flex items-center gap-0.5 flex-shrink-0 transition-all duration-200 ease-in"
+                class="flex items-center gap-0.5 flex-shrink-0 opacity-100 transition-all duration-200 ease-in"
             >
 
                 {{-- Search trigger --}}
